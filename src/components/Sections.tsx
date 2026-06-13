@@ -269,10 +269,48 @@ export function Marquee() {
   );
 }
 
+const FAQS = [
+  {
+    q: "what is hooked.?",
+    a: "hooked. is a swipe-based music discovery app. it plays the strongest 30 seconds of a song first, then lets your gestures decide what comes next.",
+  },
+  {
+    q: "how is it different from spotify radio?",
+    a: "radio leans on safe repeats. hooked. treats every skip, save, more-like-this, and never-again swipe as a direct taste signal for discovery.",
+  },
+  {
+    q: "where do the previews come from?",
+    a: "the catalog uses publicly available song previews and focuses on fast discovery. full-song links can open on services like apple music, spotify, or youtube.",
+  },
+  {
+    q: "can i save songs and playlists?",
+    a: "yes. swipe down to save a track, choose a destination, and build playlists around the songs you actually discovered.",
+  },
+];
+
+export function Faq() {
+  return (
+    <section id="faq" aria-labelledby="faq-title">
+      <Tag n="05" label="quick answers" />
+      <motion.h2 id="faq-title" {...rise}>
+        music discovery, minus the <span style={{ color: "var(--pink)" }}>dead air.</span>
+      </motion.h2>
+      <div className="faq-grid">
+        {FAQS.map((item) => (
+          <motion.article className="faq-card" key={item.q} {...rise}>
+            <h3>{item.q}</h3>
+            <p>{item.a}</p>
+          </motion.article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export function Cta() {
   return (
     <section id="cta">
-      <Tag n="05" label="get it" />
+      <Tag n="06" label="get it" />
       <motion.h2 {...rise} style={{ textAlign: "center" }}>
         stop queueing. <span style={{ color: "var(--pink)" }}>start swiping.</span>
       </motion.h2>
