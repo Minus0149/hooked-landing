@@ -45,9 +45,16 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  manifest: "/site.webmanifest",
   icons: {
-    icon: "/hooked-icon.png",
-    apple: "/hooked-icon.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/hooked-icon.png", sizes: "1024x1024", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
   },
   openGraph: {
     type: "website",
@@ -57,10 +64,10 @@ export const metadata: Metadata = {
     description,
     images: [
       {
-        url: "/06-home-library.png",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "hooked. music discovery app home and library screens",
+        alt: "hooked. swipe-based music discovery app preview",
       },
     ],
   },
@@ -68,7 +75,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title,
     description,
-    images: ["/06-home-library.png"],
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,

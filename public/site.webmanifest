@@ -1,0 +1,25 @@
+{
+  "name": "hooked.",
+  "short_name": "hooked.",
+  "description": "Swipe through 30-second song previews and discover your next favorite track.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#08080C",
+  "theme_color": "#08080C",
+  "categories": ["music", "entertainment"],
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
