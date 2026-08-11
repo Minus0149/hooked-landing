@@ -24,6 +24,9 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       const opts = {
         duration: touch ? 1.4 : 1.9,
         lock: touch,
+        // the nav is fixed, so landing a target flush with the viewport top
+        // buries its first ~70px underneath it
+        offset: -92,
         easing: (t: number) => 1 - Math.pow(1 - t, 4),
       };
       if (id === "#" || id === "#top") {

@@ -8,6 +8,9 @@ import {
   useMotionValueEvent,
 } from "motion/react";
 import { Magnetic, Tilt } from "@/components/Chrome";
+import BetaForm from "@/components/BetaForm";
+import { FAQS } from "@/data/faq";
+import { appUrl, appLinkProps } from "@/lib/site";
 
 const rise = {
   initial: { opacity: 0, y: 46 },
@@ -46,9 +49,6 @@ function Headline({ words, delay = 0.55 }: { words: { t: string; alt?: boolean }
 
 const TICKER = ["psych pop", "punjabi wave", "afrobeats", "bollywood strings", "deep house", "motown soul", "bedroom indie", "k-pop b-sides"];
 
-// the future app.<domain> home — configurable so it goes live the day the domain does
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "#cta";
-
 export function Hero() {
   const [tick, setTick] = useState(0);
   useEffect(() => {
@@ -78,8 +78,9 @@ export function Hero() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.15, duration: 0.8 }}
       >
-        we play the best 30 seconds of songs you&apos;ve never heard. four swipes teach
-        us exactly what you love. no leftovers, no filler — just hooks.
+        every song here starts at its hook — the part you&apos;d normally sit through
+        forty seconds of intro to reach. swipe up if it isn&apos;t landing. by the
+        fourth swipe it has stopped guessing.
       </motion.p>
       <motion.div
         className="hero-cta"
@@ -88,11 +89,11 @@ export function Hero() {
         transition={{ delay: 1.3, duration: 0.8 }}
       >
         <Magnetic>
-          <a className="btn-primary" href="/hooked.apk" download>
-            download for android
+          <a className="btn-primary" href="#beta">
+            join the beta
           </a>
         </Magnetic>
-        <a className="btn-browser" href={APP_URL} {...(APP_URL.startsWith("#") ? {} : { target: "_blank", rel: "noreferrer" })}>
+        <a className="btn-browser" href={appUrl} {...appLinkProps}>
           try it in your browser <span>→</span>
         </a>
       </motion.div>
@@ -102,10 +103,10 @@ export function Hero() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.45, duration: 0.8 }}
       >
-        <div><b>118</b><span>hand-cut hooks</span></div>
-        <div><b>19</b><span>genres deep</span></div>
+        <div><b>118</b><span>hooks, cut by hand</span></div>
+        <div><b>19</b><span>genres</span></div>
         <div><b>30s</b><span>only the good part</span></div>
-        <div><b>4</b><span>swipes to read you</span></div>
+        <div><b>4</b><span>ways to answer</span></div>
       </motion.div>
       <motion.div
         className="now-spinning"
@@ -131,26 +132,31 @@ export function Why() {
           algorithms feed you <span style={{ color: "var(--pink)" }}>leftovers.</span>
         </motion.h2>
         <motion.p {...rise}>
-          every platform plays it safe — the same forty songs, reheated. discovery
-          shouldn&apos;t feel like a queue. it should feel like flipping through a crate of
-          records, dropping the needle on something you&apos;ve never heard, and knowing
-          within seconds.
+          the chorus usually turns up around forty seconds in, and a third of us are
+          gone by thirty. so we bail a few seconds before the part that would have
+          sold us, decide the song wasn&apos;t our thing, and go back to the playlist
+          that keeps handing us stuff we saved in 2021.
         </motion.p>
         <motion.div className="receipts" {...rise}>
-          <span>your weekly mix: 80% songs you already saved</span>
-          <span>radio: the same rotation since 2019</span>
-          <span>hooked.: zero repeats until you ask</span>
+          <span>24% of songs are skipped inside the first 5 seconds</span>
+          <span>35% never make it as far as 0:30</span>
+          <span>the chorus normally lands somewhere after that</span>
+          <span>hooked. starts you at the hook</span>
         </motion.div>
+        <motion.p className="receipts-src" {...rise}>
+          sources: paul lamere, billions of spotify plays · ohio state, musicae
+          scientiae, 1986–2015
+        </motion.p>
       </div>
     </section>
   );
 }
 
 const GESTURES = [
-  { color: "#fff", stamp: "skip ↑", title: "not feeling it? gone in a flick.", copy: "swipe up and the next hook is already playing. even your skips teach us." },
-  { color: "var(--save)", stamp: "♥ saved", title: "love it? it becomes a record.", copy: "swipe down and the card morphs into vinyl, sliding into its own sleeve. saved — with ceremony." },
-  { color: "var(--more)", stamp: "✦ more like this", title: "chase the vibe without saving.", copy: "the gesture no other app has: swipe right and the feed bends toward that exact sound." },
-  { color: "var(--never)", stamp: "✕ never", title: "hate it? it never returns.", copy: "swipe left and that artist is gone from your universe. we hold grudges so you don't have to." },
+  { color: "#fff", stamp: "skip ↑", title: "up, and it's gone.", copy: "the next hook is playing before your thumb is back down. skips count for as much as saves here — they just point the other way." },
+  { color: "var(--save)", stamp: "♥ saved", title: "down, and it's yours.", copy: "the card turns into a record and slides into its sleeve. it takes about a second longer than it strictly needs to. that was on purpose." },
+  { color: "var(--more)", stamp: "✦ more like this", title: "right, for more of whatever that was.", copy: "not a save. it bends the next few cards toward that sound and then lets go." },
+  { color: "var(--never)", stamp: "✕ never", title: "left, and that's the end of it.", copy: "the artist doesn't come back. no soft mute, no 'show me less often' — off the list." },
 ];
 
 export function Gestures() {
@@ -210,11 +216,13 @@ export function Ritual() {
         <div className="copy">
           <Tag n="03" label="the ritual" />
           <motion.h2 {...rise}>
-            saving a song should <span style={{ color: "var(--save)" }}>feel like something.</span>
+            we made saving <span style={{ color: "var(--save)" }}>slow on purpose.</span>
           </motion.h2>
           <motion.p {...rise} style={{ color: "var(--muted)" }}>
-            watch the sleeve open. every save is a record slid home — your taste,
-            pressed to wax, one swipe at a time.
+            the card becomes a record and slides into its sleeve. it costs you about a
+            second. you could argue that second is wasted and you would probably be
+            right, but a library you had to wait for ends up feeling like it cost
+            something.
           </motion.p>
         </div>
       </div>
@@ -234,12 +242,19 @@ export function Transform() {
         <Tag n="04" label="the app" />
         <motion.div className="phone-shell" style={{ opacity, scale, y: py }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/03-discover-deck.png" alt="the hooked. swipe deck" />
+          <img
+            src="/03-discover-deck.webp"
+            alt="the hooked. swipe deck"
+            width={600}
+            height={1298}
+            loading="lazy"
+            decoding="async"
+          />
         </motion.div>
         <motion.h2 {...rise}>
-          118 hooks. four gestures.
+          118 hooks, cut by hand.
           <br />
-          zero leftovers.
+          four gestures. that&apos;s the app.
         </motion.h2>
       </div>
     </section>
@@ -269,31 +284,12 @@ export function Marquee() {
   );
 }
 
-const FAQS = [
-  {
-    q: "what is hooked.?",
-    a: "hooked. is a swipe-based music discovery app. it plays the strongest 30 seconds of a song first, then lets your gestures decide what comes next.",
-  },
-  {
-    q: "how is it different from spotify radio?",
-    a: "radio leans on safe repeats. hooked. treats every skip, save, more-like-this, and never-again swipe as a direct taste signal for discovery.",
-  },
-  {
-    q: "where do the previews come from?",
-    a: "the catalog uses publicly available song previews and focuses on fast discovery. full-song links can open on services like apple music, spotify, or youtube.",
-  },
-  {
-    q: "can i save songs and playlists?",
-    a: "yes. swipe down to save a track, choose a destination, and build playlists around the songs you actually discovered.",
-  },
-];
-
 export function Faq() {
   return (
     <section id="faq" aria-labelledby="faq-title">
       <Tag n="05" label="quick answers" />
       <motion.h2 id="faq-title" {...rise}>
-        music discovery, minus the <span style={{ color: "var(--pink)" }}>dead air.</span>
+        things people <span style={{ color: "var(--pink)" }}>keep asking.</span>
       </motion.h2>
       <div className="faq-grid">
         {FAQS.map((item) => (
@@ -310,31 +306,35 @@ export function Faq() {
 export function Cta() {
   return (
     <section id="cta">
-      <Tag n="06" label="get it" />
+      <Tag n="06" label="the beta" />
       <motion.h2 {...rise} style={{ textAlign: "center" }}>
-        stop queueing. <span style={{ color: "var(--pink)" }}>start swiping.</span>
+        come <span style={{ color: "var(--pink)" }}>break it.</span>
       </motion.h2>
       <motion.div className="shots" {...rise}>
         {/* eslint-disable @next/next/no-img-element */}
-        <Tilt><img src="/06-home-library.png" alt="home and library" /></Tilt>
-        <Tilt><img src="/03-discover-deck.png" alt="the deck" /></Tilt>
-        <Tilt><img src="/05-vinyl-into-sleeve.png" alt="the vinyl save" /></Tilt>
+        <Tilt><img src="/06-home-library.webp" alt="home and library" width={600} height={1298} loading="lazy" decoding="async" /></Tilt>
+        <Tilt><img src="/03-discover-deck.webp" alt="the deck" width={600} height={1298} loading="lazy" decoding="async" /></Tilt>
+        <Tilt><img src="/05-vinyl-into-sleeve.webp" alt="the vinyl save" width={600} height={1298} loading="lazy" decoding="async" /></Tilt>
         {/* eslint-enable @next/next/no-img-element */}
       </motion.div>
       <motion.div className="cta-row" {...rise}>
-        <Magnetic>
-          <a className="btn-primary" href="/hooked.apk" download>
-            download for android
-          </a>
-        </Magnetic>
-        <a className="btn-browser" href={APP_URL} {...(APP_URL.startsWith("#") ? {} : { target: "_blank", rel: "noreferrer" })}>
+        <a className="btn-browser" href={appUrl} {...appLinkProps}>
           try it in your browser <span>→</span>
         </a>
-        <a className="btn-ghost" href="#top">
-          ios — soon, probably
-        </a>
+        <span className="btn-ghost">android — play store, once testing closes</span>
       </motion.div>
-      <p className="cta-note">free · 90mb · no ads, no tracking, no idea what we&apos;re doing</p>
+      <p className="cta-note">free · no ads, no tracking, no idea what we&apos;re doing</p>
+
+      <motion.div className="beta-shell" id="beta" {...rise}>
+        <p className="beta-intro">
+          android goes out through <b>play store closed testing</b>{" "}
+          first, so i need the google account that&apos;s signed in on your phone — that address is the
+          only way the invite can reach you. the rest of it just tells me which
+          genres to load and which phones to stop breaking. ios is further out than
+          i&apos;d like.
+        </p>
+        <BetaForm />
+      </motion.div>
     </section>
   );
 }
@@ -344,7 +344,14 @@ export function Footer() {
     <footer>
       <div className="who">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/minus-unaware-avatar.png" alt="minus, unaware" />
+        <img
+          src="/minus-unaware-avatar.webp"
+          alt="minus, unaware"
+          width={96}
+          height={96}
+          loading="lazy"
+          decoding="async"
+        />
         <span>
           built in public by <strong style={{ color: "var(--text)" }}>MiNUs, unaware</strong> —
           mi &apos;n us, building things we&apos;re not qualified to build.

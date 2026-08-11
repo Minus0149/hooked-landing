@@ -5,9 +5,8 @@ import SceneLoader from "@/components/SceneLoader";
 import { Preloader, Cursor, ProgressRail, BigWord, JukeboxDock, Magnetic } from "@/components/Chrome";
 import "./globals.css";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://hookedcue.com";
-const configuredAppUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://app.hookedcue.com";
-const appUrl = configuredAppUrl.includes("localhost") ? siteUrl : configuredAppUrl;
+import { appUrl, siteUrl } from "@/lib/site";
+
 const title = "hooked. - Swipe your next favorite song";
 const description =
   "hooked. is a swipe-based music discovery app that plays the best 30 seconds of new songs, learns your taste from four gestures, and saves the tracks you love.";
@@ -117,7 +116,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteJsonLd).replace(/</g, "\\u003c"),
+          }}
         />
       </head>
       <body className={`${unbounded.variable} ${instrument.variable}`}>

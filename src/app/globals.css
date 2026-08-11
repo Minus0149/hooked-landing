@@ -328,11 +328,13 @@ body.has-cursor .cursor-dot, body.has-cursor .cursor-ring { display: block; }
 .sec-tag span { color: var(--pink); }
 .stage-tag { position: absolute; top: 110px; left: clamp(20px, 6vw, 90px); margin: 0; }
 #cta .sec-tag { justify-content: center; }
-.receipts { display: flex; flex-direction: column; gap: 12px; margin-top: 34px; }
+.receipts { display: flex; flex-direction: column; gap: 10px; margin-top: 30px; }
+/* these sit low enough in the chapter to land on the turntable as it crosses,
+   past the reach of .copy's halo — so each chip carries its own backdrop */
 .receipts span {
-  font-size: 13.5px; color: var(--muted); padding: 12px 18px;
+  font-size: 13.5px; color: var(--muted); padding: 11px 18px;
   border: 1px solid var(--line); border-radius: 12px; width: fit-content;
-  background: rgba(19,19,27,.45); backdrop-filter: blur(4px);
+  background: rgba(12,12,18,.86); backdrop-filter: blur(10px);
 }
 .receipts span:last-child { color: var(--text); border-color: rgba(255,61,113,.5); }
 .gesture-dashes {
@@ -418,3 +420,112 @@ body[data-grabbing] .cursor-ring { scale: 0.7; }
 /* NOTE: deliberately NOT gating the scene/cursor on prefers-reduced-motion —
    Windows reports `reduce` whenever "Animation effects" is off (common on
    gaming/perf setups, including the dev machine), which blanked the whole site. */
+
+/* ---------- sourced receipts note ---------- */
+.receipts-src {
+  margin-top: 14px; font-size: 11.5px; letter-spacing: .04em;
+  color: var(--muted); opacity: .8; max-width: 62ch; line-height: 1.6;
+  text-shadow: 0 1px 6px rgba(5,5,9,.95), 0 0 14px rgba(5,5,9,.8);
+}
+
+/* ---------- beta signup ---------- */
+#beta { padding-top: 0; }
+.beta-shell {
+  max-width: 760px; margin: 46px auto 0; padding: clamp(24px, 4vw, 40px);
+  border: 1px solid var(--line); border-radius: 26px;
+  background: linear-gradient(180deg, rgba(24,22,32,.72), rgba(13,13,18,.72));
+  backdrop-filter: blur(10px);
+  box-shadow: 0 40px 90px rgba(0,0,0,.5);
+}
+.beta-intro { color: var(--muted); font-size: 14.5px; line-height: 1.7; margin-bottom: 28px; }
+.beta-intro b { color: var(--text); font-weight: 600; }
+
+.beta-form { display: flex; flex-direction: column; gap: 22px; }
+.beta-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.field { display: flex; flex-direction: column; gap: 9px; border: 0; min-width: 0; }
+.field > label, .field > legend {
+  font-family: var(--display), sans-serif; font-weight: 500;
+  font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted);
+  padding: 0; display: block;
+}
+.field > label em, .field > legend em {
+  font-family: var(--body), sans-serif; font-style: normal; text-transform: none;
+  letter-spacing: .02em; color: rgba(142,140,153,.7); margin-left: 8px; font-size: 11.5px;
+}
+.field input[type="text"], .field input[type="email"], .field select, .field textarea {
+  font-family: var(--body), sans-serif; font-size: 15px; color: var(--text);
+  background: rgba(8,8,12,.6); border: 1px solid var(--line); border-radius: 14px;
+  padding: 14px 16px; width: 100%; transition: border-color .2s, background .2s;
+  appearance: none;
+}
+.field textarea { resize: vertical; min-height: 84px; line-height: 1.6; }
+.field select {
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+                    linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: calc(100% - 21px) 21px, calc(100% - 15px) 21px;
+  background-size: 6px 6px, 6px 6px; background-repeat: no-repeat;
+  padding-right: 42px; cursor: pointer;
+}
+.field select option { background: #13131b; color: var(--text); }
+.field input::placeholder, .field textarea::placeholder { color: rgba(142,140,153,.55); }
+.field input:hover, .field select:hover, .field textarea:hover { border-color: #34343f; }
+.field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible {
+  outline: none; border-color: var(--pink); background: rgba(8,8,12,.9);
+  box-shadow: 0 0 0 3px rgba(255,61,113,.16);
+}
+.field input[aria-invalid="true"] { border-color: rgba(255,82,82,.75); }
+.field-err { font-size: 12.5px; color: #ff8080; letter-spacing: .01em; }
+
+.pills { display: flex; flex-wrap: wrap; gap: 9px; }
+.pill {
+  font-family: var(--body), sans-serif; font-size: 13px; color: var(--muted);
+  background: rgba(8,8,12,.5); border: 1px solid var(--line); border-radius: 999px;
+  padding: 9px 16px; cursor: pointer; transition: color .2s, border-color .2s, background .2s;
+}
+.pill:hover:not(:disabled) { color: var(--text); border-color: #3a3a46; }
+.pill.on { color: #0b0b10; background: var(--save); border-color: var(--save); font-weight: 600; }
+.pill:disabled { opacity: .35; cursor: not-allowed; }
+.pill:focus-visible { outline: 2px solid var(--pink); outline-offset: 2px; }
+
+.consent { display: flex; gap: 12px; align-items: flex-start; }
+.consent input {
+  appearance: none; flex: none; width: 20px; height: 20px; margin-top: 2px;
+  border: 1px solid var(--line); border-radius: 6px; background: rgba(8,8,12,.6);
+  cursor: pointer; transition: background .2s, border-color .2s;
+}
+.consent input:checked { background: var(--pink); border-color: var(--pink); }
+.consent input:checked::after {
+  content: "✓"; display: block; color: #0b0b10; font-size: 13px; font-weight: 700;
+  line-height: 18px; text-align: center;
+}
+.consent input:focus-visible { outline: 2px solid var(--pink); outline-offset: 2px; }
+.consent label { font-size: 13.5px; color: var(--muted); line-height: 1.6; cursor: pointer; }
+.consent.has-err input { border-color: rgba(255,82,82,.75); }
+
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+.beta-submit { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 4px; }
+button.btn-primary { border: none; cursor: pointer; }
+button.btn-primary:disabled { opacity: .55; cursor: wait; transform: none; }
+.beta-live { font-size: 13px; color: #ff8080; margin: 0; }
+
+.beta-done { text-align: center; padding: 30px 10px; }
+.beta-done i {
+  display: block; width: 12px; height: 12px; border-radius: 999px; margin: 0 auto 22px;
+  background: var(--save); animation: livepulse 1.6s ease-in-out infinite;
+}
+.beta-done h3 {
+  font-family: var(--display), sans-serif; font-weight: 900;
+  font-size: clamp(22px, 3vw, 30px); letter-spacing: -.02em; margin-bottom: 14px;
+}
+.beta-done p { color: var(--muted); font-size: 14.5px; line-height: 1.7; max-width: 46ch; margin: 0 auto; }
+
+@media (max-width: 720px) {
+  .beta-row { grid-template-columns: 1fr; }
+  .beta-shell { border-radius: 20px; }
+  .beta-submit { flex-direction: column; align-items: stretch; }
+  .beta-submit .btn-primary { width: 100%; text-align: center; }
+}
+
+span.btn-ghost { cursor: default; }
+span.btn-ghost:hover { color: var(--muted); }

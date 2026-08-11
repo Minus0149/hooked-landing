@@ -9,20 +9,21 @@ import {
   Cta,
   Footer,
 } from "@/components/Sections";
+import { FAQS } from "@/data/faq";
+import { appUrl, siteUrl } from "@/lib/site";
 
 export default function Home() {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://hookedcue.com";
-  const configuredAppUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://app.hookedcue.com";
-  const appUrl = configuredAppUrl.includes("localhost") ? siteUrl : configuredAppUrl;
   const jsonLd = [
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
       name: "hooked.",
       applicationCategory: "MusicApplication",
-      operatingSystem: "Android, Web",
+      // android is in closed testing, so the only thing anyone can open today
+      // is the web app — claiming a download would be a lie to the crawler
+      operatingSystem: "Web",
       url: siteUrl,
-      downloadUrl: `${siteUrl}/hooked.apk`,
+      installUrl: appUrl,
       description:
         "A swipe-based music discovery app that plays short song previews and learns your taste from skips, saves, more-like-this signals, and never-again blocks.",
       offers: {
@@ -38,32 +39,13 @@ export default function Home() {
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      mainEntity: [
-        {
-          "@type": "Question",
-          name: "What is hooked.?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "hooked. is a swipe-based music discovery app that plays short song previews so you can find new music quickly.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "How does hooked. learn my music taste?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "The app uses four gestures: skip, save, more like this, and never. Each swipe becomes a taste signal for future recommendations.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "Can I try hooked. in a browser?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: `Yes. You can try the web app at ${appUrl} or download the Android APK from the landing page.`,
-          },
-        },
-      ],
+      // built from the same array the page renders — google wants the markup
+      // and the visible text to be the same questions
+      mainEntity: FAQS.map((item) => ({
+        "@type": "Question",
+        name: item.q,
+        acceptedAnswer: { "@type": "Answer", text: item.a },
+      })),
     },
   ];
 
@@ -71,7 +53,9 @@ export default function Home() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
       />
       <main>
         <Hero />
