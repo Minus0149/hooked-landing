@@ -20,7 +20,7 @@ const BASE = process.env.BASE ?? "http://localhost:3011";
 const BURST_GAP_MS = 2_200;
 const OLD_ENOUGH = () => Date.now() - 10_000; // past the min-fill-time gate
 
-function valid(extra = {}) {
+function valid() {
   return {
     name: "kunal",
     email: `beta+${Math.random().toString(36).slice(2, 9)}@example.com`,

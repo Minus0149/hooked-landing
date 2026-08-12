@@ -8,7 +8,7 @@ import {
   useMotionValueEvent,
 } from "motion/react";
 import { Magnetic, Tilt } from "@/components/Chrome";
-import BetaForm from "@/components/BetaForm";
+import Link from "next/link";
 import { FAQS } from "@/data/faq";
 import { appUrl, appLinkProps } from "@/lib/site";
 
@@ -89,9 +89,9 @@ export function Hero() {
         transition={{ delay: 1.3, duration: 0.8 }}
       >
         <Magnetic>
-          <a className="btn-primary" href="#beta">
+          <Link className="btn-primary" href="/beta">
             join the beta
-          </a>
+          </Link>
         </Magnetic>
         <a className="btn-browser" href={appUrl} {...appLinkProps}>
           try it in your browser <span>→</span>
@@ -318,23 +318,17 @@ export function Cta() {
         {/* eslint-enable @next/next/no-img-element */}
       </motion.div>
       <motion.div className="cta-row" {...rise}>
+        <Magnetic>
+          <a className="btn-primary" href="/beta">
+            join the beta
+          </a>
+        </Magnetic>
         <a className="btn-browser" href={appUrl} {...appLinkProps}>
           try it in your browser <span>→</span>
         </a>
         <span className="btn-ghost">android — play store, once testing closes</span>
       </motion.div>
       <p className="cta-note">free · no ads, no tracking, no idea what we&apos;re doing</p>
-
-      <motion.div className="beta-shell" id="beta" {...rise}>
-        <p className="beta-intro">
-          android goes out through <b>play store closed testing</b>{" "}
-          first, so i need the google account that&apos;s signed in on your phone — that address is the
-          only way the invite can reach you. the rest of it just tells me which
-          genres to load and which phones to stop breaking. ios is further out than
-          i&apos;d like.
-        </p>
-        <BetaForm />
-      </motion.div>
     </section>
   );
 }

@@ -1,8 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Unbounded, Instrument_Sans } from "next/font/google";
-import SmoothScroll from "@/components/SmoothScroll";
-import SceneLoader from "@/components/SceneLoader";
-import { Preloader, Cursor, ProgressRail, BigWord, JukeboxDock, Magnetic } from "@/components/Chrome";
 import "./globals.css";
 
 import { appUrl, siteUrl } from "@/lib/site";
@@ -121,29 +118,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className={`${unbounded.variable} ${instrument.variable}`}>
-        <SmoothScroll>
-          <Preloader />
-          <Cursor />
-          <BigWord />
-          <SceneLoader />
-          <ProgressRail />
-          <nav>
-            <a className="wordmark" href="#" aria-label="back to top">
-              hooked<i>.</i>
-            </a>
-            <Magnetic>
-              <a className="nav-cta" href="#cta">
-                get the app
-              </a>
-            </Magnetic>
-          </nav>
-          {children}
-          <JukeboxDock />
-          <div className="vignette" />
-          <div className="grain" />
-        </SmoothScroll>
-      </body>
+      {/* the scroll-story chrome lives in (story)/layout.tsx, not here — see the
+          note there for why /beta must not inherit it */}
+      <body className={`${unbounded.variable} ${instrument.variable}`}>{children}</body>
     </html>
   );
 }

@@ -21,6 +21,6 @@ export const FAQS = [
   },
   {
     q: "when is it on the play store?",
-    a: "closed testing first. join the beta below and you get the invite when the track opens — ios is further out.",
+    a: "closed testing first. join the beta and you get the invite when the track opens — ios is further out.",
   },
 ] as const;

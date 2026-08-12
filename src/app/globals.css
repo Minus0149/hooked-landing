@@ -196,7 +196,10 @@ h2 {
 #cta { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding-top: 110px; padding-bottom: 190px; }
 .shots { display: flex; gap: 22px; justify-content: center; margin: 60px 0; flex-wrap: wrap; }
 .shots img {
-  width: min(210px, 26vw); border-radius: 24px; border: 1px solid var(--line);
+  /* height:auto is load-bearing — the width/height attributes on the <img> act as a
+     presentational hint, so with only `width` set in CSS the height stayed at the
+     attribute's 1298px and the shots rendered as tall slivers */
+  width: min(210px, 26vw); height: auto; border-radius: 24px; border: 1px solid var(--line);
   box-shadow: 0 30px 60px rgba(0,0,0,.6); display: block;
 }
 .shots .tilt:nth-child(1) { rotate: -4deg; } .shots .tilt:nth-child(3) { rotate: 4deg; }
@@ -529,3 +532,67 @@ button.btn-primary:disabled { opacity: .55; cursor: wait; transform: none; }
 
 span.btn-ghost { cursor: default; }
 span.btn-ghost:hover { color: var(--muted); }
+
+/* ---------- /beta — its own quiet page, no 3D scene ---------- */
+.beta-page {
+  position: relative; z-index: 10; min-height: 100vh;
+  padding: 0 clamp(20px, 6vw, 90px) 56px;
+  display: flex; flex-direction: column;
+}
+.beta-nav {
+  /* the bare `nav` selector higher up is position:fixed/left:0 for the scroll
+     story — this one is in normal flow, so it opts out or the wordmark clips
+     off the left edge */
+  position: static; z-index: auto;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 18px; padding: 26px 0; flex-wrap: wrap;
+  border-bottom: 1px solid var(--line);
+}
+.beta-back {
+  font-size: 13px; color: var(--muted); text-decoration: none; transition: color .2s;
+}
+.beta-back:hover { color: var(--text); }
+
+.beta-body { width: 100%; max-width: 820px; margin: 0 auto; }
+.beta-head { padding: clamp(44px, 9vh, 96px) 0 clamp(28px, 5vh, 52px); }
+.beta-head h1 {
+  font-family: var(--display), sans-serif; font-weight: 900;
+  font-size: clamp(40px, 7.5vw, 84px); line-height: .98; letter-spacing: -.03em;
+  max-width: 14ch; margin-bottom: 24px;
+}
+.beta-head h1 span { color: var(--pink); }
+.beta-head .beta-intro { margin: 0; max-width: 56ch; font-size: 15px; }
+
+.beta-step { display: flex; gap: clamp(16px, 3vw, 30px); padding: 34px 0; border-top: 1px solid var(--line); }
+.beta-step-n {
+  flex: none; width: 48px; height: 48px; border-radius: 999px;
+  border: 1px solid var(--line); background: rgba(19,19,27,.6);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono, var(--display)), monospace; font-size: 13px;
+  letter-spacing: .08em; color: var(--pink);
+}
+.beta-step-body { flex: 1; min-width: 0; }
+.beta-step-body h2 {
+  font-family: var(--display), sans-serif; font-weight: 900;
+  font-size: clamp(22px, 3vw, 32px); letter-spacing: -.02em; margin-bottom: 12px;
+}
+.beta-step-body > p { color: var(--muted); font-size: 14.5px; line-height: 1.7; max-width: 58ch; margin-bottom: 20px; }
+.beta-step-body > p b { color: var(--text); font-weight: 600; }
+/* .btn-primary is a bare inline <a>, so its vertical padding doesn't grow the
+   line box and the note below rides up over the button */
+.beta-step-body .btn-primary { display: inline-block; }
+.beta-step-note { display: block; margin-top: 16px; font-size: 12.5px; color: var(--muted); }
+.beta-page .beta-shell { margin: 0; }
+.beta-page .cta-note { margin-top: 20px; text-align: left; }
+
+.beta-foot {
+  width: 100%; max-width: 820px; margin: auto auto 0; padding-top: 48px;
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  color: var(--muted); font-size: 12.5px;
+}
+@media (max-width: 640px) {
+  .beta-step { gap: 14px; padding: 26px 0; }
+  .beta-step-n { width: 38px; height: 38px; font-size: 12px; }
+  .beta-page { padding-bottom: 36px; }
+  .beta-page .btn-primary { display: block; width: 100%; text-align: center; }
+}
