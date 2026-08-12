@@ -6,7 +6,7 @@ import Link from "next/link";
  */
 export default function LegalLayout({ children }: { children: React.ReactNode }) {
   return (
-    <main className="legal-page">
+    <main id="main" className="legal-page">
       <nav className="beta-nav">
         <Link className="wordmark" href="/">
           hooked<i>.</i>

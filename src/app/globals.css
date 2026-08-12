@@ -643,3 +643,48 @@ span.btn-ghost:hover { color: var(--muted); }
 
 .foot-legal a { color: var(--muted); text-decoration: none; }
 .foot-legal a:hover { color: var(--text); }
+
+/* ---------- 404 / error pages ---------- */
+.oops-page {
+  position: relative; z-index: 10; min-height: 100vh;
+  padding: 0 clamp(20px, 6vw, 90px) 56px;
+  display: flex; flex-direction: column;
+}
+.oops-bare { justify-content: center; padding-top: 40px; }
+.oops-body {
+  width: 100%; max-width: 720px; margin: 0 auto; flex: 1;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.oops-code {
+  font-family: var(--display), sans-serif; font-weight: 700; font-size: 12px;
+  letter-spacing: .3em; text-transform: uppercase; color: var(--pink); margin-bottom: 20px;
+}
+.oops-body h1 {
+  font-family: var(--display), sans-serif; font-weight: 900;
+  font-size: clamp(40px, 8vw, 88px); line-height: .98; letter-spacing: -.03em;
+  max-width: 16ch; margin-bottom: 22px;
+}
+.oops-body h1 span { color: var(--pink); }
+.oops-copy { color: var(--muted); font-size: 15px; line-height: 1.7; max-width: 48ch; margin-bottom: 30px; }
+.oops-links { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.oops-links .btn-primary { border: none; cursor: pointer; }
+.oops-more { margin-top: 28px; font-size: 13px; color: var(--muted); }
+.oops-more a { color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--line); }
+.oops-more a:hover { color: var(--text); }
+.oops-digest {
+  margin-top: 26px; font-size: 12px; color: var(--muted); opacity: .7;
+  font-family: ui-monospace, Consolas, monospace;
+}
+@media (max-width: 560px) {
+  .oops-links { flex-direction: column; align-items: stretch; }
+  .oops-links .btn-primary, .oops-links .btn-browser { width: 100%; text-align: center; }
+}
+
+/* skip link — first tab stop on every page */
+.skip-link {
+  position: absolute; left: -9999px; top: 0; z-index: 100;
+  background: var(--pink); color: #0b0b10; padding: 12px 20px;
+  font-family: var(--display), sans-serif; font-weight: 700; font-size: 13px;
+  border-radius: 0 0 10px 0; text-decoration: none;
+}
+.skip-link:focus { left: 0; }

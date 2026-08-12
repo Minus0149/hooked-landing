@@ -57,7 +57,7 @@ export default function Home() {
           __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
       />
-      <main>
+      <main id="main">
         <Hero />
         <Why />
         <Gestures />

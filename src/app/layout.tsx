@@ -120,7 +120,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       {/* the scroll-story chrome lives in (story)/layout.tsx, not here — see the
           note there for why /beta must not inherit it */}
-      <body className={`${unbounded.variable} ${instrument.variable}`}>{children}</body>
+      <body className={`${unbounded.variable} ${instrument.variable}`}>
+        <a className="skip-link" href="#main">skip to content</a>
+        {children}
+      </body>
     </html>
   );
 }

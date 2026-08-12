@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 
 export default function BetaPage() {
   return (
-    <main className="beta-page">
+    <main id="main" className="beta-page">
       <nav className="beta-nav">
         <Link className="wordmark" href="/">
           hooked<i>.</i>
