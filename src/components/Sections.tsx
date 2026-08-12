@@ -351,6 +351,10 @@ export function Footer() {
           mi &apos;n us, building things we&apos;re not qualified to build.
         </span>
       </div>
+      <span className="foot-legal">
+        <Link href="/privacy">privacy</Link> · <Link href="/terms">terms</Link> ·{" "}
+        <Link href="/data-deletion">delete your data</Link>
+      </span>
       <span>hooked. © 2026 · previews via itunes · your taste stays yours</span>
     </footer>
   );

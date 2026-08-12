@@ -83,6 +83,10 @@ export default function BetaPage() {
       </div>
 
       <footer className="beta-foot">
+        <span>
+          <Link href="/privacy">privacy</Link> · <Link href="/terms">terms</Link> ·{" "}
+          <Link href="/data-deletion">delete your data</Link>
+        </span>
         <span>hooked. © 2026 · previews via itunes · your taste stays yours</span>
         <span>built in public by MiNUs, unaware</span>
       </footer>
