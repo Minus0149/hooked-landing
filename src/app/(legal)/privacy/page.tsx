@@ -63,7 +63,28 @@ export default function PrivacyPage() {
         <li><strong>A session cookie</strong>, so you stay signed in.</li>
         <li><strong>Your library</strong>: saved songs, playlists you make, and artists you have blocked with a left swipe.</li>
         <li><strong>Your swipes</strong>: for each card, the track, artist, genre and which of the four gestures you used. This is what makes the recommendations work. It is the product.</li>
-        <li><strong>Settings</strong>: where saves go, whether auto-advance is on.</li>
+        <li><strong>Settings</strong>: where saves go, whether auto-advance is on, appearance and gesture preferences.</li>
+      </ul>
+
+      <h3>house ads</h3>
+      <p>
+        hooked. shows occasional first-party sponsored cards between swipes —
+        written by us or by an artist promoting their own release, never served
+        by a third-party network, with no SDKs and no tracking pixels.
+      </p>
+      <ul>
+        <li>
+          We count how many ad cards you were shown (and whether one was
+          tapped) so the daily limit works and advertisers can be answered
+          honestly. These counters are keyed to your account — or to a random
+          per-install id if you haven&rsquo;t signed in — and are deleted after 45
+          days.
+        </li>
+        <li>
+          Ad views are not profiled, not shared, and not used to train
+          anything. You can turn the cards off entirely in Settings → Support;
+          the app keeps working exactly the same without them.
+        </li>
       </ul>
 
       <h3>on your device</h3>

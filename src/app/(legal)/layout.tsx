@@ -21,6 +21,8 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
       <footer className="legal-foot">
         <span>
           <Link href="/privacy">privacy</Link> · <Link href="/terms">terms</Link> ·{" "}
+          <Link href="/copyright">copyright</Link> ·{" "}
+          <Link href="/guidelines">guidelines</Link> ·{" "}
           <Link href="/data-deletion">delete your data</Link>
         </span>
         <span>hooked. © 2026 · previews via itunes</span>
