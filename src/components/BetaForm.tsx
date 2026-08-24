@@ -15,9 +15,9 @@ type Status = "idle" | "sending" | "done";
 /**
  * The beta application, in four headed clusters instead of one long column.
  *
- * Each <Cluster> is self-contained — number, title, one-line lede, then its
- * fields — so the form reads as "four short questions about your listening",
- * not fourteen inputs stacked on a hill.
+ * Each <Cluster> is a plain <section> with an accessible name — NOT a
+ * <fieldset>: fieldsets ignore flex/grid layout in most browsers, which is
+ * exactly how this form ended up looking unstyled no matter what the CSS said.
  */
 
 function Cluster({
@@ -31,17 +31,18 @@ function Cluster({
   lede?: string;
   children: React.ReactNode;
 }) {
+  const headingId = `cluster-${n}`;
   return (
-    <fieldset className="beta-cluster">
-      <legend className="cluster-legend">
+    <section className="beta-cluster" role="group" aria-labelledby={headingId}>
+      <header className="cluster-head" id={headingId}>
         <span className="cluster-num">{n}</span>
-        <span>
+        <span className="cluster-titles">
           <span className="cluster-title">{title}</span>
           {lede && <span className="cluster-lede">{lede}</span>}
         </span>
-      </legend>
+      </header>
       {children}
-    </fieldset>
+    </section>
   );
 }
 
@@ -215,8 +216,8 @@ export default function BetaForm() {
         title="how you listen"
         lede="this is what tunes the deck before your first swipe."
       >
-        <fieldset className="field">
-          <legend>what you listen on now</legend>
+        <div className="field">
+          <span className="group-label">what you listen on now</span>
           <div className="pills">
             {LISTENS_ON.map((opt) => (
               <button
@@ -230,12 +231,12 @@ export default function BetaForm() {
               </button>
             ))}
           </div>
-        </fieldset>
+        </div>
 
-        <fieldset className="field">
-          <legend>
+        <div className="field">
+          <span className="group-label">
             genres you actually play <em>up to {LIMITS.genres}</em>
-          </legend>
+          </span>
           <div className="pills">
             {GENRES.map((opt) => {
               const on = genres.includes(opt);
@@ -253,7 +254,7 @@ export default function BetaForm() {
               );
             })}
           </div>
-        </fieldset>
+        </div>
 
         <div className="beta-row">
           <div className="field">
