@@ -731,3 +731,35 @@ span.btn-ghost:hover { color: var(--muted); }
   color: rgba(244, 242, 238, 0.55);
   margin-top: 2px;
 }
+
+/* ------------------------------------------------------------------
+   Beta form scroll: progress hairline + sticky submit bar */
+
+.beta-shell { --shell-pad: clamp(24px, 4vw, 40px); padding: var(--shell-pad); }
+
+.beta-progress {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--accent, #ff3d71);
+  transform-origin: 0 50%;
+  z-index: 60;
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent, #ff3d71) 60%, transparent);
+}
+
+/* the CTA rides the viewport bottom until the form ends — reachable from
+   anywhere instead of waiting at the bottom of four clusters */
+.beta-submit {
+  position: sticky;
+  bottom: calc(-1 * var(--shell-pad));
+  z-index: 5;
+  margin: 18px calc(-1 * var(--shell-pad)) calc(-1 * var(--shell-pad));
+  padding: 16px var(--shell-pad) calc(var(--shell-pad) + 2px);
+  background: linear-gradient(
+    to top,
+    rgba(13, 13, 18, 0.98) 74%,
+    rgba(13, 13, 18, 0.6) 90%,
+    rgba(13, 13, 18, 0)
+  );
+  border-radius: 0 0 26px 26px;
+}

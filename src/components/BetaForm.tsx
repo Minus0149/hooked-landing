@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useId, useRef, useState } from "react";
-import { motion } from "motion/react";
+import { motion, useScroll } from "motion/react";
 import {
   ANDROID_VERSIONS,
   GENRES,
@@ -18,6 +18,10 @@ type Status = "idle" | "sending" | "done";
  * Each <Cluster> is a plain <section> with an accessible name — NOT a
  * <fieldset>: fieldsets ignore flex/grid layout in most browsers, which is
  * exactly how this form ended up looking unstyled no matter what the CSS said.
+ *
+ * Clusters rise in as they enter the viewport (once), a hairline tracks read
+ * progress along the top, and the submit rides a sticky bar so "put me in the
+ * beta" is reachable from anywhere in the form.
  */
 
 function Cluster({
@@ -33,7 +37,15 @@ function Cluster({
 }) {
   const headingId = `cluster-${n}`;
   return (
-    <section className="beta-cluster" role="group" aria-labelledby={headingId}>
+    <motion.section
+      className="beta-cluster"
+      role="group"
+      aria-labelledby={headingId}
+      initial={{ opacity: 0, y: 26 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "0px 0px -48px 0px" }}
+      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+    >
       <header className="cluster-head" id={headingId}>
         <span className="cluster-num">{n}</span>
         <span className="cluster-titles">
@@ -42,7 +54,7 @@ function Cluster({
         </span>
       </header>
       {children}
-    </section>
+    </motion.section>
   );
 }
 
@@ -137,8 +149,16 @@ export default function BetaForm() {
     );
   }
 
+  const { scrollYProgress } = useScroll();
+
   return (
     <form className="beta-form" onSubmit={onSubmit} noValidate>
+      {/* read-progress hairline: how far through the application you are */}
+      <motion.div
+        className="beta-progress"
+        aria-hidden
+        style={{ scaleX: scrollYProgress }}
+      />
       <Cluster
         n="01"
         title="who's asking"
