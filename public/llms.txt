@@ -1,0 +1,23 @@
+# hooked.
+
+> hooked. is a swipe-based music discovery app: a TikTok-style deck of songs where every play starts at the song's hook — the catchiest part — and four gestures (save, skip, more-like-this, never) teach the deck your taste. Web app at app.hookedcue.com; Android app in closed testing; the marketing home is hookedcue.com.
+
+Founded and run as an independent project by MiNUs (minus4399@gmail.com). No investors, no label money; house ads only, no third-party trackers.
+
+## Links
+
+- [Home](https://hookedcue.com): the pitch, the story, the beta signup.
+- [Web app](https://app.hookedcue.com): the full deck — invite-only while in testing.
+- [Beta signup](https://hookedcue.com/beta): join the Android closed test.
+- [Privacy policy](https://hookedcue.com/privacy): what is collected (swipes, settings, crash reports you send) and why; India DPDP-aligned.
+- [Terms](https://hookedcue.com/terms): licence, acceptable use, governing law (India).
+- [Copyright & takedown](https://hookedcue.com/copyright): uploads are rights-declared and fingerprint-checked; 36-hour takedown target for valid notices.
+- [Community guidelines](https://hookedcue.com/guidelines): house rules for creators and listeners.
+- [Delete your data](https://hookedcue.com/data-deletion): self-serve account and data deletion.
+
+## How it works
+
+- The deck plays 30-second previews beginning at a measured hook (loudness + onset + phrase-repetition scoring), never the whole file.
+- Swipes train a per-listener taste profile: save, skip, more-like-this, never. Buried songs and blocked artists never return unless the listener allows it.
+- Creators upload their own recordings (rights-declared, browser-fingerprint-checked against the catalogue) and mark hooks, including named ones.
+- First-party sponsored cards appear between swipes at a pace the listener controls; music never stops for one.

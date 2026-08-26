@@ -1,0 +1,30 @@
+# hooked. — full reference
+
+hooked. is an independent, invite-while-testing music discovery product by MiNUs (minus4399@gmail.com). It exists to answer one question: what is the fastest way to find music you will love, using nothing but your thumb?
+
+## The deck
+
+- Every card plays a 30-second preview that starts at a hook — the catchiest part of the song — measured from the audio itself (loudness, onset density, phrase-level repetition), not guessed from track position.
+- Four gestures: swipe down to save, up to skip, right for "more like this", left for "never play this again".
+- The deck learns: saves and skips feed a per-listener profile that re-ranks what comes next. Buried songs stay buried; blocked artists never return; both can be lifted in Settings → Sound & taste.
+- A "deck memory" keeps recently heard songs out of rotation for seven days, and any song skipped twice buries itself automatically (recoverable in the buried list).
+- Playlists can carry their own discovery rules: allow repeats, deal buried songs, deal blocked artists.
+
+## Creators
+
+- Anyone approved as a creator can put their own music in the deck.
+- Uploads are rights-declared and fingerprint-checked in the browser against the catalogue before they leave the uploader's machine — re-encoded copies of existing tracks are refused.
+- Creators cut hooks from a waveform editor with loop auditioning; named hooks ("the drop") show up on the card.
+- Publishing requires a rights confirmation and at least one hook.
+
+## Business model
+
+No investors, no label money. Occasional first-party sponsored cards appear between swipes — written by hooked. or by artists promoting their own releases, never from third-party ad networks, with no SDKs and no tracking pixels. Listeners control the cadence (often / normal / rare / an exact every-N gap, in swipes, minutes, hours or per day) and can turn ads off entirely. Daily and weekly ceilings are enforced server-side regardless.
+
+## Privacy, briefly
+
+Swipes, settings, and crash reports the user chooses to send. No third-party trackers, no profiling, no data sales. Anonymous listeners get a random per-install id for ad caps and crash reports; ad event logs are deleted after 45 days. Full detail at hookedcue.com/privacy.
+
+## Legal
+
+Governing law India. Rights holders get a 36-hour takedown target (hookedcue.com/copyright). Grievances: grievance@hookedcue.com. Copyright notices: copyright@hookedcue.com.
