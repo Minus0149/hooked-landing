@@ -20,6 +20,10 @@ export const FAQS = [
     a: "swipe down and pick where it goes. the playlists end up full of things you actually found, rather than things you already knew.",
   },
   {
+    q: "does it know what i want at 1am?",
+    a: "hold a card and six faces come up — party, hyped, sunny, chill, tender, sleepy. pick one and the deck leans that way. it also reads the clock: quiet things late, loud things through the afternoon. it only ever suggests, and you can turn that off.",
+  },
+  {
     q: "when is it on the play store?",
     a: "closed testing first. join the beta and you get the invite when the track opens — ios is further out.",
   },
