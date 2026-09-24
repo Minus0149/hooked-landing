@@ -11,7 +11,7 @@ const csp = [
   "style-src 'self' 'unsafe-inline'",
   "font-src 'self' data:",
   "img-src 'self' https: data: blob:",
-  `media-src https: blob:`,
+  `media-src 'self' https: blob:`, // 'self': the mood chapter's app clip is served from here
   `connect-src 'self'${isDev ? " ws: wss:" : ""}`,
   "object-src 'none'",
   "base-uri 'self'",

@@ -1,4 +1,5 @@
 import HOOKS from "@/data/hooks.json";
+import type { MoodId } from "@/data/moods";
 
 export type Hook = {
   title: string;
@@ -7,18 +8,22 @@ export type Hook = {
   previewUrl: string;
   accent: string;
   genre: string;
+  /** hand-picked, two per face, so every face has something to play */
+  mood: MoodId;
 };
 
 type State = {
   playing: boolean;
   index: number;
   track: Hook | null;
+  /** the face last picked in a hold ring, if any */
+  mood: MoodId | null;
 };
 
 /* module-level store so the R3F scene (non-React frame loop) and the DOM
    dock can share playback state without context plumbing */
 const listeners = new Set<() => void>();
-let state: State = { playing: false, index: -1, track: null };
+let state: State = { playing: false, index: -1, track: null, mood: null };
 let audio: HTMLAudioElement | null = null;
 
 function emit(next: Partial<State>) {
@@ -65,6 +70,20 @@ export function toggle() {
   } else {
     playIndex(Math.floor(Math.random() * (HOOKS as Hook[]).length));
   }
+}
+
+/**
+ * Play a hook for a face picked in a hold ring. Alternates between that mood's
+ * tracks, so picking the same face twice doesn't replay the same song.
+ */
+export function playMood(mood: MoodId) {
+  const tracks = HOOKS as Hook[];
+  const matching = tracks.map((t, i) => ({ t, i })).filter(({ t }) => t.mood === mood);
+  if (matching.length === 0) return;
+  const current = matching.findIndex(({ i }) => i === state.index);
+  const pick = matching[(current + 1) % matching.length];
+  emit({ mood });
+  playIndex(pick.i);
 }
 
 export function next() {

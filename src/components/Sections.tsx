@@ -214,7 +214,7 @@ export function Ritual() {
     <section id="ritual">
       <div className="pin">
         <div className="copy">
-          <Tag n="03" label="the ritual" />
+          <Tag n="04" label="the ritual" />
           <motion.h2 {...rise}>
             we made saving <span style={{ color: "var(--save)" }}>slow on purpose.</span>
           </motion.h2>
@@ -239,7 +239,7 @@ export function Transform() {
   return (
     <section id="transform" ref={ref}>
       <div className="pin">
-        <Tag n="04" label="the app" />
+        <Tag n="05" label="the app" />
         <motion.div className="phone-shell" style={{ opacity, scale, y: py }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -287,7 +287,7 @@ export function Marquee() {
 export function Faq() {
   return (
     <section id="faq" aria-labelledby="faq-title">
-      <Tag n="05" label="quick answers" />
+      <Tag n="06" label="quick answers" />
       <motion.h2 id="faq-title" {...rise}>
         things people <span style={{ color: "var(--pink)" }}>keep asking.</span>
       </motion.h2>
@@ -306,7 +306,7 @@ export function Faq() {
 export function Cta() {
   return (
     <section id="cta">
-      <Tag n="06" label="the beta" />
+      <Tag n="07" label="the beta" />
       <motion.h2 {...rise} style={{ textAlign: "center" }}>
         come <span style={{ color: "var(--pink)" }}>break it.</span>
       </motion.h2>

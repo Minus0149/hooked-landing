@@ -82,7 +82,7 @@ export function Cursor() {
 /* ---------- progress rail with chapter dots (each dot navigates) ---------- */
 const CHAPTERS: [string, string][] = [
   ["intro", "#"], ["the problem", "#why"], ["the gestures", "#gestures"],
-  ["the ritual", "#ritual"], ["the app", "#transform"], ["get it", "#cta"],
+  ["the moods", "#moods"], ["the ritual", "#ritual"], ["the app", "#transform"], ["get it", "#cta"],
 ];
 export function ProgressRail() {
   const { scrollYProgress } = useScroll();

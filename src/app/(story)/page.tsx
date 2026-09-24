@@ -9,6 +9,7 @@ import {
   Cta,
   Footer,
 } from "@/components/Sections";
+import { Moods, RecordHoldHost } from "@/components/Moods";
 import { FAQS } from "@/data/faq";
 import { appUrl, siteUrl } from "@/lib/site";
 
@@ -61,12 +62,15 @@ export default function Home() {
         <Hero />
         <Why />
         <Gestures />
+        <Moods />
         <Ritual />
         <Transform />
         <Marquee />
         <Faq />
         <Cta />
       </main>
+      {/* a hold on the 3D record opens the same ring, anywhere on the page */}
+      <RecordHoldHost />
       <Footer />
     </>
   );

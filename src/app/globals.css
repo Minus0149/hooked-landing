@@ -763,3 +763,80 @@ span.btn-ghost:hover { color: var(--muted); }
   );
   border-radius: 0 0 26px 26px;
 }
+
+/* ---------- 03 — the moods ---------------------------------------------- */
+#moods { min-height: 120vh; }
+.mood-copy { max-width: 640px; }
+.mood-demo { display: flex; gap: 28px; align-items: flex-start; margin-top: 30px; flex-wrap: wrap; }
+.mood-phone {
+  width: 220px; aspect-ratio: 9 / 16; border-radius: 30px; overflow: hidden; flex: none;
+  border: 1px solid var(--line); background: var(--surface);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .55), 0 0 0 6px rgba(255, 255, 255, .03);
+}
+.mood-phone video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mood-try { display: flex; flex-direction: column; gap: 12px; max-width: 280px; }
+.mood-card {
+  position: relative; width: 220px; aspect-ratio: 1; border-radius: 22px; overflow: hidden;
+  border: 1.5px solid color-mix(in srgb, var(--face) 60%, var(--line)); background: var(--surface);
+  cursor: pointer; padding: 0; touch-action: none; user-select: none; -webkit-user-select: none;
+  -webkit-touch-callout: none; transition: transform .2s ease, border-color .3s ease;
+}
+.mood-card:active { transform: scale(.97); }
+.mood-card:focus-visible { outline: 2px solid var(--pink); outline-offset: 3px; }
+.mood-card img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+.mood-card-blank {
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 30% 25%, color-mix(in srgb, var(--face) 55%, transparent), transparent 60%), var(--surface);
+}
+.mood-card-cta {
+  position: absolute; left: 12px; right: 12px; bottom: 12px; display: inline-flex; align-items: center; gap: 8px;
+  justify-content: center; padding: 10px 14px; border-radius: 999px; color: var(--text);
+  background: rgba(8, 8, 12, .78); backdrop-filter: blur(10px); border: 1px solid rgba(244, 242, 238, .14);
+  font-family: var(--display), sans-serif; font-weight: 700; font-size: 13px; letter-spacing: .02em;
+}
+.mood-card-cta svg { color: var(--face); }
+.mood-now { color: var(--muted); font-size: 14px; line-height: 1.5; min-height: 42px; }
+.mood-now b { color: var(--text); font-weight: 600; }
+.mood-alt { color: var(--muted); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
+.mood-card-cta { white-space: nowrap; }
+@media (max-width: 700px) {
+  .mood-demo { gap: 16px; }
+  .mood-phone { width: 150px; border-radius: 24px; }
+  .mood-try { max-width: 170px; }
+  .mood-card { width: 170px; }
+  .mood-card-cta { font-size: 11.5px; padding: 9px 10px; left: 8px; right: 8px; }
+  .mood-alt { display: none; }
+}
+
+/* the hold ring (same geometry as the app) */
+.mr-backdrop { position: fixed; inset: 0; z-index: 90; background: rgba(8, 8, 12, .55); backdrop-filter: blur(6px); }
+.mr-ring { position: fixed; z-index: 91; width: 0; height: 0; }
+.mr-track {
+  position: absolute; left: 0; top: 0; border-radius: 50%; pointer-events: none;
+  border: 1px solid rgba(244, 242, 238, .12);
+}
+.mr-face {
+  position: absolute; left: 0; top: 0; display: grid; place-items: center; padding: 0; border-radius: 50%;
+  background: rgba(19, 19, 27, .92); color: var(--face); cursor: pointer;
+  border: 1.5px solid color-mix(in srgb, var(--face) 45%, transparent);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .45);
+}
+.mr-face.on {
+  background: var(--face); border-color: var(--face); color: #0b0b10;
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--face) 24%, transparent), 0 10px 24px rgba(0, 0, 0, .5);
+}
+.mr-face:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+.mr-face-anim { display: grid; place-items: center; }
+.mr-label {
+  position: absolute; left: 0; transform: translateX(-50%); white-space: nowrap; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 2px; pointer-events: none;
+  font-size: 12px; color: var(--muted);
+}
+.mr-label b { font-family: var(--display), sans-serif; font-size: 16px; }
+.mr-label > span:only-child {
+  padding: 6px 12px; border-radius: 999px; background: rgba(8, 8, 12, .8); border: 1px solid rgba(244, 242, 238, .14); color: var(--text);
+}
+.mr-hint {
+  position: fixed; z-index: 91; left: 0; right: 0; bottom: 18px; text-align: center; pointer-events: none;
+  color: var(--muted); font-size: 13px;
+}

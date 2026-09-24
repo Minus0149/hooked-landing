@@ -4,10 +4,18 @@ import { Canvas, useFrame, type ThreeEvent } from "@react-three/fiber";
 import { Environment, Lightformer, RoundedBox } from "@react-three/drei";
 import * as THREE from "three";
 import { getState as jbState, toggle as jbToggle } from "@/lib/jukebox";
+import { MOODS, type MoodId } from "@/data/moods";
 
 const PINK = new THREE.Color("#ff3d71");
 const SAVE = new THREE.Color("#00e5a0");
 const GESTURE = [new THREE.Color("#ffffff"), SAVE, new THREE.Color("#ffb627"), new THREE.Color("#ff5252")];
+// the stage takes the colour of the face last picked, while the moods chapter is up
+const MOOD_COLOR = Object.fromEntries(MOODS.map((m) => [m.id, new THREE.Color(m.accent)])) as Record<
+  MoodId,
+  THREE.Color
+>;
+/** hold the record this long (without dragging it) and the mood ring opens */
+const RECORD_HOLD_MS = 420;
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -116,9 +124,19 @@ function Story() {
   const mouse = useRef({ x: 0, y: 0 });
   // drag-to-spin: velocity injected by dragging the record, eased back to base speed
   const spin = useRef({ vel: 0.012, dragging: false, lastX: 0 });
+  // hold-for-a-mood: a press that doesn't move opens the ring; one that moves
+  // is a spin. `fired` swallows the click that follows the hold's release.
+  const hold = useRef<{ timer?: number; fired: boolean; x: number; y: number }>({
+    fired: false, x: 0, y: 0,
+  });
   useMemo(() => {
     if (typeof window === "undefined") return;
     window.addEventListener("pointermove", (e) => {
+      if (hold.current.timer !== undefined &&
+          Math.abs(e.clientX - hold.current.x) + Math.abs(e.clientY - hold.current.y) > 10) {
+        window.clearTimeout(hold.current.timer);
+        hold.current.timer = undefined;
+      }
       mouse.current.x = (e.clientX / window.innerWidth - 0.5) * 2;
       mouse.current.y = (e.clientY / window.innerHeight - 0.5) * 2;
       if (spin.current.dragging) {
@@ -128,6 +146,8 @@ function Story() {
       }
     });
     window.addEventListener("pointerup", () => {
+      window.clearTimeout(hold.current.timer);
+      hold.current.timer = undefined;
       spin.current.dragging = false;
       document.body.removeAttribute("data-grabbing");
     });
@@ -210,6 +230,21 @@ function Story() {
       energy = lerp(energy, 0.55, pGin);
     }
     if (sy >= ges.top - 1 && pG < 1) target = GESTURE[Math.min(3, Math.floor(pG * 4))];
+
+    // MOODS: the record keeps its stage-right hover; the light takes the face
+    // last picked from a hold ring, so the choice shows up in the room
+    const moo = rect("moods");
+    // stacked (portrait) layouts have no free side for the record: it would
+    // hover over the demo, so it dips out below while the chapter is up
+    if (mob) {
+      const inM = clamp01((sy + vh - moo.top) / (vh * 0.6));
+      const outM = clamp01((sy + vh * 0.4 - (moo.top + moo.h)) / (vh * 0.6));
+      vY -= inM * (1 - outM) * 6;
+    }
+    const picked = jbState().mood;
+    if (picked && sy + vh * 0.5 >= moo.top && sy + vh * 0.5 < moo.top + moo.h) {
+      target = MOOD_COLOR[picked];
+    }
 
     // RITUAL: the sleeve rises on the right, the record drifts over and slides home
     const rStart = rit.top - 0.8 * vh;
@@ -448,6 +483,10 @@ function Story() {
       <group ref={vinyl} position={[2.9, -1.39, 0]}>
         <mesh
           onClick={(e: ThreeEvent<MouseEvent>) => {
+            if (hold.current.fired) {
+              hold.current.fired = false; // the hold opened the ring; this is its release
+              return;
+            }
             if (e.delta < 6 && !(e.nativeEvent.target as HTMLElement)?.closest?.("a,button")) jbToggle();
           }}
           onPointerDown={(e: ThreeEvent<PointerEvent>) => {
@@ -455,6 +494,20 @@ function Story() {
             spin.current.dragging = true;
             spin.current.lastX = e.nativeEvent.clientX;
             document.body.setAttribute("data-grabbing", "1");
+            const { clientX, clientY } = e.nativeEvent;
+            hold.current.fired = false;
+            hold.current.x = clientX;
+            hold.current.y = clientY;
+            window.clearTimeout(hold.current.timer);
+            hold.current.timer = window.setTimeout(() => {
+              hold.current.timer = undefined;
+              hold.current.fired = true;
+              spin.current.dragging = false; // from here the finger aims, it doesn't spin
+              document.body.removeAttribute("data-grabbing");
+              window.dispatchEvent(
+                new CustomEvent("hooked:hold-record", { detail: { x: clientX, y: clientY } }),
+              );
+            }, RECORD_HOLD_MS);
           }}
           onPointerOver={() => document.body.setAttribute("data-disc-hover", "1")}
           onPointerOut={() => document.body.removeAttribute("data-disc-hover")}
