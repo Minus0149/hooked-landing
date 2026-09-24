@@ -2,6 +2,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import type { NextRequest } from "next/server";
 import { checkRateLimit, clientKey } from "@/lib/rate-limit";
+import { betaSink } from "@/config/backend";
 import {
   ANDROID_VERSIONS,
   EMAIL_RE,
@@ -75,7 +76,7 @@ function validate(body: Record<string, unknown>) {
 }
 
 async function alreadySignedUp(email: string) {
-  if (process.env.BETA_WEBHOOK_URL) return false; // the sink owns dedupe
+  if (!process.env.BETA_LOCAL_FILE) return false; // the backend owns dedupe
   try {
     const raw = await fs.readFile(DATA_FILE, "utf8");
     return raw
@@ -94,8 +95,10 @@ async function alreadySignedUp(email: string) {
 }
 
 async function store(record: Record<string, unknown>) {
-  const webhook = process.env.BETA_WEBHOOK_URL;
-  if (webhook) {
+  // BETA_LOCAL_FILE=1 keeps signups in a local JSONL instead (dev, or a VPS
+  // with no backend); otherwise they go to the app's backend.
+  if (!process.env.BETA_LOCAL_FILE) {
+    const webhook = betaSink(process.env);
     const secret = process.env.BETA_WEBHOOK_SECRET;
     const res = await fetch(webhook, {
       method: "POST",

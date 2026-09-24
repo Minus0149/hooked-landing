@@ -2,11 +2,12 @@
  * Integration tests for POST /api/beta.
  *
  *   npx next build
- *   BETA_DATA_DIR=.data-test npx next start -p 3011
+ *   BETA_LOCAL_FILE=1 BETA_DATA_DIR=.data-test npx next start -p 3011
  *   node --test tests/beta-api.mjs
  *
- * Point BASE somewhere else with BASE=http://host:port. Uses a throwaway
- * BETA_DATA_DIR so a run never touches real signups.
+ * Point BASE somewhere else with BASE=http://host:port. BETA_LOCAL_FILE=1 is
+ * not optional: without it the route posts to the live backend, and every run
+ * would file fake signups into the real invite queue.
  *
  * Note on rate limiting: the limiter allows 20 requests per IP per 15 min with
  * a 2s burst gap, so every request here waits out the gap first. The burst
