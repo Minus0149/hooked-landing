@@ -811,24 +811,31 @@ span.btn-ghost:hover { color: var(--muted); }
 /* the hold ring (same geometry as the app) */
 .mr-backdrop { position: fixed; inset: 0; z-index: 90; background: rgba(8, 8, 12, .55); backdrop-filter: blur(6px); }
 .mr-ring { position: fixed; z-index: 91; width: 0; height: 0; }
-.mr-track {
-  position: absolute; left: 0; top: 0; border-radius: 50%; pointer-events: none;
-  border: 1px solid rgba(244, 242, 238, .12);
+.mr-wheel { position: absolute; left: 0; top: 0; pointer-events: none; }
+.mr-wheel svg { display: block; overflow: visible; }
+.mr-rim { fill: none; stroke: rgba(244, 242, 238, .1); stroke-width: 1; }
+.mr-wedge { pointer-events: auto; cursor: pointer; transition: transform .16s cubic-bezier(.2, .9, .3, 1.2); }
+.mr-wedge path { fill: rgba(16, 16, 23, .9); stroke: rgba(244, 242, 238, .08); stroke-width: 1; transition: fill .12s ease, stroke .12s ease; }
+.mr-wedge.on path { fill: var(--face); stroke: var(--face); filter: drop-shadow(0 0 14px color-mix(in srgb, var(--face) 55%, transparent)); }
+.mr-name {
+  font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  fill: rgba(244, 242, 238, .5); pointer-events: none; transition: fill .12s ease;
 }
+.mr-wedge.on .mr-name { fill: rgba(11, 11, 16, .78); }
+.mr-hole { fill: none; stroke: rgba(244, 242, 238, .12); stroke-width: 1; stroke-dasharray: 2 4; }
+.mr-pointer { fill: var(--face); }
+.mr-cancel { fill: none; stroke: rgba(244, 242, 238, .7); stroke-width: 2; stroke-linecap: round; }
 .mr-face {
-  position: absolute; left: 0; top: 0; display: grid; place-items: center; padding: 0; border-radius: 50%;
-  background: rgba(19, 19, 27, .92); color: var(--face); cursor: pointer;
-  border: 1.5px solid color-mix(in srgb, var(--face) 45%, transparent);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, .45);
+  position: absolute; left: -22px; top: -22px; width: 44px; height: 44px; display: grid; place-items: center;
+  padding: 0; border: 0; border-radius: 50%; background: none; color: var(--face); cursor: pointer; transition: color .12s ease;
 }
-.mr-face.on {
-  background: var(--face); border-color: var(--face); color: #0b0b10;
-  box-shadow: 0 0 0 5px color-mix(in srgb, var(--face) 24%, transparent), 0 10px 24px rgba(0, 0, 0, .5);
-}
+.mr-face.on { color: #0b0b10; }
 .mr-face:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
 .mr-face-anim { display: grid; place-items: center; }
 .mr-label {
-  position: absolute; left: 0; transform: translateX(-50%); white-space: nowrap; text-align: center;
+  /* left/width, not translateX(-50%): motion animates y on this node and
+     replaces the whole transform, which pushed the label off-centre */
+  position: absolute; left: -140px; width: 280px; white-space: nowrap; text-align: center;
   display: flex; flex-direction: column; align-items: center; gap: 2px; pointer-events: none;
   font-size: 12px; color: var(--muted);
 }

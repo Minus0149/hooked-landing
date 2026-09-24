@@ -2,7 +2,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
-import { FACE_IDLE, MOODS, moodAtPush } from "../src/data/moods.ts";
+import { FACE_IDLE, MOODS, moodAtPush, wedgePoint } from "../src/data/moods.ts";
 
 const hooks = JSON.parse(readFileSync(new URL("../src/data/hooks.json", import.meta.url), "utf8"));
 
@@ -48,4 +48,11 @@ test("matches the app's moods", { skip: !existsSync(WEB) && "web repo not checke
     }
   }
   assert.equal(block(mine, "FACE_IDLE"), block(app, "FACE_IDLE"), "face motions differ from the app's");
+});
+
+test("each wedge's face sits on the direction that picks it", () => {
+  MOODS.forEach((m, i) => {
+    const p = wedgePoint(i, 80);
+    assert.equal(moodAtPush(p.x, p.y, 38), m.id);
+  });
 });

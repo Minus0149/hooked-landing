@@ -56,10 +56,11 @@ export function Moods() {
           hold a song. <span style={{ color: "var(--pink)" }}>pick a mood.</span>
         </motion.h2>
         <motion.p {...rise}>
-          press and hold any card and six faces ring your thumb. push toward one and
-          let go — the deck leans that way for the rest of the session, and the vote
-          tells everyone else what the song feels like. hold the + instead and you
-          get a playlist for that mood that fills itself as you keep songs.
+          press and hold any card and a wheel of six moods opens under your thumb.
+          push toward one and let go — the deck leans that way for the rest of the
+          session, and the vote tells everyone else what the song feels like. changed
+          your mind? slide back to the middle. hold the + instead and you get a
+          playlist for that mood that fills itself as you keep songs.
         </motion.p>
 
         <motion.div className="mood-demo" {...rise}>

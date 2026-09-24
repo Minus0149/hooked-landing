@@ -34,6 +34,27 @@ export function wheelAngle(i: number): number {
   return WHEEL_START_DEG + i * WHEEL_STEP_DEG;
 }
 
+/** Face `i`'s wedge as an SVG path: an annular sector trimmed by `gapDeg` a side. */
+export function wedgePath(i: number, rIn: number, rOut: number, gapDeg = 0): string {
+  const mid = wheelAngle(i);
+  const half = WHEEL_STEP_DEG / 2 - gapDeg;
+  const rad = (d: number) => (d * Math.PI) / 180;
+  const pt = (r: number, d: number) =>
+    `${+(Math.cos(rad(d)) * r).toFixed(2)} ${+(Math.sin(rad(d)) * r).toFixed(2)}`;
+  const a0 = mid - half;
+  const a1 = mid + half;
+  return (
+    `M ${pt(rOut, a0)} A ${rOut} ${rOut} 0 0 1 ${pt(rOut, a1)} ` +
+    `L ${pt(rIn, a1)} A ${rIn} ${rIn} 0 0 0 ${pt(rIn, a0)} Z`
+  );
+}
+
+/** A point `r` out along face `i`'s bisector. */
+export function wedgePoint(i: number, r: number): { x: number; y: number } {
+  const a = (wheelAngle(i) * Math.PI) / 180;
+  return { x: Math.cos(a) * r, y: Math.sin(a) * r };
+}
+
 /** Which face a push from the press point is aiming at; null inside the dead zone. */
 export function moodAtPush(dx: number, dy: number, deadZone: number): MoodId | null {
   if (Math.sqrt(dx * dx + dy * dy) < deadZone) return null;
