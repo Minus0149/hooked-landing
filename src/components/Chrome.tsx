@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { AnimatePresence, motion, useScroll, useSpring, useMotionValueEvent } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { getState as jbState, subscribe as jbSubscribe, toggle as jbToggle, next as jbNext } from "@/lib/jukebox";
 
 /* ---------- preloader: the needle drops, the page begins ---------- */
@@ -79,43 +79,41 @@ export function Cursor() {
   );
 }
 
-/* ---------- progress rail with chapter dots (each dot navigates) ---------- */
-const CHAPTERS: [string, string][] = [
-  ["intro", "#"], ["the problem", "#why"], ["the gestures", "#gestures"],
-  ["the moods", "#moods"], ["the ritual", "#ritual"], ["the app", "#transform"], ["get it", "#cta"],
-];
-export function ProgressRail() {
-  const { scrollYProgress } = useScroll();
-  const scaleY = useSpring(scrollYProgress, { stiffness: 90, damping: 24 });
-  const [active, setActive] = useState(0);
-  useMotionValueEvent(scrollYProgress, "change", (v) =>
-    setActive(Math.min(CHAPTERS.length - 1, Math.floor(v * CHAPTERS.length))),
-  );
-  return (
-    <div className="rail">
-      <div className="rail-track">
-        <motion.div className="rail-fill" style={{ scaleY }} />
-      </div>
-      <div className="rail-dots">
-        {CHAPTERS.map(([label, href], i) => (
-          <a key={label} href={href} aria-label={label} className={`rail-dot ${i <= active ? "on" : ""}`}>
-            <i>{label}</i>
-          </a>
-        ))}
-      </div>
-    </div>
-  );
+/* ---------- jukebox dock: play real hooks right on the landing ---------- */
+/**
+ * The dock rides the hero, where the record it plays from is. Further down it
+ * only shows while a hook is playing (it's the pause button then), and it
+ * always steps aside for the footer — it used to sit on headings and on the
+ * legal links at the bottom of the page.
+ */
+function useSeen(selector: string, margin = "0px") {
+  const [seen, setSeen] = useState(false);
+  useEffect(() => {
+    const el = document.querySelector(selector);
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setSeen(e.isIntersecting), { rootMargin: margin });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [selector, margin]);
+  return seen;
 }
 
-/* ---------- jukebox dock: play real hooks right on the landing ---------- */
 export function JukeboxDock() {
   const state = useSyncExternalStore(jbSubscribe, jbState, jbState);
+  const inHero = useSeen("#top", "0px 0px -35% 0px");
+  // the next section's first lines arriving at the bottom of the screen —
+  // right where the dock sits — sends it away unless something is playing
+  const contentBelow = useSeen("#why", "0px 0px -16% 0px");
+  const atFoot = useSeen("footer");
+  const show = ((inHero && !contentBelow) || state.playing) && !atFoot;
   return (
     <motion.div
       className="dock"
       initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 2.2, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      animate={show ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      transition={{ delay: show && !state.track ? 2.2 : 0, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      style={{ pointerEvents: show ? "auto" : "none" }}
+      aria-hidden={show ? undefined : true}
     >
       <button className="dock-play" onClick={jbToggle} aria-label={state.playing ? "pause" : "play a hook"}>
         {state.playing ? "❚❚" : "▶"}
@@ -137,7 +135,7 @@ export function JukeboxDock() {
           ) : (
             <>
               <b>hear a hook</b>
-              <span>tap the record · real 30s previews</span>
+              <span>tap the record · hold it for a mood</span>
             </>
           )}
         </motion.div>
@@ -190,63 +188,14 @@ export function Magnetic({ children, strength = 0.32 }: { children: React.ReactN
   );
 }
 
-/* ---------- tilt wrapper: cards pivot in 3D under the cursor ---------- */
-export function Tilt({ children }: { children: React.ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [rot, setRot] = useState({ rx: 0, ry: 0 });
-  const [enabled, setEnabled] = useState(false);
+/* ---------- nav: clear over the hero, a solid bar once content scrolls under ---------- */
+export function NavShell({ children }: { children: React.ReactNode }) {
+  const [solid, setSolid] = useState(false);
   useEffect(() => {
-    // a touch-drag over the card is a scroll, and the tilt would stick mid-pivot
-    setEnabled(!matchMedia("(pointer: coarse)").matches);
+    const on = () => setSolid(window.scrollY > 24);
+    on();
+    addEventListener("scroll", on, { passive: true });
+    return () => removeEventListener("scroll", on);
   }, []);
-  return (
-    <motion.div
-      ref={ref}
-      className="tilt"
-      style={{ transformPerspective: 700 }}
-      animate={{ rotateX: rot.rx, rotateY: rot.ry, scale: rot.rx || rot.ry ? 1.04 : 1 }}
-      transition={{ type: "spring", stiffness: 220, damping: 20, mass: 0.6 }}
-      onPointerMove={(e) => {
-        if (!enabled) return;
-        const r = ref.current!.getBoundingClientRect();
-        setRot({
-          rx: -((e.clientY - r.top) / r.height - 0.5) * 14,
-          ry: ((e.clientX - r.left) / r.width - 0.5) * 14,
-        });
-      }}
-      onPointerLeave={() => setRot({ rx: 0, ry: 0 })}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-/* ---------- giant outlined chapter word behind the 3D ---------- */
-const WORDS: [string, number][] = [
-  ["DISCOVER", 0.0], ["LEFTOVERS", 0.08], ["SKIP", 0.18], ["SAVE", 0.26],
-  ["MORE", 0.33], ["NEVER", 0.40], ["RITUAL", 0.48], ["HOOKED", 0.66], ["YOURS", 0.85],
-];
-export function BigWord() {
-  const { scrollYProgress } = useScroll();
-  const [word, setWord] = useState("DISCOVER");
-  useMotionValueEvent(scrollYProgress, "change", (v) => {
-    let w = WORDS[0][0];
-    for (const [label, at] of WORDS) if (v >= at) w = label;
-    setWord(w);
-  });
-  return (
-    <div className="bigword" aria-hidden>
-      <AnimatePresence mode="popLayout">
-        <motion.span
-          key={word}
-          initial={{ opacity: 0, y: 90, rotate: -2 }}
-          animate={{ opacity: 1, y: 0, rotate: 0 }}
-          exit={{ opacity: 0, y: -90 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        >
-          {word}
-        </motion.span>
-      </AnimatePresence>
-    </div>
-  );
+  return <nav className={solid ? "solid" : undefined}>{children}</nav>;
 }

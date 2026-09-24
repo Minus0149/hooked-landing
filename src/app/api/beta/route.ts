@@ -3,77 +3,18 @@ import path from "node:path";
 import type { NextRequest } from "next/server";
 import { checkRateLimit, clientKey } from "@/lib/rate-limit";
 import { betaSink } from "@/config/backend";
-import {
-  ANDROID_VERSIONS,
-  EMAIL_RE,
-  GENRES,
-  HOURS,
-  LIMITS,
-  LISTENS_ON,
-} from "@/data/beta";
+import { validateDetails, validateSignup, type Stage } from "@/data/beta";
 
 // fs + a long-lived rate-limit map both need the node runtime
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const MAX_BODY_BYTES = 8 * 1024;
-const MIN_FILL_MS = 2_500;
+// a bot fills a form in milliseconds. step one is one field, step two a few
+// taps — both floors sit well under what a person needs
+const MIN_FILL_MS: Record<Stage, number> = { signup: 1_500, details: 1_200 };
 const DATA_DIR = process.env.BETA_DATA_DIR ?? path.join(process.cwd(), ".data");
 const DATA_FILE = path.join(DATA_DIR, "beta-signups.jsonl");
-
-type Errors = Record<string, string>;
-
-const clean = (v: unknown, max: number) =>
-  typeof v === "string" ? v.replace(/\s+/g, " ").trim().slice(0, max) : "";
-
-function pickMany(v: unknown, allowed: readonly string[], max: number) {
-  if (!Array.isArray(v)) return [];
-  const seen = new Set<string>();
-  for (const item of v) {
-    if (typeof item !== "string") continue;
-    const val = item.trim().toLowerCase();
-    if (allowed.includes(val)) seen.add(val);
-    if (seen.size >= max) break;
-  }
-  return [...seen];
-}
-
-function pickOne(v: unknown, allowed: readonly string[]) {
-  const val = typeof v === "string" ? v.trim().toLowerCase() : "";
-  return allowed.includes(val) ? val : "";
-}
-
-function validate(body: Record<string, unknown>) {
-  const errors: Errors = {};
-
-  const name = clean(body.name, LIMITS.name);
-  if (name.length < 2) errors.name = "we need something to call you";
-
-  const email = clean(body.email, LIMITS.email).toLowerCase();
-  if (!email) errors.email = "an email, please — that's how the invite arrives";
-  else if (!EMAIL_RE.test(email)) errors.email = "that address doesn't look right";
-
-  const device = clean(body.device, LIMITS.device);
-  if (device.length < 2) errors.device = "which phone will you be testing on?";
-
-  const consent = body.consent === true;
-  if (!consent) errors.consent = "tick the box and you're in";
-
-  const data = {
-    name,
-    email,
-    device,
-    androidVersion: pickOne(body.androidVersion, ANDROID_VERSIONS),
-    listensOn: pickMany(body.listensOn, LISTENS_ON, LIMITS.listensOn),
-    genres: pickMany(body.genres, GENRES, LIMITS.genres),
-    hours: pickOne(body.hours, HOURS),
-    lastSkipped: clean(body.lastSkipped, LIMITS.lastSkipped),
-    notes: clean(body.notes, LIMITS.notes),
-    consent,
-  };
-
-  return { data, errors };
-}
 
 async function alreadySignedUp(email: string) {
   if (!process.env.BETA_LOCAL_FILE) return false; // the backend owns dedupe
@@ -150,31 +91,38 @@ export async function POST(request: NextRequest) {
 
   // bot traps. both answer 200 so a script can't tell it was caught and
   // start probing for the shape that gets through.
+  const stage: Stage = body.stage === "details" ? "details" : "signup";
   const honeypot = typeof body.website === "string" ? body.website.trim() : "";
   const startedAt = typeof body.startedAt === "number" ? body.startedAt : 0;
   const elapsed = startedAt > 0 ? Date.now() - startedAt : Infinity;
-  if (honeypot || (elapsed >= 0 && elapsed < MIN_FILL_MS)) {
+  if (honeypot || (elapsed >= 0 && elapsed < MIN_FILL_MS[stage])) {
     return json({ ok: true }, 200);
   }
 
-  const { data, errors } = validate(body);
-  if (Object.keys(errors).length) {
-    return json({ ok: false, errors, message: "a couple of things need fixing." }, 400);
-  }
-
-  if (await alreadySignedUp(data.email)) {
-    return json(
-      { ok: false, message: "you're already on the list. sit tight." },
-      409,
-    );
+  const userAgent = (request.headers.get("user-agent") ?? "").slice(0, 200);
+  let record: Record<string, unknown>;
+  if (stage === "details") {
+    // Step two, for someone already on the list: the same email with the
+    // extra answers. The backend fills in whichever of those fields are still
+    // empty on a pending request and never overwrites or touches a decision.
+    const { data, errors } = validateDetails(body);
+    if (Object.keys(errors).length) {
+      return json({ ok: false, errors, message: errors.details ?? "a couple of things need fixing." }, 400);
+    }
+    const { data: who } = validateSignup({ email: data.email, name: body.name });
+    record = { stage, name: who.name, ...data, submittedAt: new Date().toISOString(), userAgent };
+  } else {
+    const { data, errors } = validateSignup(body);
+    if (Object.keys(errors).length) {
+      return json({ ok: false, errors, message: "a couple of things need fixing." }, 400);
+    }
+    // a repeat is not an error: they are on the list either way
+    if (await alreadySignedUp(data.email)) return json({ ok: true, duplicate: true }, 200);
+    record = { stage, ...data, submittedAt: new Date().toISOString(), userAgent };
   }
 
   try {
-    await store({
-      ...data,
-      submittedAt: new Date().toISOString(),
-      userAgent: (request.headers.get("user-agent") ?? "").slice(0, 200),
-    });
+    await store(record);
   } catch (err) {
     console.error("[beta] could not store signup:", err);
     return json(

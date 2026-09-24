@@ -1,345 +1,396 @@
 "use client";
 import { useEffect, useId, useRef, useState } from "react";
-import { motion, useScroll } from "motion/react";
+import Link from "next/link";
+import { appUrl, appLinkProps } from "@/lib/site";
+import { AnimatePresence, motion } from "motion/react";
 import {
   ANDROID_VERSIONS,
   GENRES,
   HOURS,
   LIMITS,
   LISTENS_ON,
+  hasDetails,
+  toggleChip,
+  type Errors,
 } from "@/data/beta";
 
-type Errors = Record<string, string>;
-type Status = "idle" | "sending" | "done";
-
 /**
- * The beta application, in four headed clusters instead of one long column.
+ * The beta signup, in two steps.
  *
- * Each <Cluster> is a plain <section> with an accessible name — NOT a
- * <fieldset>: fieldsets ignore flex/grid layout in most browsers, which is
- * exactly how this form ended up looking unstyled no matter what the CSS said.
+ * It used to be eleven fields in four boxes, with the button three screens down
+ * on a phone. Play closed testing needs one thing — the Google account on the
+ * phone — so step one asks for that (a name if you like) and submitting it IS
+ * the signup. Everything else moved to an optional step after they're already
+ * on the list, where skipping costs nothing.
  *
- * Clusters rise in as they enter the viewport (once), a hairline tracks read
- * progress along the top, and the submit rides a sticky bar so "put me in the
- * beta" is reachable from anywhere in the form.
+ * No native <select> or checkbox: every choice is a chip in the app's style.
  */
 
-function Cluster({
-  n,
-  title,
-  lede,
-  children,
+type Phase = "signup" | "sending" | "details" | "sending-details" | "done";
+
+const ease = [0.22, 1, 0.36, 1] as const;
+
+async function post(payload: Record<string, unknown>) {
+  const res = await fetch("/api/beta", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await res.json().catch(() => ({}))) as {
+    ok?: boolean;
+    errors?: Errors;
+    message?: string;
+  };
+  return { ok: res.ok && data.ok === true, data };
+}
+
+function Chips({
+  label,
+  hint,
+  options,
+  value,
+  onChange,
+  multi,
 }: {
-  n: string;
-  title: string;
-  lede?: string;
-  children: React.ReactNode;
+  label: string;
+  hint?: string;
+  options: readonly string[];
+  value: string[];
+  onChange: (next: string[]) => void;
+  /** max picks; omit for a single choice */
+  multi?: number;
 }) {
-  const headingId = `cluster-${n}`;
+  const id = useId();
   return (
-    <motion.section
-      className="beta-cluster"
-      role="group"
-      aria-labelledby={headingId}
-      initial={{ opacity: 0, y: 26 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px 0px -48px 0px" }}
-      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-    >
-      <header className="cluster-head" id={headingId}>
-        <span className="cluster-num">{n}</span>
-        <span className="cluster-titles">
-          <span className="cluster-title">{title}</span>
-          {lede && <span className="cluster-lede">{lede}</span>}
-        </span>
-      </header>
-      {children}
-    </motion.section>
+    <div className="bf-field" role={multi ? "group" : "radiogroup"} aria-labelledby={id}>
+      <span className="bf-label" id={id}>
+        {label}
+        {hint && <em>{hint}</em>}
+      </span>
+      <div className="bf-chips">
+        {options.map((o) => {
+          const on = value.includes(o);
+          const full = multi !== undefined && !on && value.length >= multi;
+          return (
+            <button
+              key={o}
+              type="button"
+              className={`bf-chip${on ? " on" : ""}`}
+              disabled={full}
+              {...(multi ? { "aria-pressed": on } : { role: "radio", "aria-checked": on })}
+              onClick={() => onChange(multi ? toggleChip(value, o, multi) : on ? [] : [o])}
+            >
+              {o}
+            </button>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
-export default function BetaForm() {
+export default function BetaForm({ compact = false }: { compact?: boolean }) {
   const uid = useId();
-  // stamped on mount, not during render — Date.now() in a render body is impure.
-  // 0 means "no timing info", which the api treats as fail-open.
+  const fid = (n: string) => `${uid}-${n}`;
+  // stamped on mount and again when step two opens — never during render
+  // (Date.now() in a render body is impure). 0 means "no timing info".
   const startedAt = useRef(0);
   useEffect(() => {
     startedAt.current = Date.now();
   }, []);
-  const [status, setStatus] = useState<Status>("idle");
+  const [phase, setPhase] = useState<Phase>("signup");
+
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [errors, setErrors] = useState<Errors>({});
   const [message, setMessage] = useState("");
-  const [listensOn, setListensOn] = useState<string[]>([]);
+
+  const [device, setDevice] = useState("");
+  const [android, setAndroid] = useState<string[]>([]);
+  const [hours, setHours] = useState<string[]>([]);
   const [genres, setGenres] = useState<string[]>([]);
+  const [listensOn, setListensOn] = useState<string[]>([]);
+  const [notes, setNotes] = useState("");
 
-  const fid = (n: string) => `${uid}-${n}`;
-  const errId = (n: string) => `${uid}-${n}-err`;
-  const describe = (n: string) => (errors[n] ? { "aria-describedby": errId(n) } : {});
-  const invalid = (n: string) => (errors[n] ? { "aria-invalid": true as const } : {});
+  const emailRef = useRef<HTMLInputElement>(null);
+  const doneRef = useRef<HTMLDivElement>(null);
 
-  function toggle(list: string[], set: (v: string[]) => void, value: string, max: number) {
-    if (list.includes(value)) set(list.filter((v) => v !== value));
-    else if (list.length < max) set([...list, value]);
-  }
-
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function signup(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (status === "sending") return;
-    setStatus("sending");
+    if (phase !== "signup") return;
+    const form = new FormData(e.currentTarget);
+    setPhase("sending");
     setErrors({});
     setMessage("");
-
-    const form = new FormData(e.currentTarget);
-    const payload = {
-      name: form.get("name"),
-      email: form.get("email"),
-      device: form.get("device"),
-      androidVersion: form.get("androidVersion"),
-      hours: form.get("hours"),
-      lastSkipped: form.get("lastSkipped"),
-      notes: form.get("notes"),
-      consent: form.get("consent") === "on",
-      website: form.get("website"),
-      listensOn,
-      genres,
-      startedAt: startedAt.current,
-    };
-
     try {
-      const res = await fetch("/api/beta", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(payload),
+      const { ok, data } = await post({
+        stage: "signup",
+        email,
+        name,
+        consent: true,
+        website: form.get("website"),
+        startedAt: startedAt.current,
       });
-      const data = (await res.json().catch(() => ({}))) as {
-        ok?: boolean;
-        errors?: Errors;
-        message?: string;
-      };
-
-      if (res.ok && data.ok) {
-        setStatus("done");
+      if (ok) {
+        startedAt.current = Date.now();
+        setPhase("details");
         return;
       }
-      setStatus("idle");
+      setPhase("signup");
       setErrors(data.errors ?? {});
-      setMessage(data.message ?? "that didn't go through. try again?");
+      setMessage(data.errors ? "" : (data.message ?? "that didn't go through. try again?"));
+      if (data.errors?.email) emailRef.current?.focus();
     } catch {
-      setStatus("idle");
-      setMessage("no connection. the form will still be here.");
+      setPhase("signup");
+      setMessage("no connection. your address is still in the box.");
     }
   }
 
-  if (status === "done") {
-    return (
-      <motion.div
-        className="beta-done"
-        role="status"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <i />
-        <h3>you&apos;re on the list.</h3>
-        <p>
-          the invite goes to that address when the closed test opens. it comes from
-          the play store, not from me, so keep an eye on the promotions tab.
-        </p>
-      </motion.div>
-    );
+  const details = {
+    device: device.trim(),
+    androidVersion: android[0] ?? "",
+    hours: hours[0] ?? "",
+    genres,
+    listensOn,
+    lastSkipped: "",
+    notes: notes.trim(),
+  };
+  const anything = hasDetails(details);
+
+  async function sendDetails(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (phase !== "details" || !anything) return;
+    const form = new FormData(e.currentTarget);
+    setPhase("sending-details");
+    setMessage("");
+    try {
+      const { ok, data } = await post({
+        stage: "details",
+        email,
+        name,
+        ...details,
+        website: form.get("website"),
+        startedAt: startedAt.current,
+      });
+      if (ok) {
+        setPhase("done");
+        return;
+      }
+      setPhase("details");
+      setMessage(data.message ?? "that didn't go through. try again?");
+    } catch {
+      setPhase("details");
+      setMessage("no connection. your answers are still here.");
+    }
   }
 
-  const { scrollYProgress } = useScroll();
+  const onList = phase === "details" || phase === "sending-details" || phase === "done";
+  useEffect(() => {
+    if (onList) doneRef.current?.focus({ preventScroll: true });
+  }, [onList]);
+
+  const submit = (
+    <button className="btn-primary bf-submit" type="submit" disabled={phase === "sending"}>
+      {phase === "sending" ? "adding you…" : "put me on the list"}
+    </button>
+  );
 
   return (
-    <form className="beta-form" onSubmit={onSubmit} noValidate>
-      {/* read-progress hairline: how far through the application you are */}
-      <motion.div
-        className="beta-progress"
-        aria-hidden
-        style={{ scaleX: scrollYProgress }}
-      />
-      <Cluster
-        n="01"
-        title="who's asking"
-        lede="so the invite lands with the right person."
-      >
-        <div className="beta-row">
-          <div className="field">
-            <label htmlFor={fid("name")}>your name</label>
-            <input
-              id={fid("name")}
-              name="name"
-              type="text"
-              autoComplete="name"
-              maxLength={LIMITS.name}
-              required
-              {...invalid("name")}
-              {...describe("name")}
-            />
-            {errors.name && <span className="field-err" id={errId("name")}>{errors.name}</span>}
-          </div>
+    <div className={`bf${compact ? " bf-compact" : ""}`}>
+      <AnimatePresence mode="wait" initial={false}>
+        {!onList ? (
+          <motion.form
+            key="signup"
+            className="bf-signup"
+            onSubmit={signup}
+            noValidate
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.35, ease }}
+          >
+            <div className="bf-field">
+              <label className="bf-label" htmlFor={fid("email")}>
+                your google account email
+              </label>
+              <div className="bf-row">
+                <input
+                  ref={emailRef}
+                  id={fid("email")}
+                  className="bf-input"
+                  type="email"
+                  name="email"
+                  inputMode="email"
+                  autoComplete="email"
+                  placeholder="you@gmail.com"
+                  maxLength={LIMITS.email}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  aria-invalid={errors.email ? true : undefined}
+                  aria-describedby={errors.email ? fid("email-err") : fid("email-hint")}
+                  required
+                />
+                {compact && submit}
+              </div>
+              {errors.email ? (
+                <span className="bf-err" id={fid("email-err")}>
+                  {errors.email}
+                </span>
+              ) : (
+                <span className="bf-hint" id={fid("email-hint")}>
+                  the one signed in on your android phone — it&apos;s how the play store invite finds you.
+                </span>
+              )}
+            </div>
 
-          <div className="field">
-            <label htmlFor={fid("email")}>
-              email <em>the google account on your phone</em>
-            </label>
-            <input
-              id={fid("email")}
-              name="email"
-              type="email"
-              inputMode="email"
-              autoComplete="email"
-              maxLength={LIMITS.email}
-              required
-              {...invalid("email")}
-              {...describe("email")}
-            />
-            {errors.email && <span className="field-err" id={errId("email")}>{errors.email}</span>}
-          </div>
-        </div>
-      </Cluster>
+            {!compact && (
+              <div className="bf-field">
+                <label className="bf-label" htmlFor={fid("name")}>
+                  what should we call you? <em>optional</em>
+                </label>
+                <input
+                  id={fid("name")}
+                  className="bf-input"
+                  type="text"
+                  name="name"
+                  autoComplete="given-name"
+                  maxLength={LIMITS.name}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  aria-invalid={errors.name ? true : undefined}
+                  aria-describedby={errors.name ? fid("name-err") : undefined}
+                />
+                {errors.name && (
+                  <span className="bf-err" id={fid("name-err")}>
+                    {errors.name}
+                  </span>
+                )}
+              </div>
+            )}
 
-      <Cluster n="02" title="your phone" lede="the test build only runs on android.">
-        <div className="beta-row">
-          <div className="field">
-            <label htmlFor={fid("device")}>
-              model <em>make and model</em>
-            </label>
-            <input
-              id={fid("device")}
-              name="device"
-              type="text"
-              placeholder="pixel 8a, redmi note 13, ..."
-              maxLength={LIMITS.device}
-              required
-              {...invalid("device")}
-              {...describe("device")}
-            />
-            {errors.device && <span className="field-err" id={errId("device")}>{errors.device}</span>}
-          </div>
+            {/* honeypot — hidden from people, irresistible to scripts */}
+            <div className="hp" aria-hidden="true">
+              <label htmlFor={fid("website")}>website</label>
+              <input id={fid("website")} name="website" type="text" tabIndex={-1} autoComplete="off" />
+            </div>
 
-          <div className="field">
-            <label htmlFor={fid("android")}>android version</label>
-            <select id={fid("android")} name="androidVersion" defaultValue="">
-              <option value="">pick one</option>
-              {ANDROID_VERSIONS.map((v) => (
-                <option key={v} value={v}>{v}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-      </Cluster>
+            {!compact && submit}
+            <p className="bf-consent">
+              we&apos;ll email you the invite and the odd update. nothing else, never passed on —{" "}
+              <Link href="/privacy">privacy</Link>.
+            </p>
+            {message && (
+              <p className="bf-message" role="alert">
+                {message}
+              </p>
+            )}
+          </motion.form>
+        ) : (
+          <motion.div
+            key="on-list"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, ease }}
+          >
+            <div className="bf-done" ref={doneRef} tabIndex={-1} role="status">
+              <i aria-hidden="true" />
+              <div>
+                <b>you&apos;re on the list.</b>
+                <span>
+                  the invite goes to <strong>{email.trim().toLowerCase()}</strong> when the android test opens.
+                </span>
+              </div>
+            </div>
 
-      <Cluster
-        n="03"
-        title="how you listen"
-        lede="this is what tunes the deck before your first swipe."
-      >
-        <div className="field">
-          <span className="group-label">what you listen on now</span>
-          <div className="pills">
-            {LISTENS_ON.map((opt) => (
-              <button
-                type="button"
-                key={opt}
-                className={listensOn.includes(opt) ? "pill on" : "pill"}
-                aria-pressed={listensOn.includes(opt)}
-                onClick={() => toggle(listensOn, setListensOn, opt, LIMITS.listensOn)}
-              >
-                {opt}
-              </button>
-            ))}
-          </div>
-        </div>
+            {phase === "done" ? (
+              <p className="bf-thanks">
+                that&apos;s everything. see you in the play store — and in the meantime, the{" "}
+                <a href={appUrl} {...appLinkProps}>
+                  browser build
+                </a>{" "}
+                is the whole app.
+              </p>
+            ) : (
+              <form className="bf-details" onSubmit={sendDetails} noValidate>
+                <div className="bf-details-head">
+                  <b>help us tune it</b>
+                  <span>optional · about a minute · skip it and you&apos;re still in</span>
+                </div>
 
-        <div className="field">
-          <span className="group-label">
-            genres you actually play <em>up to {LIMITS.genres}</em>
-          </span>
-          <div className="pills">
-            {GENRES.map((opt) => {
-              const on = genres.includes(opt);
-              return (
-                <button
-                  type="button"
-                  key={opt}
-                  className={on ? "pill on" : "pill"}
-                  aria-pressed={on}
-                  disabled={!on && genres.length >= LIMITS.genres}
-                  onClick={() => toggle(genres, setGenres, opt, LIMITS.genres)}
-                >
-                  {opt}
-                </button>
-              );
-            })}
-          </div>
-        </div>
+                <div className="bf-field">
+                  <label className="bf-label" htmlFor={fid("device")}>
+                    your phone
+                  </label>
+                  <input
+                    id={fid("device")}
+                    className="bf-input"
+                    type="text"
+                    name="device"
+                    placeholder="pixel 8a, redmi note 13…"
+                    maxLength={LIMITS.device}
+                    value={device}
+                    onChange={(e) => setDevice(e.target.value)}
+                  />
+                </div>
+                <Chips label="android version" options={ANDROID_VERSIONS} value={android} onChange={setAndroid} />
+                <Chips
+                  label="genres you actually play"
+                  hint={`${genres.length} of ${LIMITS.genres}`}
+                  options={GENRES}
+                  value={genres}
+                  onChange={setGenres}
+                  multi={LIMITS.genres}
+                />
+                <Chips
+                  label="where you listen now"
+                  options={LISTENS_ON}
+                  value={listensOn}
+                  onChange={setListensOn}
+                  multi={LIMITS.listensOn}
+                />
+                <Chips label="music on a normal day" options={HOURS} value={hours} onChange={setHours} />
+                <div className="bf-field">
+                  <label className="bf-label" htmlFor={fid("notes")}>
+                    anything else <em>bugs you expect, features you want</em>
+                  </label>
+                  <textarea
+                    id={fid("notes")}
+                    className="bf-input"
+                    name="notes"
+                    rows={3}
+                    maxLength={LIMITS.notes}
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                  />
+                </div>
 
-        <div className="beta-row">
-          <div className="field">
-            <label htmlFor={fid("hours")}>music on a normal day</label>
-            <select id={fid("hours")} name="hours" defaultValue="">
-              <option value="">pick one</option>
-              {HOURS.map((v) => (
-                <option key={v} value={v}>{v}</option>
-              ))}
-            </select>
-          </div>
+                <div className="hp" aria-hidden="true">
+                  <label htmlFor={fid("website2")}>website</label>
+                  <input id={fid("website2")} name="website" type="text" tabIndex={-1} autoComplete="off" />
+                </div>
 
-          <div className="field">
-            {/* the hint lives in the placeholder: as an <em> it wrapped to a
-                second line and knocked this column out of line with the other */}
-            <label htmlFor={fid("skip")}>last song you skipped</label>
-            <input
-              id={fid("skip")}
-              name="lastSkipped"
-              type="text"
-              placeholder="the one with the long intro"
-              maxLength={LIMITS.lastSkipped}
-            />
-          </div>
-        </div>
-      </Cluster>
-
-      <Cluster n="04" title="anything else" lede="bugs you expect, features you want, complaints.">
-        <div className="field">
-          <label htmlFor={fid("notes")}>notes</label>
-          <textarea id={fid("notes")} name="notes" rows={3} maxLength={LIMITS.notes} />
-        </div>
-
-        {/* honeypot — never shown, never announced, only bots fill it */}
-        <div className="hp" aria-hidden="true">
-          <label htmlFor={fid("website")}>website</label>
-          <input id={fid("website")} name="website" type="text" tabIndex={-1} autoComplete="off" />
-        </div>
-
-        <div className={errors.consent ? "consent has-err" : "consent"}>
-          <input
-            id={fid("consent")}
-            name="consent"
-            type="checkbox"
-            required
-            {...invalid("consent")}
-            {...describe("consent")}
-          />
-          <label htmlFor={fid("consent")}>
-            email me the test invite and the odd update. nothing else, no passing it
-            on. the{" "}
-            <a href="/privacy">privacy policy</a> says the same in longer words.
-          </label>
-        </div>
-        {errors.consent && <span className="field-err" id={errId("consent")}>{errors.consent}</span>}
-
-        <div className="beta-submit">
-          <button type="submit" className="btn-primary" disabled={status === "sending"}>
-            {status === "sending" ? "sending..." : "put me in the beta"}
-          </button>
-          <p className="beta-live" role="status" aria-live="polite">
-            {message}
-          </p>
-        </div>
-      </Cluster>
-    </form>
+                <div className="bf-actions">
+                  <button
+                    className="btn-primary bf-submit"
+                    type="submit"
+                    disabled={!anything || phase === "sending-details"}
+                  >
+                    {phase === "sending-details" ? "sending…" : "send these"}
+                  </button>
+                  <button type="button" className="bf-skip" onClick={() => setPhase("done")}>
+                    skip — i&apos;m done
+                  </button>
+                </div>
+                {message && (
+                  <p className="bf-message" role="alert">
+                    {message}
+                  </p>
+                )}
+              </form>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }

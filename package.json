@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --experimental-strip-types --test tests/beta-sink.test.mjs tests/moods.test.mjs"
+    "test": "node --experimental-strip-types --test tests/beta-sink.test.mjs tests/moods.test.mjs tests/beta-form.test.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",

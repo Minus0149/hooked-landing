@@ -31,7 +31,7 @@ export default function CopyrightPage() {
         </li>
         <li>
           Uploads are fingerprint-checked against the catalogue in the browser
-          before they leave the uploader's machine. A re-encoded copy of a song
+          before they leave the uploader&apos;s machine. A re-encoded copy of a song
           already on hooked. is refused outright; partial overlaps (a cleared
           sample, say) require an explicit confirmation.
         </li>

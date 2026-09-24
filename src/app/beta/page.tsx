@@ -41,45 +41,26 @@ export default function BetaPage() {
             come <span>break it.</span>
           </h1>
           <p className="beta-intro">
-            two steps. play it in the browser first — it&apos;s the whole app, no signup — and if
-            it earns a place on your phone, the form below gets you into the android test.
+            android goes out through play store closed testing first, so all we need is the
+            google account that&apos;s signed in on your phone — that address is how the invite
+            reaches you. ios is further out than we&apos;d like.
           </p>
         </header>
 
-        {/* step 1 — the trial. opens in a new tab on purpose, so this page and the
-            form are still sitting here when they come back. */}
-        <section className="beta-step">
-          <div className="beta-step-n">01</div>
-          <div className="beta-step-body">
-            <h2>play with it first</h2>
-            <p>
-              the browser build is the real deck — 118 hooks, all four gestures, the vinyl save.
-              nothing to install and nothing to sign up for. give it four swipes.
-            </p>
-            <a className="btn-primary" href={appUrl} {...appLinkProps}>
-              try it in your browser
-            </a>
-            <span className="beta-step-note">opens in a new tab · this page stays put</span>
-          </div>
+        <section className="beta-card" aria-label="join the android beta">
+          <BetaForm />
         </section>
 
-        {/* step 2 — the form */}
-        <section className="beta-step">
-          <div className="beta-step-n">02</div>
-          <div className="beta-step-body">
-            <h2>then get it on your phone</h2>
-            <p>
-              android goes out through <b>play store closed testing</b>{" "}
-              first, so i need the google account that&apos;s signed in on your phone — that
-              address is the only way the invite can reach you. the rest just tells me which genres
-              to load and which phones to stop breaking. ios is further out than i&apos;d like.
-            </p>
-            <div className="beta-shell">
-              <BetaForm />
-            </div>
-            <p className="cta-note">free · no ads, no tracking, no idea what we&apos;re doing</p>
+        {/* the trial opens in a new tab on purpose, so this page is still here after */}
+        <aside className="beta-try">
+          <div>
+            <b>not sure yet?</b>
+            <span>the browser build is the real deck — every gesture, the moods, the vinyl save. no signup.</span>
           </div>
-        </section>
+          <a className="btn-browser" href={appUrl} {...appLinkProps}>
+            try it in your browser <span>→</span>
+          </a>
+        </aside>
       </div>
 
       <footer className="beta-foot">

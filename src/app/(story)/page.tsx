@@ -1,14 +1,4 @@
-import {
-  Hero,
-  Why,
-  Gestures,
-  Ritual,
-  Transform,
-  Marquee,
-  Faq,
-  Cta,
-  Footer,
-} from "@/components/Sections";
+import { Hero, Problem, Gestures, Faq, Join, Footer } from "@/components/Sections";
 import { Moods, RecordHoldHost } from "@/components/Moods";
 import { FAQS } from "@/data/faq";
 import { appUrl, siteUrl } from "@/lib/site";
@@ -60,16 +50,13 @@ export default function Home() {
       />
       <main id="main">
         <Hero />
-        <Why />
+        <Problem />
         <Gestures />
         <Moods />
-        <Ritual />
-        <Transform />
-        <Marquee />
         <Faq />
-        <Cta />
+        <Join />
       </main>
-      {/* a hold on the 3D record opens the same ring, anywhere on the page */}
+      {/* a hold on the 3D record in the hero opens the same ring */}
       <RecordHoldHost />
       <Footer />
     </>

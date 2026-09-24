@@ -21,7 +21,7 @@ export const FAQS = [
   },
   {
     q: "does it know what i want at 1am?",
-    a: "hold a card and six faces come up — party, hyped, sunny, chill, tender, sleepy. pick one and the deck leans that way. it also reads the clock: quiet things late, loud things through the afternoon. it only ever suggests, and you can turn that off.",
+    a: "hold a card and a wheel of six moods opens under your thumb — hyped, party, sunny, chill, tender, sleepy. push toward one and the deck leans that way. it also reads the clock: quiet things late, loud things through the afternoon. it only ever suggests, and you can turn that off.",
   },
   {
     q: "when is it on the play store?",

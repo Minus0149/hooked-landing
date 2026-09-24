@@ -5,22 +5,17 @@ import { useCallback, useEffect, useRef, useSyncExternalStore } from "react";
 import { moodById, type MoodId } from "@/data/moods";
 import { getState, playMood, subscribe } from "@/lib/jukebox";
 import { Face } from "./MoodFaces";
+import { Tag, rise } from "./Sections";
 import { HOLD_MS, MoodRing, useHoldRing } from "./MoodRing";
 
-const rise = {
-  initial: { opacity: 0, y: 46 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-12% 0px" },
-  transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] as const },
-};
 
 const useJukebox = () => useSyncExternalStore(subscribe, getState, getState);
 
 /**
- * Chapter 03 — the moods. Three ways in, on purpose:
+ * Section 03 — the moods. Two ways in, side by side:
  *   - the real app, looping: a hold ring recorded from the actual UI;
- *   - a card to try it on: hold it and push, or just tap it and tap a face;
- *   - the record on the right (and in the hero) answers a hold the same way.
+ *   - a card to try it on: hold it and push, or just tap it and tap a face.
+ * (The record in the hero answers a hold the same way.)
  * Every pick plays a real hook from that mood.
  */
 export function Moods() {
@@ -49,20 +44,20 @@ export function Moods() {
   const cancelHold = () => window.clearTimeout(hold.current.timer);
 
   return (
-    <section className="chapter" id="moods">
-      <div className="copy mood-copy">
-        <Tag />
+    <section className="sec moods" id="moods">
+      <div className="sec-head">
+        <Tag n="03" label="the moods" />
         <motion.h2 {...rise}>
-          hold a song. <span style={{ color: "var(--pink)" }}>pick a mood.</span>
+          hold a song. <span className="pink">pick a mood.</span>
         </motion.h2>
-        <motion.p {...rise}>
-          press and hold any card and a wheel of six moods opens under your thumb.
-          push toward one and let go — the deck leans that way for the rest of the
-          session, and the vote tells everyone else what the song feels like. changed
-          your mind? slide back to the middle. hold the + instead and you get a
-          playlist for that mood that fills itself as you keep songs.
+        <motion.p className="lead" {...rise}>
+          press and hold any card and a wheel of six moods opens under your thumb. push
+          toward one and let go — the deck leans that way for the rest of the session.
+          changed your mind? slide back to the middle.
         </motion.p>
+      </div>
 
+      <div className="mood-body">
         <motion.div className="mood-demo" {...rise}>
           <div className="mood-phone" aria-label="The hold ring in the hooked app">
             <video
@@ -125,25 +120,31 @@ export function Moods() {
                 "or just tap it, then tap a face"
               )}
             </p>
-            <p className="mood-alt">…or hold the record →</p>
           </div>
         </motion.div>
+
+        <motion.ul className="mood-notes" {...rise}>
+          <li>
+            <b>your pick is a vote.</b> it tells everyone else what the song feels like, so
+            the moods get sharper the more people hold.
+          </li>
+          <li>
+            <b>hold the + instead</b> and you get a playlist for that mood that fills itself
+            as you keep songs.
+          </li>
+          <li>
+            <b>it reads the clock, too.</b> quiet things late, loud things through the
+            afternoon — a suggestion you can switch off.
+          </li>
+        </motion.ul>
       </div>
       <MoodRing ring={ring} onCommit={commit} onCancel={close} hint="pick a face — a hook in that mood plays" />
     </section>
   );
 }
 
-function Tag() {
-  return (
-    <motion.div className="sec-tag" {...rise}>
-      <span>03</span> — the moods
-    </motion.div>
-  );
-}
-
 /**
- * Answers a hold on the 3D record, wherever it is on the page. The scene
+ * Answers a hold on the 3D record in the hero. The scene
  * dispatches `hooked:hold-record` from inside the canvas; this owns the ring.
  */
 export function RecordHoldHost() {
