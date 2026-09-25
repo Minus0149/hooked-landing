@@ -71,7 +71,7 @@ export function MoodTry() {
           <span className="mood-card-cta">
             {mood ? (
               <>
-                <Face mood={mood.id} size={20} /> {mood.label.toLowerCase()} · hold again
+                <Face mood={mood.id} size={22} animated /> {mood.label.toLowerCase()} · hold again
               </>
             ) : (
               <>press &amp; hold me</>

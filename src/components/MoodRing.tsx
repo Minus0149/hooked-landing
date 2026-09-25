@@ -241,7 +241,7 @@ function RingBody({
                   ease: "easeInOut",
                 }}
               >
-                <Face mood={m.id} size={28} />
+                <Face mood={m.id} size={30} animated delay={i * 0.13} />
               </motion.span>
             </motion.button>
           );

@@ -138,10 +138,10 @@ export function StageWheel() {
           return (
             <g key={m.id} transform={`translate(${pop.x} ${pop.y})`} style={{ ["--face" as string]: m.accent }}>
               <path d={wedgePath(k, R_IN, R_OUT, 1)} className={`wedge${on ? " on" : ""}`} />
-              <foreignObject x={c.x - 22} y={c.y - 30} width={44} height={44} className={`face${on ? " on" : ""}`}>
-                <Face mood={m.id} size={40} />
+              <foreignObject x={c.x - 30} y={c.y - 42} width={60} height={60} className={`face${on ? " on" : ""}`}>
+                <Face mood={m.id} size={60} animated delay={k * 0.13} />
               </foreignObject>
-              <text x={c.x} y={c.y + 34} className={`name${on ? " on" : ""}`}>
+              <text x={c.x} y={c.y + 38} className={`name${on ? " on" : ""}`}>
                 {m.label}
               </text>
             </g>
@@ -211,23 +211,15 @@ export function StagePhone() {
   );
 }
 
-/** The hero's phone: the deck, looping, beside the turntable. */
-export function HeroPhone() {
+/** Under the turntable in the opening scene: what the record does. */
+export function HeroCaption() {
   const t = usePlayhead(0, 1);
-  const shown = 1 - seg(t, 0.45, 0.75);
-  const ref = useRef<HTMLVideoElement>(null);
-  useEffect(() => {
-    const v = ref.current;
-    if (!v) return;
-    if (shown > 0 && v.paused) void v.play().catch(() => {});
-    if (shown <= 0 && !v.paused) v.pause();
-  }, [shown]);
+  const shown = 1 - seg(t, 0.3, 0.6);
+  if (shown <= 0) return null;
   return (
-    <div className="hero-phone" style={{ opacity: shown, visibility: shown > 0 ? "visible" : "hidden" }}>
-      <video ref={ref} muted loop playsInline autoPlay preload="metadata" poster="/media/hero-deck.jpg" aria-label="the hooked. deck: swiping through songs">
-        <source src="/media/hero-deck.webm" type="video/webm" />
-        <source src="/media/hero-deck.mp4" type="video/mp4" />
-      </video>
-    </div>
+    <p className="hero-caption" style={{ opacity: shown }}>
+      <b>tap the record</b> to hear a hook · <b>hold it</b> to pick a mood
+      <span className="scroll-cue" aria-hidden="true">scroll — it shows you the rest</span>
+    </p>
   );
 }

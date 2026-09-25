@@ -7,7 +7,7 @@ import { Magnetic } from "@/components/Chrome";
 import BetaForm from "@/components/BetaForm";
 import { FaqList, Headline, Tag } from "@/components/Sections";
 import { MoodTry } from "@/components/Moods";
-import { HeroPhone, SongTimeline, StagePhone, StageWheel } from "@/components/StageOverlays";
+import { HeroCaption, SongTimeline, StagePhone, StageWheel } from "@/components/StageOverlays";
 import { SCENES, onFilm, playhead, setFilm, type SceneId } from "@/lib/film";
 import { appLinkProps, appUrl } from "@/lib/site";
 
@@ -82,9 +82,8 @@ function SceneCopy({ id }: { id: SceneId }) {
           ]}
         />
         <p className="hero-sub">
-          every song starts at its hook — the part you&apos;d normally sit through forty seconds
-          of intro to reach. swipe it away if it isn&apos;t landing. by the fourth swipe it has
-          stopped guessing.
+          every song starts at its hook — the part you&apos;d sit through forty seconds of intro
+          to reach. by the fourth swipe it has stopped guessing.
         </p>
         <div className="hero-cta">
           <Magnetic>
@@ -93,13 +92,9 @@ function SceneCopy({ id }: { id: SceneId }) {
             </Link>
           </Magnetic>
           <a className="btn-browser" href={appUrl} {...appLinkProps}>
-            try it in your browser <span>→</span>
+            try the web app <span>→</span>
           </a>
         </div>
-        <p className="hero-hint">
-          <b>tap the record</b> to hear a hook · <b>hold it</b> to pick a mood · scroll, and it
-          shows you the rest
-        </p>
       </div>
     );
   }
@@ -264,7 +259,7 @@ export default function Film() {
       <div className="film-stage" aria-hidden={false}>
         <div className="stage-box">
           {stageReady && <Stage />}
-          <HeroPhone />
+          <HeroCaption />
           <SongTimeline />
           <StagePhone />
           <StageWheel />

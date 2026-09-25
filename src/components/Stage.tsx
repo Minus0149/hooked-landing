@@ -270,7 +270,8 @@ function Show({ reduced }: { reduced: boolean }) {
       s.camX = damp(s.camX, mouse.current.x * 0.3);
       s.camY = damp(s.camY, -mouse.current.y * 0.18);
     }
-    const deckDist = 10.4 / Math.min(1.15, Math.max(0.62, aspect));
+    // pulled back a little in the opening, so the whole deck has room around it
+    const deckDist = (10.4 / Math.min(1.15, Math.max(0.62, aspect))) * lerp(1, 1.12, 1 - Math.min(1, t));
     const frontDist = 10.2 / Math.min(1.1, Math.max(0.6, aspect));
     // with the app clip beside it, the record steps left of centre
     const shift = wide ? 1.35 * phoneShown(t) : 0;

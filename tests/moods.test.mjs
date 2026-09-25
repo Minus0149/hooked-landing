@@ -56,3 +56,16 @@ test("each wedge's face sits on the direction that picks it", () => {
     assert.equal(moodAtPush(p.x, p.y, 38), m.id);
   });
 });
+
+test("the landing's faces are the app's faces", async () => {
+  const { readFileSync, existsSync } = await import("node:fs");
+  const web = new URL("../../web/src/components/faces.tsx", import.meta.url);
+  if (!existsSync(web)) return; // web client not checked out beside this one
+  const strip = (s) =>
+    s
+      .replace(/\r/g, "")
+      .replace(/^import type \{ MoodId \} from .*$/m, "")
+      .replace(/^ \* Copied from web[\s\S]*?^ \*\n/m, "");
+  const landing = readFileSync(new URL("../src/components/MoodFaces.tsx", import.meta.url), "utf8");
+  assert.equal(strip(landing), strip(readFileSync(web, "utf8")));
+});

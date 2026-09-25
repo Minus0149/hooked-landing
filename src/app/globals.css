@@ -119,7 +119,7 @@ h2 {
 }
 .film-copy {
   grid-column: 1; grid-row: 1;
-  padding: 0 clamp(20px, 3vw, 52px) 0 calc(var(--gutter) + 70px);
+  padding: 0 clamp(20px, 3vw, 52px) 0 calc(var(--gutter) + 52px);
   position: relative; z-index: 3;
 }
 .film-stage {
@@ -156,14 +156,27 @@ h2 {
 
 /* hero */
 .hero-copy { max-width: 600px; }
-.hero-copy h1 { font-size: clamp(40px, 4.3vw, 70px); max-width: 12ch; }
+/* sized by the screen's height too: on a 720px laptop the width-only size
+   pushed the buttons and the hint off the bottom */
+.hero-copy h1 { font-size: clamp(36px, min(4.3vw, 7.4svh), 72px); max-width: 12ch; }
+.scene-needle .scene-inner { padding-top: 120px; padding-bottom: 72px; }
 .hero-sub {
-  margin-top: 28px; max-width: 46ch; color: var(--muted);
-  font-size: clamp(16px, 1.3vw, 19px); line-height: 1.65;
+  margin-top: clamp(16px, 3svh, 28px); max-width: 42ch; color: var(--muted);
+  font-size: clamp(16px, 1.25vw, 19px); line-height: 1.6;
 }
-.hero-cta { display: flex; align-items: center; gap: 16px; margin-top: 34px; flex-wrap: wrap; }
-.hero-hint { margin-top: 28px; color: var(--muted); font-size: 14px; line-height: 1.6; max-width: 46ch; }
-.hero-hint b { color: var(--text); font-weight: 600; }
+.hero-cta { display: flex; align-items: center; gap: 14px; margin-top: clamp(22px, 4svh, 36px); flex-wrap: wrap; }
+.hero-cta .btn-primary, .hero-cta .btn-browser { white-space: nowrap; }
+.hero-cta .btn-primary { padding: 17px 30px; font-size: 14.5px; }
+.hero-cta .btn-browser { padding: 16px 22px; }
+.hero-caption {
+  position: absolute; left: 0; right: 0; bottom: clamp(104px, 14svh, 150px); z-index: 2;
+  text-align: center; color: var(--muted); font-size: 13.5px; line-height: 1.6; pointer-events: none;
+}
+.hero-caption b { color: var(--text); font-weight: 600; }
+.scroll-cue {
+  display: block; margin-top: 10px; font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(244,242,238,.45);
+}
 
 /* the problem */
 .punch {
@@ -262,8 +275,8 @@ h2 {
 .stage-wheel .wedge { fill: rgba(16,16,23,.9); stroke: rgba(244,242,238,.08); stroke-width: 1.5; transition: fill .2s; }
 .stage-wheel .wedge.on { fill: var(--face); stroke: var(--face); filter: drop-shadow(0 0 22px color-mix(in srgb, var(--face) 55%, transparent)); }
 .stage-wheel .face { color: var(--face); }
-.stage-wheel .face.on { color: #0b0b10; }
-.stage-wheel .face svg { width: 44px; height: 44px; }
+.stage-wheel .face.on { color: #0b0b10; --face-cut: var(--face); }
+.stage-wheel .face { overflow: visible; }
 .stage-wheel .name {
   font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
   fill: rgba(244,242,238,.5); text-anchor: middle;
@@ -605,7 +618,8 @@ body[data-grabbing] .cursor-ring { scale: 0.7; }
   .hero-copy h1 { font-size: clamp(38px, 10.5vw, 56px); }
   .hero-sub { margin-top: 16px; font-size: 15.5px; }
   .hero-cta { margin-top: 22px; }
-  .hero-hint { margin-top: 18px; font-size: 13px; }
+  .hero-caption { bottom: 14px; font-size: 12px; }
+  .scroll-cue { display: none; }
 }
 
 /* ---------- phone ---------- */
@@ -743,7 +757,7 @@ body[data-grabbing] .cursor-ring { scale: 0.7; }
   position: absolute; left: -22px; top: -22px; width: 44px; height: 44px; display: grid; place-items: center;
   padding: 0; border: 0; border-radius: 50%; background: none; color: var(--face); cursor: pointer; transition: color .12s ease;
 }
-.mr-face.on { color: #0b0b10; }
+.mr-face.on { color: #0b0b10; --face-cut: var(--face); }
 .mr-face:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
 .mr-face-anim { display: grid; place-items: center; }
 .mr-label {
