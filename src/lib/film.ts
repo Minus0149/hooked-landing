@@ -50,6 +50,21 @@ export function setFilm(t: number) {
   listeners.forEach((fn) => fn(t));
 }
 
+/**
+ * What an overlay that only draws near scenes `from..to` should see.
+ *
+ * Near its window: the playhead, rounded (no re-render per pixel). Outside it:
+ * a value far past the edge on that side. It used to park on the first value
+ * just outside the window — but the song timeline starts fading in 0.3 before
+ * its scene, so scrolling back to the top froze it a quarter visible over the
+ * hero.
+ */
+export function parkPlayhead(next: number, from: number, to: number): number {
+  if (next < from - 0.5) return from - 10;
+  if (next > to + 0.5) return to + 10;
+  return Math.round(next * 400) / 400;
+}
+
 export const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 /** progress of t through [a, b], clamped */
 export const seg = (t: number, a: number, b: number) => clamp01((t - a) / (b - a));

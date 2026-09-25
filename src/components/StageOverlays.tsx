@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { MOODS, wedgePath, wedgePoint } from "@/data/moods";
-import { film, onFilm, seg, sceneIndex } from "@/lib/film";
+import { film, onFilm, parkPlayhead, seg, sceneIndex } from "@/lib/film";
 import { phoneShown } from "@/lib/choreo";
 import { Face } from "./MoodFaces";
 
@@ -14,19 +14,9 @@ import { Face } from "./MoodFaces";
 
 /** the playhead, re-rendered only while `from..to` is on screen */
 function usePlayhead(from: number, to: number) {
-  const [t, setT] = useState(film.t);
-  useEffect(
-    () =>
-      onFilm((next) => {
-        // outside the window, one last update to park it, then quiet
-        if (next < from - 0.2 || next > to + 0.2) {
-          setT((cur) => (cur < from - 0.2 || cur > to + 0.2 ? cur : next));
-          return;
-        }
-        setT(Math.round(next * 400) / 400);
-      }),
-    [from, to],
-  );
+  const [t, setT] = useState(() => parkPlayhead(film.t, from, to));
+  // (setting the same parked value again is free — React skips the render)
+  useEffect(() => onFilm((next) => setT(parkPlayhead(next, from, to))), [from, to]);
   return t;
 }
 

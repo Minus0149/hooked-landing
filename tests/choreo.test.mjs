@@ -82,3 +82,15 @@ test("each sound plays once, going forward, as the story reaches it", () => {
   assert.deepEqual(cuesCrossed(CUES, 2.5, 2.6), [], "never twice");
   assert.equal(cuesCrossed(CUES, 0, 10).length, CUES.length);
 });
+
+test("an overlay far from its scene is parked well outside it, never at its edge", async () => {
+  const { parkPlayhead } = await import("../src/lib/film.ts");
+  const { seg } = await import("../src/lib/film.ts");
+  // the song timeline: scene 1, fading in from 0.7
+  const show = (t) => seg(t, 0.7, 1.05);
+  for (const top of [0, 0.1, 0.45]) {
+    assert.equal(show(parkPlayhead(top, 1, 2)), 0, `hidden when scrolled back to ${top}`);
+  }
+  assert.equal(parkPlayhead(1.5, 1, 2), 1.5, "the real playhead near its scene");
+  assert.ok(parkPlayhead(6, 1, 2) > 10, "parked far past the end");
+});
