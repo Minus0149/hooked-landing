@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { film, onFilm } from "@/lib/film";
 import { AnimatePresence, motion } from "motion/react";
 import { getState as jbState, subscribe as jbSubscribe, toggle as jbToggle, next as jbNext } from "@/lib/jukebox";
 
@@ -100,15 +101,15 @@ function useSeen(selector: string, margin = "0px") {
 
 export function JukeboxDock() {
   const state = useSyncExternalStore(jbSubscribe, jbState, jbState);
-  const inHero = useSeen("#top", "0px 0px -35% 0px");
-  // the next section's first lines arriving at the bottom of the screen —
-  // right where the dock sits — sends it away unless something is playing
-  const contentBelow = useSeen("#why", "0px 0px -16% 0px");
+  // up while the needle-drop scene is on screen; past it, only while a hook
+  // is playing — in the film the copy runs right under this corner
+  const inHero = useSyncExternalStore(onFilm, () => film.t < 0.75, () => true);
   const atFoot = useSeen("footer");
-  const show = ((inHero && !contentBelow) || state.playing) && !atFoot;
+  const show = (inHero || state.playing) && !atFoot;
   return (
     <motion.div
       className="dock"
+      data-playing={state.playing ? "1" : undefined}
       initial={{ opacity: 0, y: 30 }}
       animate={show ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
       transition={{ delay: show && !state.track ? 2.2 : 0, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}

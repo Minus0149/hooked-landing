@@ -1,5 +1,6 @@
-import { Hero, Problem, Gestures, Faq, Join, Footer } from "@/components/Sections";
-import { Moods, RecordHoldHost } from "@/components/Moods";
+import { Footer } from "@/components/Sections";
+import Film from "@/components/Film";
+import { RecordHoldHost } from "@/components/Moods";
 import { FAQS } from "@/data/faq";
 import { appUrl, siteUrl } from "@/lib/site";
 
@@ -49,14 +50,9 @@ export default function Home() {
         }}
       />
       <main id="main">
-        <Hero />
-        <Problem />
-        <Gestures />
-        <Moods />
-        <Faq />
-        <Join />
+        <Film />
       </main>
-      {/* a hold on the 3D record in the hero opens the same ring */}
+      {/* a hold on the record on the stage opens the same ring */}
       <RecordHoldHost />
       <Footer />
     </>
