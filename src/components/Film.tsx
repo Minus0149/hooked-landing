@@ -229,6 +229,10 @@ export default function Film() {
   const [inFilm, setInFilm] = useState(true);
 
   useEffect(() => {
+    // fetch three.js now, behind the preloader; mount it when the curtain
+    // lifts. Waiting to start the download until then left the stage empty
+    // for five or six seconds on a first visit.
+    void import("./Stage");
     const t = setTimeout(() => setStageReady(true), PRELOADER_MS);
     return () => clearTimeout(t);
   }, []);
@@ -258,6 +262,9 @@ export default function Film() {
     <section className="film" id="top" data-scene={SCENES[active]?.id}>
       <div className="film-stage" aria-hidden={false}>
         <div className="stage-box">
+          {/* a still of the opening shot, until the live stage has drawn */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="stage-poster" src="/media/stage-poster.webp" alt="" aria-hidden="true" />
           {stageReady && <Stage />}
           <HeroCaption />
           <SongTimeline />
