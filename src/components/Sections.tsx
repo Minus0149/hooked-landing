@@ -1,5 +1,5 @@
 "use client";
-import { useId, useState } from "react";
+import { Fragment, useId, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { FAQS } from "@/data/faq";
@@ -25,20 +25,32 @@ export function Tag({ n, label }: { n: string; label: string }) {
 }
 
 /* word-by-word headline reveal */
-export function Headline({ words, delay = 0.55 }: { words: { t: string; alt?: boolean }[]; delay?: number }) {
+export function Headline({
+  words,
+  delay = 0.55,
+}: {
+  /** `br` ends a line after that word (on screens wide enough to hold it) */
+  words: { t: string; alt?: boolean; br?: boolean }[];
+  delay?: number;
+}) {
   return (
     <h1>
       {words.map((w, i) => (
-        <span key={i} className="word-mask">
-          <motion.span
-            className={w.alt ? "alt" : undefined}
-            initial={{ y: "110%", rotate: 4 }}
-            animate={{ y: "0%", rotate: 0 }}
-            transition={{ delay: delay + i * 0.06, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {w.t}
-          </motion.span>{" "}
-        </span>
+        <Fragment key={i}>
+          <span className={`word-mask${w.br ? " line-end" : ""}`}>
+            <motion.span
+              className={w.alt ? "alt" : undefined}
+              initial={{ y: "110%", rotate: 4 }}
+              animate={{ y: "0%", rotate: 0 }}
+              transition={{ delay: delay + i * 0.06, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {w.t}
+            </motion.span>{" "}
+          </span>
+          {/* a real break: a pseudo-element inside the word's inline-block
+              can't end the line it sits on */}
+          {w.br && <br className="line-break" />}
+        </Fragment>
       ))}
     </h1>
   );

@@ -160,11 +160,25 @@ html[data-stage="live"] .stage-poster { opacity: 0; }
 .scene-copy .lead { margin-top: 20px; }
 
 /* hero */
-.hero-copy { max-width: 600px; }
-/* sized by the screen's height too: on a 720px laptop the width-only size
-   pushed the buttons and the hint off the bottom */
-.hero-copy h1 { font-size: clamp(36px, min(4.3vw, 7.4svh), 72px); max-width: 12ch; }
-.scene-needle .scene-inner { padding-top: 120px; padding-bottom: 72px; }
+/* The hero spans the page: the headline runs over the stage in two lines,
+   the intro and buttons sit under it on the left, and the deck is framed low
+   on the right (Stage.tsx) so the two never meet. Sized by width AND height,
+   so a 720px-tall laptop gets a shorter headline, not a clipped one. */
+.scene-needle .scene-inner {
+  width: calc(100vw - 2 * var(--gutter) - 52px);
+  padding-top: clamp(96px, 15svh, 150px); padding-bottom: clamp(40px, 7svh, 80px);
+  align-items: flex-start;
+}
+.hero-copy { width: 100%; display: flex; flex-direction: column; gap: clamp(24px, 5svh, 56px); }
+.hero-copy h1 {
+  /* sized so "your next favorite song" holds one line at every width above
+     the stacked layout (checked at 1100, 1280, 1440, 1920) */
+  font-size: clamp(44px, min(5.3vw, 10svh), 104px);
+  max-width: none; line-height: .98;
+}
+
+.hero-bottom { max-width: min(460px, 36vw); }
+.hero-bottom .hero-sub { margin-top: 0; }
 .hero-sub {
   margin-top: clamp(16px, 3svh, 28px); max-width: 42ch; color: var(--muted);
   font-size: clamp(16px, 1.25vw, 19px); line-height: 1.6;
@@ -620,7 +634,12 @@ body[data-grabbing] .cursor-ring { scale: 0.7; }
   .scene-inner { padding-bottom: 84px; }
   .dock:not([data-playing]) { display: none; }
   .stage-wheel-label small { font-size: 12.5px; }
-  .hero-copy h1 { font-size: clamp(38px, 10.5vw, 56px); }
+  .scene-needle .scene-inner { width: auto; padding-top: 18px; }
+  .hero-copy { gap: 16px; }
+  .hero-copy h1 { font-size: clamp(36px, 10.2vw, 56px); line-height: 1.02; }
+  /* on a phone the words wrap where they fit */
+  .hero-copy .line-break { display: none; }
+  .hero-bottom { max-width: none; }
   .hero-sub { margin-top: 16px; font-size: 15.5px; }
   .hero-cta { margin-top: 22px; }
   .hero-caption { bottom: 14px; font-size: 12px; }

@@ -74,13 +74,19 @@ function SceneCopy({ id }: { id: SceneId }) {
   if (id === "needle") {
     return (
       <div className="hero-copy">
-        <p className="kicker">a tiktok for music</p>
-        <Headline
-          words={[
-            { t: "your" }, { t: "next" }, { t: "favorite" }, { t: "song" }, { t: "is" },
-            { t: "one", alt: true }, { t: "swipe", alt: true }, { t: "away", alt: true },
-          ]}
-        />
+        {/* the headline breaks out of the copy column: two full-width lines
+            over the stage, the deck set low beneath them — in the column it
+            wrapped a word or two per line, four or five lines deep */}
+        <div className="hero-top">
+          <p className="kicker">a tiktok for music</p>
+          <Headline
+            words={[
+              { t: "your" }, { t: "next" }, { t: "favorite" }, { t: "song", br: true }, { t: "is" },
+              { t: "one", alt: true }, { t: "swipe", alt: true }, { t: "away.", alt: true },
+            ]}
+          />
+        </div>
+        <div className="hero-bottom">
         <p className="hero-sub">
           every song starts at its hook — the part you&apos;d sit through forty seconds of intro
           to reach. by the fourth swipe it has stopped guessing.
@@ -94,6 +100,7 @@ function SceneCopy({ id }: { id: SceneId }) {
           <a className="btn-browser" href={appUrl} {...appLinkProps}>
             try the web app <span>→</span>
           </a>
+        </div>
         </div>
       </div>
     );

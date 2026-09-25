@@ -280,7 +280,14 @@ function Show() {
       lerp(0.35 + s.camY * 0.5, 3.4 + s.camY, dv),
       lerp(frontDist, deckDist, dv),
     );
-    camera.lookAt(lerp(shift, 0, dv), lerp(0.1, -0.45, dv), 0);
+    // the opening shot, on a wide screen: the headline runs across the top of
+    // the stage, so the deck is framed low and a little right, under it
+    const heroFrame = wide ? 1 - Math.min(1, Math.max(0, (t - 0.25) / 0.45)) : 0;
+    camera.lookAt(
+      lerp(shift, 0, dv) - 0.9 * heroFrame,
+      lerp(0.1, -0.45, dv) + 1.7 * heroFrame,
+      0,
+    );
 
     // ---- the deck
     turntable.current.position.y = deckY(t);
