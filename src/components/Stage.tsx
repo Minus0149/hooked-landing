@@ -253,8 +253,13 @@ function Show() {
   const S = useRef({ t: film.t, lastT: film.t, keyColor: PINK.clone(), camX: 0, camY: 0, arm: 0 });
   const born = useRef<number | null>(null);
 
+  const frames = useRef(0);
   useFrame(({ camera, clock, size }) => {
     const s = S.current;
+    // fade the stage in only once this loop has placed the camera: the first
+    // frames drew from the default camera, a bigger deck in the wrong place,
+    // and it showed through the start of the fade as a ghost
+    if (++frames.current === 4) document.documentElement.setAttribute("data-stage", "live");
     if (born.current === null) born.current = clock.elapsedTime;
     const age = clock.elapsedTime - born.current;
     // the playhead, smoothed: a jump from the scene list glides through the
@@ -621,10 +626,6 @@ export default function Stage() {
         frameloop={visible ? "always" : "never"}
         eventSource={eventSource}
         onCreated={(state) => {
-          // after its first frames are on screen, the stage fades in
-          requestAnimationFrame(() =>
-            requestAnimationFrame(() => document.documentElement.setAttribute("data-stage", "live")),
-          );
           // pointer position relative to this canvas, wherever it sits
           state.setEvents({
             compute: (event, st) => {
