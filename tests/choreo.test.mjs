@@ -94,3 +94,15 @@ test("an overlay far from its scene is parked well outside it, never at its edge
   assert.equal(parkPlayhead(1.5, 1, 2), 1.5, "the real playhead near its scene");
   assert.ok(parkPlayhead(6, 1, 2) > 10, "parked far past the end");
 });
+
+test("the equaliser folds the sound into bars, bass first", async () => {
+  const { bandLevels } = await import("../src/lib/spectrum.ts");
+  const bins = new Array(128).fill(0);
+  bins[1] = 255; // a loud low note
+  const bars = bandLevels(bins, 24);
+  assert.equal(bars.length, 24);
+  assert.equal(bars[0], 1, "the bass lands in the first bar");
+  assert.ok(bars.slice(3).every((b) => b === 0), "and nowhere else");
+  assert.ok(bandLevels(new Array(128).fill(128), 24).every((b) => Math.abs(b - 128 / 255) < 1e-9));
+  assert.deepEqual(bandLevels([], 24), []);
+});

@@ -3,7 +3,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, type ThreeEvent } from "@react-three/fiber";
 import { Environment, Lightformer, RoundedBox } from "@react-three/drei";
 import * as THREE from "three";
-import { getState as jbState, toggle as jbToggle } from "@/lib/jukebox";
+import { getState as jbState, spectrum, toggle as jbToggle } from "@/lib/jukebox";
+import { bandLevels } from "@/lib/spectrum";
 import { MOODS, type MoodId } from "@/data/moods";
 import { film } from "@/lib/film";
 import {
@@ -184,7 +185,7 @@ function Disc({
   );
 }
 
-function Show({ reduced }: { reduced: boolean }) {
+function Show() {
   const turntable = useRef<THREE.Group>(null!);
   const platter = useRef<THREE.Mesh>(null!);
   const arm = useRef<THREE.Group>(null!);
@@ -214,6 +215,7 @@ function Show({ reduced }: { reduced: boolean }) {
   const halo = useRef<THREE.Mesh>(null!);
   const front = useRef<THREE.DirectionalLight>(null!);
   const dummyRef = useRef<THREE.Object3D | null>(null);
+  const levelsRef = useRef<Float32Array | null>(null);
   const EQ_N = 48;
 
   const mouse = useRef({ x: 0, y: 0 });
@@ -257,7 +259,7 @@ function Show({ reduced }: { reduced: boolean }) {
     const age = clock.elapsedTime - born.current;
     // the playhead, smoothed: a jump from the scene list glides through the
     // story instead of teleporting
-    s.t = reduced ? film.t : damp(s.t, film.t, 0.14);
+    s.t = damp(s.t, film.t, 0.14);
     const t = s.t;
     for (const sfx of cuesCrossed(CUES, s.lastT, film.t)) play(sfx);
     s.lastT = film.t;
@@ -266,10 +268,8 @@ function Show({ reduced }: { reduced: boolean }) {
     const aspect = size.width / Math.max(1, size.height);
     const wide = aspect > 0.8 && size.width > 640;
     const dv = deckView(t);
-    if (!reduced) {
-      s.camX = damp(s.camX, mouse.current.x * 0.3);
-      s.camY = damp(s.camY, -mouse.current.y * 0.18);
-    }
+    s.camX = damp(s.camX, mouse.current.x * 0.3);
+    s.camY = damp(s.camY, -mouse.current.y * 0.18);
     // pulled back a little in the opening, so the whole deck has room around it
     const deckDist = (10.4 / Math.min(1.15, Math.max(0.62, aspect))) * lerp(1, 1.12, 1 - Math.min(1, t));
     const frontDist = 10.2 / Math.min(1.1, Math.max(0.6, aspect));
@@ -287,7 +287,7 @@ function Show({ reduced }: { reduced: boolean }) {
     turntable.current.visible = deckY(t) > -8.5;
     const playing = jbState().playing;
     const sp = spin.current;
-    if (!sp.dragging) sp.vel = damp(sp.vel, reduced ? 0.004 : playing ? 0.05 : 0.014, 0.05);
+    if (!sp.dragging) sp.vel = damp(sp.vel, playing ? 0.05 : 0.014, 0.05);
     platter.current.rotation.y += sp.vel;
     s.arm = damp(s.arm, needle(t, age), 0.08);
     arm.current.rotation.y = lerp(0.12, 0.62, s.arm);
@@ -356,7 +356,7 @@ function Show({ reduced }: { reduced: boolean }) {
     s.keyColor.lerp(target, 0.06);
     keyLight.current.color.copy(s.keyColor);
     keyLight.current.intensity =
-      90 + (reduced ? 0 : Math.sin(clock.elapsedTime * 2.2) * 14) +
+      90 + Math.sin(clock.elapsedTime * 2.2) * 14 +
       (playing ? (1 + Math.sin(clock.elapsedTime * 7.3)) * 9 : 0);
     const ringMat = glowRing.current.material as THREE.MeshStandardMaterial;
     ringMat.emissive.copy(s.keyColor);
@@ -365,12 +365,25 @@ function Show({ reduced }: { reduced: boolean }) {
     plateMat.color.copy(s.keyColor);
     (halo.current.material as THREE.MeshBasicMaterial).color.copy(s.keyColor);
 
-    // ---- the waveform wall behind the deck
+    // ---- the equaliser wall behind the deck: the actual sound while a hook
+    // plays (mirrored from the middle, bass at the centre), a slow ripple
+    // while it doesn't. It used to be switched off under reduced motion,
+    // which left a row of frozen boxes on machines that report it.
     const dummy = (dummyRef.current ??= new THREE.Object3D());
     const bars = eq.current;
+    const bins = spectrum();
+    const half = EQ_N / 2;
+    const levels = bins ? bandLevels(bins, half) : null;
+    const lv = (levelsRef.current ??= new Float32Array(EQ_N));
     for (let i = 0; i < EQ_N; i++) {
-      const wave = reduced ? 0.5 : Math.abs(Math.sin(i * 0.45 - clock.elapsedTime * 2.2));
-      const h = 0.08 + (playing ? 1.25 : 1) * (0.16 + 0.55 * wave);
+      const idle = 0.16 + 0.5 * Math.abs(Math.sin(i * 0.45 - clock.elapsedTime * 1.8)) * (0.6 + 0.4 * Math.sin(clock.elapsedTime * 0.7 + i));
+      const band = levels ? levels[Math.abs(Math.floor(i - half + (i < half ? 1 : 0)))] ?? 0 : null;
+      // squared-ish: loud masters sit near the top on every band, and a
+      // straight mapping made one flat wall; this lets the peaks stand out
+      const target = band === null ? idle : 0.06 + Math.pow(band, 1.8) * 1.45;
+      // rise fast, fall slow, like a meter
+      lv[i] = target > lv[i] ? lv[i] + (target - lv[i]) * 0.6 : lv[i] + (target - lv[i]) * 0.12;
+      const h = 0.08 + lv[i];
       dummy.position.set((i / (EQ_N - 1) - 0.5) * 6.2, h / 2, -2.7);
       dummy.scale.set(1, h, 1);
       dummy.updateMatrix();
@@ -582,9 +595,6 @@ export default function Stage() {
   const [eventSource] = useState<HTMLElement | undefined>(() =>
     typeof document !== "undefined" ? document.body : undefined,
   );
-  const [reduced] = useState(
-    () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-  );
   const wrap = useRef<HTMLDivElement>(null);
   // draw only while the stage is on screen
   const [visible, setVisible] = useState(true);
@@ -620,7 +630,7 @@ export default function Stage() {
         }}
       >
         <fog attach="fog" args={["#08080c", 16, 30]} />
-        <Show reduced={reduced} />
+        <Show />
       </Canvas>
     </div>
   );
