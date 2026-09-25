@@ -177,7 +177,9 @@ html[data-stage="live"] .stage-poster { opacity: 0; }
   max-width: none; line-height: .98;
 }
 
-.hero-bottom { max-width: min(460px, 36vw); }
+/* only the sentence is kept narrow — capping the whole block made the two
+   buttons stack on a 1024px window */
+.hero-bottom .hero-sub { max-width: min(460px, 38vw); }
 .hero-bottom .hero-sub { margin-top: 0; }
 .hero-sub {
   margin-top: clamp(16px, 3svh, 28px); max-width: 42ch; color: var(--muted);
@@ -402,8 +404,10 @@ html[data-stage="live"] .stage-poster { opacity: 0; }
   font-size: 14px; font-weight: 600; color: var(--text); letter-spacing: .01em;
 }
 .bf-label em { font-style: normal; font-weight: 400; color: var(--muted); margin-left: 8px; }
-.bf-row { display: flex; gap: 10px; }
-.bf-row .bf-input { flex: 1; min-width: 0; }
+/* the email keeps a usable width; in a narrow column the button drops under
+   it instead of squeezing it to "you@gmail." */
+.bf-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.bf-row .bf-input { flex: 1 1 240px; min-width: 0; }
 .bf-input {
   font-family: var(--body), sans-serif; font-size: 16px; color: var(--text);
   background: rgba(8,8,12,.7); border: 1px solid var(--line); border-radius: 16px;
@@ -639,7 +643,7 @@ body[data-grabbing] .cursor-ring { scale: 0.7; }
   .hero-copy h1 { font-size: clamp(36px, 10.2vw, 56px); line-height: 1.02; }
   /* on a phone the words wrap where they fit */
   .hero-copy .line-break { display: none; }
-  .hero-bottom { max-width: none; }
+  .hero-bottom, .hero-bottom .hero-sub { max-width: none; }
   .hero-sub { margin-top: 16px; font-size: 15.5px; }
   .hero-cta { margin-top: 22px; }
   .hero-caption { bottom: 14px; font-size: 12px; }
@@ -655,8 +659,14 @@ body[data-grabbing] .cursor-ring { scale: 0.7; }
   .sound-toggle { padding: 9px 11px; margin-right: 8px; }
   .sound-toggle .label { display: none; }
   .hero-cta { gap: 12px; }
-  .hero-cta .magnetic { width: 100%; }
-  .btn-primary, .btn-browser { display: block; width: 100%; text-align: center; }
+  /* side by side, one row: they fit at 360px wide once they're sized for it */
+  .hero-cta { flex-wrap: nowrap; gap: 10px; }
+  .hero-cta > * { flex: 1 1 auto; }
+  .hero-cta .btn-primary, .hero-cta .btn-browser {
+    display: block; text-align: center; padding: 15px 12px; font-size: 12.5px;
+  }
+  .hero-cta .magnetic .btn-primary { width: 100%; }
+  .btn-primary, .btn-browser { text-align: center; }
   .mood-try { gap: 14px; }
   .mood-card { width: 132px; }
   .mood-card-cta { font-size: 10.5px; padding: 8px 6px; left: 6px; right: 6px; }
