@@ -621,8 +621,10 @@ export default function Stage() {
         frameloop={visible ? "always" : "never"}
         eventSource={eventSource}
         onCreated={(state) => {
-          // the live stage is up: the poster standing in for it can go
-          requestAnimationFrame(() => document.documentElement.setAttribute("data-stage", "live"));
+          // after its first frames are on screen, the stage fades in
+          requestAnimationFrame(() =>
+            requestAnimationFrame(() => document.documentElement.setAttribute("data-stage", "live")),
+          );
           // pointer position relative to this canvas, wherever it sits
           state.setEvents({
             compute: (event, st) => {

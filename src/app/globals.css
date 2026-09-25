@@ -128,12 +128,17 @@ h2 {
   height: 100svh; z-index: 2;
 }
 .stage-box { position: relative; width: 100%; height: 100%; overflow: hidden; }
-.stage-canvas { position: absolute; inset: 0; pointer-events: none; }
-.stage-poster {
-  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;
-  pointer-events: none; transition: opacity .8s ease .2s;
+.stage-canvas {
+  position: absolute; inset: 0; pointer-events: none;
+  opacity: 0; transition: opacity .9s ease;
 }
-html[data-stage="live"] .stage-poster { opacity: 0; }
+html[data-stage="live"] .stage-canvas { opacity: 1; }
+.stage-glow {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(42% 30% at 58% 66%, rgba(255, 61, 113, .16), transparent 70%);
+  transition: opacity .9s ease;
+}
+html[data-stage="live"] .stage-glow { opacity: 0; }
 .stage-canvas canvas { pointer-events: none; }
 /* the stage melts into the page on its copy side and at the top/bottom */
 .stage-fade {

@@ -269,9 +269,11 @@ export default function Film() {
     <section className="film" id="top" data-scene={SCENES[active]?.id}>
       <div className="film-stage" aria-hidden={false}>
         <div className="stage-box">
-          {/* a still of the opening shot, until the live stage has drawn */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="stage-poster" src="/media/stage-poster.webp" alt="" aria-hidden="true" />
+          {/* until the live stage has drawn: a glow where the deck will be.
+              (A still image stood in here once, but it was shot at one screen
+              shape — on others it sat beside the live deck while it faded,
+              two turntables for a moment.) */}
+          <div className="stage-glow" aria-hidden="true" />
           {stageReady && <Stage />}
           <HeroCaption />
           <SongTimeline />
