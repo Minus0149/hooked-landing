@@ -6,7 +6,7 @@ const updated = "12 August 2026";
 export const metadata: Metadata = {
   title: "privacy policy",
   description:
-    "What hooked. stores, why, who it is shared with, how long it is kept, and how to have it deleted.",
+    "What hookedcue stores, why, who it is shared with, how long it is kept, and how to have it deleted.",
   alternates: { canonical: "/privacy" },
   robots: { index: true, follow: true },
 };
@@ -17,7 +17,7 @@ export default function PrivacyPage() {
       <p className="legal-kicker">last updated {updated}</p>
       <h1>privacy policy</h1>
       <p className="legal-lede">
-        hooked. is run by one person. This is written plainly because there is no reason for it not
+        hookedcue is run by one person. This is written plainly because there is no reason for it not
         to be. It describes exactly what the app stores, and nothing it does not do.
       </p>
 
@@ -31,7 +31,7 @@ export default function PrivacyPage() {
 
       <h2>who is responsible</h2>
       <p>
-        hooked. is operated by MiNUs (&ldquo;we&rdquo;, &ldquo;us&rdquo;) from India. For anything
+        hookedcue is operated by MiNUs (&ldquo;we&rdquo;, &ldquo;us&rdquo;) from India. For anything
         in this policy, including a request to see or delete your data, write to{" "}
         <a href="mailto:privacy@hookedcue.com">privacy@hookedcue.com</a>.
       </p>
@@ -68,7 +68,7 @@ export default function PrivacyPage() {
 
       <h3>house ads</h3>
       <p>
-        hooked. shows occasional first-party sponsored cards between swipes —
+        hookedcue shows occasional first-party sponsored cards between swipes —
         written by us or by an artist promoting their own release, never served
         by a third-party network, with no SDKs and no tracking pixels.
       </p>
@@ -112,8 +112,13 @@ export default function PrivacyPage() {
           processes request metadata including IP addresses in doing so.
         </li>
         <li>
-          <strong>Our own database.</strong> hooked. runs a self-hosted Convex instance on
-          infrastructure we control. Your data is not on a third-party analytics platform.
+          <strong>Convex.</strong> hookedcue&rsquo;s database is hosted on Convex (convex.dev), a
+          managed backend service that stores and processes it on our behalf. Your data is not on a
+          third-party analytics platform.
+        </li>
+        <li>
+          <strong>Our own mail server.</strong> Account emails (confirming your address, resetting a
+          password) are sent from a mail server we run ourselves, not a third-party email service.
         </li>
       </ul>
       <p>
@@ -143,7 +148,7 @@ export default function PrivacyPage() {
 
       <h2>children</h2>
       <p>
-        hooked. is not intended for under-13s and we do not knowingly collect their data. If you are
+        hookedcue is not intended for under-13s and we do not knowingly collect their data. If you are
         under 18, please get a parent or guardian&rsquo;s permission first. If you believe a child
         has an account, email us and we will remove it.
       </p>
@@ -158,7 +163,7 @@ export default function PrivacyPage() {
       <h2>changes</h2>
       <p>
         If this policy changes in a way that matters, the date at the top changes and, if you have an
-        account, we will email you. Continuing to use hooked. after a change means you accept it.
+        account, we will email you. Continuing to use hookedcue after a change means you accept it.
       </p>
     </article>
   );

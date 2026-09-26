@@ -1,6 +1,6 @@
-# hooked.
+# hookedcue
 
-> hooked. is a swipe-based music discovery app: a TikTok-style deck of songs where every play starts at the song's hook — the catchiest part — and four gestures (save, skip, more-like-this, never) teach the deck your taste. Web app at app.hookedcue.com; Android app in closed testing; the marketing home is hookedcue.com.
+> hookedcue is a swipe-based music discovery app: a TikTok-style deck of songs where every play starts at the song's hook — the catchiest part — and four gestures (save, skip, more-like-this, never) teach the deck your taste. Web app at app.hookedcue.com; Android app in closed testing; the marketing home is hookedcue.com.
 
 Founded and run as an independent project by MiNUs (minus4399@gmail.com). No investors, no label money; house ads only, no third-party trackers.
 

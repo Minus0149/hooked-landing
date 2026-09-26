@@ -9,7 +9,7 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
     <main id="main" className="legal-page">
       <nav className="beta-nav">
         <Link className="wordmark" href="/">
-          hooked<i>.</i>
+          hookedcue<i>.</i>
         </Link>
         <Link className="beta-back" href="/">
           ← back to the site
@@ -25,7 +25,7 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
           <Link href="/guidelines">guidelines</Link> ·{" "}
           <Link href="/data-deletion">delete your data</Link>
         </span>
-        <span>hooked. © 2026 · previews via itunes</span>
+        <span>hookedcue © 2026 · previews via itunes</span>
       </footer>
 
       <div className="vignette" />

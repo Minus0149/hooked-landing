@@ -1,6 +1,6 @@
-# hooked. — full reference
+# hookedcue — full reference
 
-hooked. is an independent, invite-while-testing music discovery product by MiNUs (minus4399@gmail.com). It exists to answer one question: what is the fastest way to find music you will love, using nothing but your thumb?
+hookedcue is an independent, invite-while-testing music discovery product by MiNUs (minus4399@gmail.com). It exists to answer one question: what is the fastest way to find music you will love, using nothing but your thumb?
 
 ## The deck
 
@@ -19,7 +19,7 @@ hooked. is an independent, invite-while-testing music discovery product by MiNUs
 
 ## Business model
 
-No investors, no label money. Occasional first-party sponsored cards appear between swipes — written by hooked. or by artists promoting their own releases, never from third-party ad networks, with no SDKs and no tracking pixels. Listeners control the cadence (often / normal / rare / an exact every-N gap, in swipes, minutes, hours or per day) and can turn ads off entirely. Daily and weekly ceilings are enforced server-side regardless.
+No investors, no label money. Occasional first-party sponsored cards appear between swipes — written by hookedcue or by artists promoting their own releases, never from third-party ad networks, with no SDKs and no tracking pixels. Listeners control the cadence (often / normal / rare / an exact every-N gap, in swipes, minutes, hours or per day) and can turn ads off entirely. Daily and weekly ceilings are enforced server-side regardless.
 
 ## Privacy, briefly
 

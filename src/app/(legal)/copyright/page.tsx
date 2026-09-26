@@ -6,7 +6,7 @@ const updated = "24 August 2026";
 export const metadata: Metadata = {
   title: "copyright & takedown policy",
   description:
-    "How hooked. handles copyright: uploads are rights-declared and fingerprint-checked, and rights holders can get infringing audio removed within 36 hours.",
+    "How hookedcue handles copyright: uploads are rights-declared and fingerprint-checked, and rights holders can get infringing audio removed within 36 hours.",
   alternates: { canonical: "/copyright" },
   robots: { index: true, follow: true },
 };
@@ -17,7 +17,7 @@ export default function CopyrightPage() {
       <p className="legal-kicker">last updated {updated}</p>
       <h1>copyright &amp; takedown</h1>
       <p className="legal-lede">
-        hooked. streams short previews under the iTunes Affiliate framework and
+        hookedcue streams short previews under the iTunes Affiliate framework and
         full recordings only from the people who hold the rights to them. This
         page explains exactly how that is enforced, and how to reach us if it
         fails.
@@ -32,7 +32,7 @@ export default function CopyrightPage() {
         <li>
           Uploads are fingerprint-checked against the catalogue in the browser
           before they leave the uploader&apos;s machine. A re-encoded copy of a song
-          already on hooked. is refused outright; partial overlaps (a cleared
+          already on hookedcue is refused outright; partial overlaps (a cleared
           sample, say) require an explicit confirmation.
         </li>
         <li>
@@ -45,7 +45,7 @@ export default function CopyrightPage() {
 
       <h2>for rights holders</h2>
       <p>
-        If you believe audio on hooked. infringes your copyright, write to{" "}
+        If you believe audio on hookedcue infringes your copyright, write to{" "}
         <a href="mailto:copyright@hookedcue.com">copyright@hookedcue.com</a>{" "}
         with:
       </p>
@@ -70,7 +70,7 @@ export default function CopyrightPage() {
       <p>
         If your audio was removed and you believe that was a mistake, reply to
         the removal notice with your reasoning and evidence. If both sides
-        claim the same recording, it stays off hooked. until they agree or a
+        claim the same recording, it stays off hookedcue until they agree or a
         court settles it — we are a discovery deck, not a courtroom.
       </p>
 
@@ -83,7 +83,7 @@ export default function CopyrightPage() {
       <h2>the previews themselves</h2>
       <p>
         30-second previews of chart music are streamed directly from Apple&rsquo;s
-        iTunes servers via the iTunes Search API and its affiliate terms; hooked.
+        iTunes servers via the iTunes Search API and its affiliate terms; hookedcue
         does not host them. Full-length playback always happens on Apple Music,
         Spotify or YouTube, never inside the app.
       </p>

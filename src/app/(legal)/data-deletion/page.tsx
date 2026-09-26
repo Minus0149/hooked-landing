@@ -7,7 +7,7 @@ const updated = "12 August 2026";
 export const metadata: Metadata = {
   title: "delete your data",
   description:
-    "How to delete your hooked. account and everything stored with it — in the app in two taps, or by email.",
+    "How to delete your hookedcue account and everything stored with it — in the app in two taps, or by email.",
   alternates: { canonical: "/data-deletion" },
   robots: { index: true, follow: true },
 };

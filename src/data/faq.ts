@@ -4,7 +4,7 @@
 
 export const FAQS = [
   {
-    q: "what is hooked.?",
+    q: "what is hookedcue?",
     a: "a swipe app for finding songs. it plays the strongest 30 seconds first, and your swipes decide what turns up next.",
   },
   {

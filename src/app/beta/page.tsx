@@ -5,7 +5,7 @@ import { appUrl, appLinkProps } from "@/lib/site";
 
 const title = "join the beta";
 const description =
-  "Try hooked. in your browser, then join the Android closed test. Play Store invites go to the Google account you enter.";
+  "Try hookedcue in your browser, then join the Android closed test. Play Store invites go to the Google account you enter.";
 
 export const metadata: Metadata = {
   title,
@@ -14,10 +14,10 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "/beta",
-    siteName: "hooked.",
-    title: `${title} | hooked.`,
+    siteName: "hookedcue",
+    title: `${title} | hookedcue`,
     description,
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "hooked. beta signup" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "hookedcue beta signup" }],
   },
   robots: { index: true, follow: true },
 };
@@ -27,7 +27,7 @@ export default function BetaPage() {
     <main id="main" className="beta-page">
       <nav className="beta-nav">
         <Link className="wordmark" href="/">
-          hooked<i>.</i>
+          hookedcue<i>.</i>
         </Link>
         <Link className="beta-back" href="/">
           ← back to the site
@@ -68,7 +68,7 @@ export default function BetaPage() {
           <Link href="/privacy">privacy</Link> · <Link href="/terms">terms</Link> ·{" "}
           <Link href="/data-deletion">delete your data</Link>
         </span>
-        <span>hooked. © 2026 · previews via itunes · your taste stays yours</span>
+        <span>hookedcue © 2026 · previews via itunes · your taste stays yours</span>
         <span>built in public by MiNUs, unaware</span>
       </footer>
 

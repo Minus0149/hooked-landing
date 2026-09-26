@@ -57,6 +57,23 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const damp = (cur: number, target: number, f = 0.08) => cur + (target - cur) * f;
 
 /* ---------- textures: one canvas = hundreds of grooves = one draw call ---------- */
+/** Largest font size (down from `size`) at which `text` fits in `maxWidth` px. */
+function fitFont(
+  x: CanvasRenderingContext2D,
+  text: string,
+  weight: number,
+  size: number,
+  maxWidth: number,
+  family: string,
+) {
+  let px = size;
+  x.font = `${weight} ${px}px ${family}`;
+  while (px > 18 && x.measureText(text).width > maxWidth) {
+    px -= 2;
+    x.font = `${weight} ${px}px ${family}`;
+  }
+}
+
 function vinylTexture(label: [string, string, string]) {
   const c = document.createElement("canvas");
   c.width = c.height = 1024;
@@ -77,8 +94,10 @@ function vinylTexture(label: [string, string, string]) {
   x.strokeStyle = "rgba(8,8,12,.5)"; x.lineWidth = 4;
   x.beginPath(); x.arc(512, 512, 130, 0, 7); x.stroke();
   x.fillStyle = "#0b0b10";
-  x.font = "900 56px Unbounded, sans-serif"; x.textAlign = "center"; x.textBaseline = "middle";
-  x.fillText("hooked.", 512, 488);
+  x.textAlign = "center"; x.textBaseline = "middle";
+  // "hookedcue." is wider than the old "hooked.": fit it inside the label
+  fitFont(x, "hookedcue.", 900, 56, 270, "Unbounded, sans-serif");
+  x.fillText("hookedcue.", 512, 488);
   x.font = "600 26px Instrument Sans, sans-serif";
   x.fillText("SIDE A · YOUR TASTE", 512, 556);
   x.beginPath(); x.arc(512, 512, 14, 0, 7); x.fill();
@@ -136,8 +155,9 @@ function plateTexture() {
   c.width = 512; c.height = 128;
   const x = c.getContext("2d")!;
   x.fillStyle = "rgba(244,242,238,.88)";
-  x.font = "900 58px Unbounded, sans-serif"; x.textAlign = "left"; x.textBaseline = "middle";
-  x.fillText("hooked.", 16, 48);
+  x.textAlign = "left"; x.textBaseline = "middle";
+  fitFont(x, "hookedcue.", 900, 58, 470, "Unbounded, sans-serif");
+  x.fillText("hookedcue.", 16, 48);
   x.fillStyle = "rgba(244,242,238,.4)"; x.font = "600 24px Instrument Sans, sans-serif";
   x.fillText("MODEL 01 · TASTE TURNTABLE", 18, 102);
   const t = new THREE.CanvasTexture(c);

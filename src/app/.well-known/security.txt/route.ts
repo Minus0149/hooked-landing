@@ -11,7 +11,7 @@ export const dynamic = "force-static";
 export function GET() {
   const expires = new Date(Date.UTC(2027, 7, 12)).toISOString();
 
-  const body = `# hooked. — security contact
+  const body = `# hookedcue — security contact
 # If you have found a vulnerability, please tell us before telling anyone else.
 
 Contact: mailto:security@hookedcue.com
@@ -20,7 +20,7 @@ Preferred-Languages: en
 Canonical: ${siteUrl}/.well-known/security.txt
 Policy: ${siteUrl}/terms
 
-# hooked. is a small project in closed testing, run by one person.
+# hookedcue is a small project in closed testing, run by one person.
 # We will confirm receipt as quickly as we can. Please don't run automated
 # scanners against production, don't access accounts that aren't yours, and give
 # us a reasonable window to fix anything before disclosing it.

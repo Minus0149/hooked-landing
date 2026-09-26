@@ -19,7 +19,7 @@ export function Preloader() {
           exit={{ y: "-100%", transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1] } }}
         >
           <div className="preloader-word">
-            {"hooked.".split("").map((ch, i) => (
+            {"hookedcue.".split("").map((ch, i) => (
               <motion.span
                 key={i}
                 initial={{ y: 60, opacity: 0 }}

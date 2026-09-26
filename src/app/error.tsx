@@ -22,7 +22,7 @@ export default function Error({
     <main id="main" className="oops-page">
       <nav className="beta-nav">
         <Link className="wordmark" href="/">
-          hooked<i>.</i>
+          hookedcue<i>.</i>
         </Link>
       </nav>
 

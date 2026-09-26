@@ -47,7 +47,7 @@ export function SongTimeline() {
   if (show <= 0) return null;
   // the playhead crawls through the intro over most of the scene
   const at = Math.min(SONG_S, (seg(p, 0.05, 0.72) * (CHORUS_S + 6)));
-  // then the jump: the intro dims and "hooked. starts here" lands on the chorus
+  // then the jump: the intro dims and "hookedcue starts here" lands on the chorus
   const jump = seg(p, 0.76, 0.9);
   const W = 600;
   const x = (s: number) => 20 + (s / SONG_S) * (W - 40);
@@ -100,7 +100,7 @@ export function SongTimeline() {
               className="leap"
             />
             <text x={x(CHORUS_S) - 10} y={352} className="start" textAnchor="end">
-              hooked. starts here
+              hookedcue starts here
             </text>
           </g>
         )}

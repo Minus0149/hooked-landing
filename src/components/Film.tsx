@@ -118,7 +118,7 @@ function SceneCopy({ id }: { id: SceneId }) {
           in 2021.
         </p>
         <p className="punch">
-          so hooked. starts every song <span className="pink">at the hook.</span>
+          so hookedcue starts every song <span className="pink">at the hook.</span>
         </p>
         <p className="sources">
           sources: paul lamere, billions of spotify plays · ohio state, musicae scientiae,

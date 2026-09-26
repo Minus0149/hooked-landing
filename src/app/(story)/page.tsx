@@ -9,7 +9,7 @@ export default function Home() {
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
-      name: "hooked.",
+      name: "hookedcue",
       applicationCategory: "MusicApplication",
       // android is in closed testing, so the only thing anyone can open today
       // is the web app — claiming a download would be a lie to the crawler
