@@ -71,3 +71,16 @@ test("chips toggle on and off and stop at the cap", () => {
   assert.deepEqual(toggleChip(["soul"], "soul", 2), []);
   assert.deepEqual(toggleChip(["soul", "house"], "k-pop", 2), ["soul", "house"]);
 });
+
+// The /beta email field rendered 240px tall on phones: the row's flex-basis
+// (a width, side by side) turned into a height once the row became a column.
+test("the email field keeps its height when the row stacks on a phone", async () => {
+  const { readFileSync } = await import("node:fs");
+  const css = readFileSync(new URL("../src/app/globals.css", import.meta.url), "utf8");
+  const stacked = [...css.matchAll(/\.bf-row\s*\{\s*flex-direction:\s*column;?\s*\}/g)];
+  assert.ok(stacked.length > 0, "the row still stacks somewhere");
+  for (const m of stacked) {
+    const after = css.slice(m.index, m.index + 400);
+    assert.match(after, /\.bf-row \.bf-input\s*\{\s*flex:\s*none;?\s*\}/, "a stacked row must drop the input's flex-basis");
+  }
+});

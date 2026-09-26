@@ -404,36 +404,45 @@ html[data-stage="live"] .stage-glow { opacity: 0; }
 
 /* ---------- the beta form (landing + /beta) ---------- */
 .bf-signup, .bf-details { display: flex; flex-direction: column; gap: 22px; }
-.bf-field { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+/* fields match the app's sign-in and apply forms (web/src/styles/global.css,
+   "auth forms"): small caps label above, a quiet 50px input, errors in a
+   tinted box rather than bare red text */
+.bf-field { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 .bf-label {
-  font-size: 14px; font-weight: 600; color: var(--text); letter-spacing: .01em;
+  font-size: 11px; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--muted);
 }
-.bf-label em { font-style: normal; font-weight: 400; color: var(--muted); margin-left: 8px; }
+.bf-label em { font-style: normal; font-weight: 500; letter-spacing: .06em; text-transform: none; opacity: .75; margin-left: 6px; }
 /* the email keeps a usable width; in a narrow column the button drops under
    it instead of squeezing it to "you@gmail." */
 .bf-row { display: flex; gap: 10px; flex-wrap: wrap; }
 .bf-row .bf-input { flex: 1 1 240px; min-width: 0; }
 .bf-input {
   font-family: var(--body), sans-serif; font-size: 16px; color: var(--text);
-  background: rgba(8,8,12,.7); border: 1px solid var(--line); border-radius: 16px;
-  padding: 15px 18px; width: 100%; transition: border-color .2s, background .2s, box-shadow .2s;
-  appearance: none;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+  min-height: 50px; padding: 13px 16px; width: 100%;
+  transition: border-color .2s, box-shadow .2s; appearance: none;
 }
 textarea.bf-input { resize: vertical; min-height: 92px; line-height: 1.6; }
 .bf-input::placeholder { color: rgba(154,152,166,.6); }
 .bf-input:hover { border-color: #363642; }
+/* focus is a quiet brightening, as in the app — a pink ring on an empty,
+   just-focused field reads as "you did something wrong" */
 .bf-input:focus-visible {
-  outline: none; border-color: var(--pink); background: rgba(8,8,12,.92);
-  box-shadow: 0 0 0 3px rgba(255,61,113,.16);
+  outline: none; border-color: rgba(244,242,238,.45);
+  box-shadow: 0 0 0 4px rgba(244,242,238,.07);
 }
-.bf-input[aria-invalid="true"] { border-color: rgba(255,82,82,.8); }
+.bf-input[aria-invalid="true"] { border-color: rgba(255,82,82,.7); }
 .bf-hint { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
-.bf-err { font-size: 13.5px; color: #ff8a8a; }
+.bf-err, .bf-message {
+  font-size: 13.5px; font-weight: 600; line-height: 1.45; color: #ff9a9a;
+  background: rgba(255,82,82,.1); border: 1px solid rgba(255,82,82,.32);
+  border-radius: 12px; padding: 11px 13px;
+}
 .bf-submit { align-self: flex-start; }
 .bf-row .bf-submit { flex: none; padding: 0 28px; height: 54px; }
 .bf-consent { font-size: 13.5px; color: var(--muted); line-height: 1.55; }
 .bf-consent a { color: var(--text); }
-.bf-message { font-size: 14px; color: #ff8a8a; }
 .bf-done { display: flex; gap: 16px; align-items: flex-start; outline: none; }
 .bf-done i {
   flex: none; width: 12px; height: 12px; border-radius: 999px; margin-top: 8px;
@@ -680,6 +689,8 @@ body[data-grabbing] .cursor-ring { scale: 0.7; }
   .faq-item button { padding: 18px 0; }
   .faq-a p { font-size: 15px; }
   .bf-row { flex-direction: column; }
+  /* in a column the row's 240px flex-basis became the input's HEIGHT */
+  .bf-row .bf-input { flex: none; }
   .bf-row .bf-submit { height: auto; padding: 18px; width: 100%; }
   .bf-submit { width: 100%; text-align: center; }
   .dock-meta { max-width: 120px; }
