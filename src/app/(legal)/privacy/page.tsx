@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-const updated = "12 August 2026";
+const updated = "26 September 2026";
 
 export const metadata: Metadata = {
   title: "privacy policy",
@@ -64,7 +64,25 @@ export default function PrivacyPage() {
         <li><strong>Your library</strong>: saved songs, playlists you make, and artists you have blocked with a left swipe.</li>
         <li><strong>Your swipes</strong>: for each card, the track, artist, genre and which of the four gestures you used. This is what makes the recommendations work. It is the product.</li>
         <li><strong>Settings</strong>: where saves go, whether auto-advance is on, appearance and gesture preferences.</li>
+        <li><strong>Moods you pick</strong> on the mood wheel, which switch your deck to that mood.</li>
+        <li><strong>Playlists you import</strong>: the song list you paste in, and which songs we matched.</li>
+        <li><strong>Songs you report</strong>: the song, the reason you chose and any note you add. Reports also work without an account.</li>
       </ul>
+
+      <h3>if you are a creator</h3>
+      <ul>
+        <li>Your artist name, bio and links.</li>
+        <li>The songs you upload: the audio files, cover details and the hooks you mark.</li>
+        <li>An audio fingerprint of each upload — a list of numbers, not the audio — used only to catch duplicate uploads.</li>
+      </ul>
+
+      <h3>crash reports and app diagnostics</h3>
+      <p>
+        When the app hits an error it sends us a report so we can fix it: the error message and
+        where in the app it happened, the app version and platform, and your account id and email
+        if you are signed in (a random per-install id if you are not). Reports are deleted within 90
+        days, and straight away if you delete your account.
+      </p>
 
       <h3>house ads</h3>
       <p>
@@ -91,7 +109,9 @@ export default function PrivacyPage() {
       <p>
         The app keeps a few things in your browser&rsquo;s local storage so it works before you sign
         in and does not nag you twice: your local library cache, whether you have seen the tutorial,
-        and a count of free swipes. Clearing your browser data removes all of it, and{" "}
+        a count of free swipes, and a random per-install id that is sent with ad counters and crash
+        reports so they can be counted without an account. Clearing your browser or app data removes
+        all of it, and{" "}
         <strong>Settings → Reset local data</strong> does the same on demand.
       </p>
       <p>
@@ -117,6 +137,11 @@ export default function PrivacyPage() {
           third-party analytics platform.
         </li>
         <li>
+          <strong>Expo.</strong> The Android app checks Expo&rsquo;s update service (expo.dev) for new
+          versions of the app. That check sends the app version, platform and a random update id —
+          nothing about who you are or what you listen to.
+        </li>
+        <li>
           <strong>Our own mail server.</strong> Account emails (confirming your address, resetting a
           password) are sent from a mail server we run ourselves, not a third-party email service.
         </li>
@@ -131,6 +156,10 @@ export default function PrivacyPage() {
         <li><strong>Your account and library</strong> — until you delete it.</li>
         <li><strong>Access requests</strong> — while the test is running, so we do not re-review the same person. Deleting your account deletes your request with it.</li>
         <li><strong>Rate-limit counters</strong> — minutes to hours, then they expire.</li>
+        <li><strong>Crash reports</strong> — deleted within 90 days.</li>
+        <li><strong>Song reports</strong> — until we have acted on them, and deleted within 90 days after.</li>
+        <li><strong>Ad counters</strong> — 45 days.</li>
+        <li><strong>Server and email-delivery logs</strong> — deleted within 30 days.</li>
       </ul>
 
       <h2>your rights</h2>
@@ -139,18 +168,20 @@ export default function PrivacyPage() {
         the UK or EU, you can ask to see what we hold, correct it, delete it, or withdraw consent.
       </p>
       <p>
-        Deletion does not need a request: <strong>Settings → Delete my account</strong> removes your
-        profile, library, playlists, blocked artists, swipe history and access request immediately
-        and permanently. There is a fuller description on the{" "}
+        Deletion does not need a request: <strong>Settings → Data &amp; privacy → Delete my
+        account</strong> removes your sign-in, profile, library, playlists, blocked artists, swipe
+        history, moods, imports, crash reports, creator uploads and access request immediately and
+        permanently. There is a fuller description on the{" "}
         <Link href="/data-deletion">data deletion</Link> page. For anything else, email{" "}
         <a href="mailto:privacy@hookedcue.com">privacy@hookedcue.com</a>.
       </p>
 
       <h2>children</h2>
       <p>
-        hookedcue is not intended for under-13s and we do not knowingly collect their data. If you are
-        under 18, please get a parent or guardian&rsquo;s permission first. If you believe a child
-        has an account, email us and we will remove it.
+        hookedcue is for people aged 18 and over. The music is real chart music, some of it explicit,
+        and the app learns from what you play. We do not knowingly collect data from anyone under 18;
+        on Google Play the app is restricted to adults. If you believe someone under 18 has an
+        account, email us and we will delete it.
       </p>
 
       <h2>security</h2>

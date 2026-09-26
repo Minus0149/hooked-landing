@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-const updated = "12 August 2026";
+const updated = "26 September 2026";
 
 export const metadata: Metadata = {
   title: "terms of use",
@@ -27,6 +27,13 @@ export default function TermsPage() {
         <strong>data may be reset</strong> while we get it right. Do not treat your hookedcue library
         as the only copy of anything you care about. We will avoid wiping libraries and will warn you
         if we have to, but this is a beta and we cannot promise it.
+      </p>
+
+      <h2>you must be 18 or older</h2>
+      <p>
+        hookedcue is for adults. The catalogue is real chart music, some of it explicit, so you must
+        be at least 18 to use the app or apply for the beta. If we learn an account belongs to
+        someone younger, we will delete it.
       </p>
 
       <h2>access is invited, not owed</h2>
