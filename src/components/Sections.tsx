@@ -123,7 +123,8 @@ export function Footer() {
       </div>
       <span className="foot-legal">
         <Link href="/privacy">privacy</Link> · <Link href="/terms">terms</Link> ·{" "}
-        <Link href="/data-deletion">delete your data</Link>
+        <Link href="/data-deletion">delete your data</Link> ·{" "}
+        <Link href="/artists">for artists</Link> · <Link href="/contact">contact</Link>
       </span>
       <span>hookedcue © 2026 · previews via itunes · your taste stays yours</span>
     </footer>

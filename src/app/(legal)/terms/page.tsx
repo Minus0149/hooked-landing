@@ -85,8 +85,18 @@ export default function TermsPage() {
 
       <h2>price</h2>
       <p>
-        hookedcue is free during testing. If that ever changes you will be told before it affects you,
-        and never retroactively.
+        Listening on hookedcue is free during testing. If that ever changes you will be told before it
+        affects you, and never retroactively.
+      </p>
+
+      <h2>paid promotion for artists</h2>
+      <p>
+        Approved artists can pay to promote their own songs. Prices, what counts as a listen and how
+        campaigns run are on the <Link href="/artists">artists page</Link>; cancellations and refunds
+        follow the <Link href="/refunds">refunds policy</Link>. Payments are processed by Razorpay;
+        promoted songs are always labelled &ldquo;Promoted&rdquo;. You may only promote music you have
+        the rights to, and we may stop a campaign that breaks our{" "}
+        <Link href="/guidelines">guidelines</Link>, refunding what wasn&apos;t delivered.
       </p>
 
       <h2>governing law</h2>

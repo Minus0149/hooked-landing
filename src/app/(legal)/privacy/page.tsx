@@ -76,6 +76,22 @@ export default function PrivacyPage() {
         <li>An audio fingerprint of each upload — a list of numbers, not the audio — used only to catch duplicate uploads.</li>
       </ul>
 
+      <h3>if you pay to promote a song</h3>
+      <ul>
+        <li>
+          What you bought and paid: the package, the amount, any code, and Razorpay&rsquo;s order and
+          payment ids. Your card, UPI or bank details go to Razorpay, never to us.
+        </li>
+        <li>
+          Your campaign&rsquo;s numbers: how many listeners heard it and what they did (saves, skips).
+          Listeners appear only as counts — we never show an artist who listened.
+        </li>
+        <li>
+          Payment records are kept for 8 years, as Indian tax law requires, even if you delete your
+          account. Everything else about a campaign is deleted with the account.
+        </li>
+      </ul>
+
       <h3>crash reports and app diagnostics</h3>
       <p>
         When the app hits an error it sends us a report so we can fix it: the error message and
@@ -135,6 +151,10 @@ export default function PrivacyPage() {
           <strong>Convex.</strong> hookedcue&rsquo;s database is hosted on Convex (convex.dev), a
           managed backend service that stores and processes it on our behalf. Your data is not on a
           third-party analytics platform.
+        </li>
+        <li>
+          <strong>Razorpay.</strong> Processes payments for artist promotion. It receives what you
+          enter at checkout; we receive only whether the payment succeeded and its ids.
         </li>
         <li>
           <strong>Expo.</strong> The Android app checks Expo&rsquo;s update service (expo.dev) for new

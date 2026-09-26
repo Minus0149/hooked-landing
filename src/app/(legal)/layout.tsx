@@ -23,7 +23,9 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
           <Link href="/privacy">privacy</Link> · <Link href="/terms">terms</Link> ·{" "}
           <Link href="/copyright">copyright</Link> ·{" "}
           <Link href="/guidelines">guidelines</Link> ·{" "}
-          <Link href="/data-deletion">delete your data</Link>
+          <Link href="/data-deletion">delete your data</Link> ·{" "}
+          <Link href="/refunds">refunds</Link> · <Link href="/contact">contact</Link> ·{" "}
+          <Link href="/artists">for artists</Link>
         </span>
         <span>hookedcue © 2026 · previews via itunes</span>
       </footer>

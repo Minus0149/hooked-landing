@@ -825,3 +825,11 @@ body[data-grabbing] .cursor-ring { scale: 0.7; }
   position: fixed; z-index: 91; left: 0; right: 0; bottom: 18px; text-align: center; pointer-events: none;
   color: var(--muted); font-size: 13px;
 }
+
+/* ---------- artists: pricing table ---------- */
+.price-table { width: 100%; max-width: 66ch; border-collapse: collapse; margin: 6px 0 18px; font-size: 15px; }
+.price-table th, .price-table td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--line); color: var(--muted); }
+.price-table thead th { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; }
+.price-table tbody th { color: var(--text); font-weight: 600; }
+.price-table td:nth-child(3) { color: var(--text); font-weight: 600; }
+@media (max-width: 480px) { .price-table th, .price-table td { padding: 10px 6px; font-size: 14px; } }
