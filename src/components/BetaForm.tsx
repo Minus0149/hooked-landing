@@ -13,6 +13,19 @@ import {
   toggleChip,
   type Errors,
 } from "@/data/beta";
+import { betaText, chipLabel, serverError, type BetaCopyKey, type BetaLang } from "@/data/betaCopy";
+
+/** "…goes to {email} when…" with the address in bold. */
+function withEmail(text: string, email: string) {
+  const [before, after = ""] = text.split("{email}");
+  return (
+    <>
+      {before}
+      <strong>{email}</strong>
+      {after}
+    </>
+  );
+}
 
 /**
  * The beta signup, in two steps.
@@ -53,7 +66,9 @@ function Chips({
   value,
   onChange,
   multi,
+  lang = "en",
 }: {
+  lang?: BetaLang;
   label: string;
   hint?: string;
   options: readonly string[];
@@ -82,7 +97,7 @@ function Chips({
               {...(multi ? { "aria-pressed": on } : { role: "radio", "aria-checked": on })}
               onClick={() => onChange(multi ? toggleChip(value, o, multi) : on ? [] : [o])}
             >
-              {o}
+              {chipLabel(lang, o)}
             </button>
           );
         })}
@@ -91,7 +106,8 @@ function Chips({
   );
 }
 
-export default function BetaForm({ compact = false }: { compact?: boolean }) {
+export default function BetaForm({ compact = false, lang = "en" }: { compact?: boolean; lang?: BetaLang }) {
+  const t = (key: BetaCopyKey, vars?: Record<string, string | number>) => betaText(lang, key, vars);
   const uid = useId();
   const fid = (n: string) => `${uid}-${n}`;
   // stamped on mount and again when step two opens — never during render
@@ -150,12 +166,14 @@ export default function BetaForm({ compact = false }: { compact?: boolean }) {
         return;
       }
       setPhase("signup");
-      setErrors(data.errors ?? {});
-      setMessage(data.errors ? "" : (data.message ?? "that didn't go through. try again?"));
+      setErrors(
+        Object.fromEntries(Object.entries(data.errors ?? {}).map(([k, v]) => [k, serverError(lang, v)])),
+      );
+      setMessage(data.errors ? "" : (data.message ?? t("failed")));
       if (data.errors?.email) emailRef.current?.focus();
     } catch {
       setPhase("signup");
-      setMessage("no connection. your address is still in the box.");
+      setMessage(t("offlineSignup"));
     }
   }
 
@@ -190,10 +208,10 @@ export default function BetaForm({ compact = false }: { compact?: boolean }) {
         return;
       }
       setPhase("details");
-      setMessage(data.message ?? "that didn't go through. try again?");
+      setMessage(data.message ?? t("failed"));
     } catch {
       setPhase("details");
-      setMessage("no connection. your answers are still here.");
+      setMessage(t("offlineDetails"));
     }
   }
 
@@ -204,9 +222,9 @@ export default function BetaForm({ compact = false }: { compact?: boolean }) {
 
   const submit = (
     <>
-      {ref && <p className="bf-invited">a friend invited you — you&apos;ll skip the waitlist.</p>}
+      {ref && <p className="bf-invited">{t("invited")}</p>}
       <button className="btn-primary bf-submit" type="submit" disabled={phase === "sending"}>
-        {phase === "sending" ? "adding you…" : ref ? "join with my invite" : "put me on the list"}
+        {phase === "sending" ? t("adding") : ref ? t("joinInvite") : t("putMeOn")}
       </button>
     </>
   );
@@ -227,7 +245,7 @@ export default function BetaForm({ compact = false }: { compact?: boolean }) {
           >
             <div className="bf-field">
               <label className="bf-label" htmlFor={fid("email")}>
-                your google account email
+                {t("emailLabel")}
               </label>
               <div className="bf-row">
                 <input
@@ -254,7 +272,7 @@ export default function BetaForm({ compact = false }: { compact?: boolean }) {
                 </span>
               ) : (
                 <span className="bf-hint" id={fid("email-hint")}>
-                  the one signed in on your android phone — it&apos;s how the play store invite finds you.
+                  {t("emailHint")}
                 </span>
               )}
             </div>
@@ -262,7 +280,7 @@ export default function BetaForm({ compact = false }: { compact?: boolean }) {
             {!compact && (
               <div className="bf-field">
                 <label className="bf-label" htmlFor={fid("name")}>
-                  what should we call you? <em>optional</em>
+                  {t("nameLabel")} <em>{t("optional")}</em>
                 </label>
                 <input
                   id={fid("name")}
@@ -292,8 +310,7 @@ export default function BetaForm({ compact = false }: { compact?: boolean }) {
 
             {!compact && submit}
             <p className="bf-consent">
-              we&apos;ll email you the invite and the odd update. nothing else, never passed on —{" "}
-              <Link href="/privacy">privacy</Link>.
+              {t("consentLead")} <Link href="/privacy">{t("privacy")}</Link>.
             </p>
             {message && (
               <p className="bf-message" role="alert">
@@ -313,18 +330,13 @@ export default function BetaForm({ compact = false }: { compact?: boolean }) {
               <div>
                 {invited ? (
                   <>
-                    <b>you&apos;re in — a friend&apos;s invite skipped the queue.</b>
-                    <span>
-                      your invite is on its way to <strong>{email.trim().toLowerCase()}</strong>. open it to make
-                      your account.
-                    </span>
+                    <b>{t("inFriend")}</b>
+                    <span>{withEmail(t("inFriendSub"), email.trim().toLowerCase())}</span>
                   </>
                 ) : (
                   <>
-                    <b>you&apos;re on the list.</b>
-                    <span>
-                      the invite goes to <strong>{email.trim().toLowerCase()}</strong> when the android test opens.
-                    </span>
+                    <b>{t("onList")}</b>
+                    <span>{withEmail(t("onListSub"), email.trim().toLowerCase())}</span>
                   </>
                 )}
               </div>
@@ -332,54 +344,56 @@ export default function BetaForm({ compact = false }: { compact?: boolean }) {
 
             {phase === "done" ? (
               <p className="bf-thanks">
-                that&apos;s everything. see you in the play store — and in the meantime, the{" "}
+                {t("thanksLead")}{" "}
                 <a href={appUrl} {...appLinkProps}>
-                  browser build
+                  {t("browserBuild")}
                 </a>{" "}
-                is the whole app.
+                {t("thanksTail")}
               </p>
             ) : (
               <form className="bf-details" onSubmit={sendDetails} noValidate>
                 <div className="bf-details-head">
-                  <b>help us tune it</b>
-                  <span>optional · about a minute · skip it and you&apos;re still in</span>
+                  <b>{t("tuneHead")}</b>
+                  <span>{t("tuneSub")}</span>
                 </div>
 
                 <div className="bf-field">
                   <label className="bf-label" htmlFor={fid("device")}>
-                    your phone
+                    {t("phone")}
                   </label>
                   <input
                     id={fid("device")}
                     className="bf-input"
                     type="text"
                     name="device"
-                    placeholder="pixel 8a, redmi note 13…"
+                    placeholder={t("phonePlaceholder")}
                     maxLength={LIMITS.device}
                     value={device}
                     onChange={(e) => setDevice(e.target.value)}
                   />
                 </div>
-                <Chips label="android version" options={ANDROID_VERSIONS} value={android} onChange={setAndroid} />
+                <Chips lang={lang} label={t("androidVersion")} options={ANDROID_VERSIONS} value={android} onChange={setAndroid} />
                 <Chips
-                  label="genres you actually play"
-                  hint={`${genres.length} of ${LIMITS.genres}`}
+                  lang={lang}
+                  label={t("genres")}
+                  hint={t("genresCount", { n: genres.length, max: LIMITS.genres })}
                   options={GENRES}
                   value={genres}
                   onChange={setGenres}
                   multi={LIMITS.genres}
                 />
                 <Chips
-                  label="where you listen now"
+                  lang={lang}
+                  label={t("listensOn")}
                   options={LISTENS_ON}
                   value={listensOn}
                   onChange={setListensOn}
                   multi={LIMITS.listensOn}
                 />
-                <Chips label="music on a normal day" options={HOURS} value={hours} onChange={setHours} />
+                <Chips lang={lang} label={t("hours")} options={HOURS} value={hours} onChange={setHours} />
                 <div className="bf-field">
                   <label className="bf-label" htmlFor={fid("notes")}>
-                    anything else <em>bugs you expect, features you want</em>
+                    {t("notes")} <em>{t("notesHint")}</em>
                   </label>
                   <textarea
                     id={fid("notes")}
@@ -403,10 +417,10 @@ export default function BetaForm({ compact = false }: { compact?: boolean }) {
                     type="submit"
                     disabled={!anything || phase === "sending-details"}
                   >
-                    {phase === "sending-details" ? "sending…" : "send these"}
+                    {phase === "sending-details" ? t("sending") : t("sendThese")}
                   </button>
                   <button type="button" className="bf-skip" onClick={() => setPhase("done")}>
-                    skip — i&apos;m done
+                    {t("skipDone")}
                   </button>
                 </div>
                 {message && (

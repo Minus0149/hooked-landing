@@ -29,9 +29,14 @@ export default function BetaPage() {
         <Link className="wordmark" href="/">
           hookedcue<i>.</i>
         </Link>
-        <Link className="beta-back" href="/">
-          ← back to the site
-        </Link>
+        <span className="lang-switch">
+          <Link className="beta-back" href="/hi" hrefLang="hi" lang="hi">
+            हिन्दी में
+          </Link>
+          <Link className="beta-back" href="/">
+            ← back to the site
+          </Link>
+        </span>
       </nav>
 
       <div className="beta-body">

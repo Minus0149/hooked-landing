@@ -124,7 +124,8 @@ export function Footer() {
       <span className="foot-legal">
         <Link href="/privacy">privacy</Link> · <Link href="/terms">terms</Link> ·{" "}
         <Link href="/data-deletion">delete your data</Link> ·{" "}
-        <Link href="/artists">for artists</Link> · <Link href="/contact">contact</Link>
+        <Link href="/artists">for artists</Link> · <Link href="/contact">contact</Link> ·{" "}
+        <Link href="/hi" hrefLang="hi" lang="hi">हिन्दी</Link>
       </span>
       <span>hookedcue © 2026 · previews via itunes · your taste stays yours</span>
     </footer>

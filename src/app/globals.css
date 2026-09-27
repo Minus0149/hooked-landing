@@ -519,6 +519,26 @@ textarea.bf-input { resize: vertical; min-height: 92px; line-height: 1.6; }
 }
 .beta-foot a { color: var(--muted); }
 
+/* ---------- /hi — the hero and beta form in Hindi ---------- */
+/* Devanagari splits apart when letter-spaced, and needs a little more line */
+[lang="hi"] * { letter-spacing: 0 !important; }
+[lang="hi"] .beta-head h1 { line-height: 1.2; }
+.hi-beta-head { padding-top: clamp(48px, 8vh, 84px); }
+.hi-beta-head h2 { font-size: clamp(30px, 4.4vw, 48px); line-height: 1.2; margin-bottom: 18px; }
+.hi-beta-head h2 span { color: var(--pink); }
+.hi-swipes { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.hi-swipes li {
+  display: flex; align-items: center; gap: 14px; padding: 14px 18px;
+  border: 1px solid var(--line); border-radius: 18px; background: rgba(24,22,32,.55);
+  font-size: 16px; line-height: 1.5;
+}
+.hi-swipes b {
+  flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 999px;
+  background: rgba(255,255,255,.06); font-size: 18px;
+}
+.hi-swipes strong { color: var(--pink); margin-right: 4px; }
+.lang-switch { display: flex; gap: 14px; }
+
 /* ---------- footer ---------- */
 footer {
   position: relative; z-index: 10;
