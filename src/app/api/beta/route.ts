@@ -4,6 +4,7 @@ import type { NextRequest } from "next/server";
 import { checkRateLimit, clientKey } from "@/lib/rate-limit";
 import { betaSink } from "@/config/backend";
 import { validateDetails, validateSignup, type Stage } from "@/data/beta";
+import { inviteCode } from "@/lib/inviteCode";
 
 // fs + a long-lived rate-limit map both need the node runtime
 export const runtime = "nodejs";
@@ -35,7 +36,7 @@ async function alreadySignedUp(email: string) {
   }
 }
 
-async function store(record: Record<string, unknown>) {
+async function store(record: Record<string, unknown>): Promise<{ approved: boolean }> {
   // BETA_LOCAL_FILE=1 keeps signups in a local JSONL instead (dev, or a VPS
   // with no backend); otherwise they go to the app's backend.
   if (!process.env.BETA_LOCAL_FILE) {
@@ -52,10 +53,13 @@ async function store(record: Record<string, unknown>) {
       signal: AbortSignal.timeout(8_000),
     });
     if (!res.ok) throw new Error(`webhook responded ${res.status}`);
-    return;
+    // the backend says whether a friend's invite approved them on the spot
+    const answer = (await res.json().catch(() => ({}))) as { status?: string; referred?: boolean };
+    return { approved: answer.referred === true && answer.status === "approved" };
   }
   await fs.mkdir(DATA_DIR, { recursive: true });
   await fs.appendFile(DATA_FILE, JSON.stringify(record) + "\n", "utf8");
+  return { approved: false };
 }
 
 const json = (body: unknown, status: number, headers?: HeadersInit) =>
@@ -118,11 +122,13 @@ export async function POST(request: NextRequest) {
     }
     // a repeat is not an error: they are on the list either way
     if (await alreadySignedUp(data.email)) return json({ ok: true, duplicate: true }, 200);
-    record = { stage, ...data, submittedAt: new Date().toISOString(), userAgent };
+    const ref = inviteCode(body.ref);
+    record = { stage, ...data, ...(ref ? { ref } : {}), submittedAt: new Date().toISOString(), userAgent };
   }
 
+  let approved = false;
   try {
-    await store(record);
+    ({ approved } = await store(record));
   } catch (err) {
     console.error("[beta] could not store signup:", err);
     return json(
@@ -131,5 +137,5 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  return json({ ok: true }, 200);
+  return json({ ok: true, approved }, 200);
 }

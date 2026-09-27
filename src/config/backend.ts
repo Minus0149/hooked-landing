@@ -12,6 +12,9 @@
  */
 export const BETA_SINK_URL = "https://shocking-goldfinch-745.convex.site/beta";
 
+/** The backend's query endpoint — shared song pages read one track from it. */
+export const CONVEX_CLOUD_URL = "https://shocking-goldfinch-745.convex.cloud";
+
 export function betaSink(env: Record<string, string | undefined>): string {
   const override = env.BETA_SINK_URL?.trim();
   return override && /^https:\/\//.test(override) ? override : BETA_SINK_URL;

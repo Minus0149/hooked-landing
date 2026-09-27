@@ -40,6 +40,8 @@ async function post(payload: Record<string, unknown>) {
     ok?: boolean;
     errors?: Errors;
     message?: string;
+    /** a friend's invite link approved them on the spot */
+    approved?: boolean;
   };
   return { ok: res.ok && data.ok === true, data };
 }
@@ -99,6 +101,15 @@ export default function BetaForm({ compact = false }: { compact?: boolean }) {
     startedAt.current = Date.now();
   }, []);
   const [phase, setPhase] = useState<Phase>("signup");
+  // a friend's invite link (hookedcue.com/beta?ref=CODE) skips the waitlist
+  const [ref, setRef] = useState<string | null>(null);
+  const [invited, setInvited] = useState(false);
+  useEffect(() => {
+    const raw = new URLSearchParams(window.location.search).get("ref")?.trim().toUpperCase() ?? "";
+    // read once from the URL after mount; the page itself is statically rendered
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (/^[2-9A-HJ-NP-Z]{7}$/.test(raw)) setRef(raw);
+  }, []);
 
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -130,9 +141,11 @@ export default function BetaForm({ compact = false }: { compact?: boolean }) {
         consent: true,
         website: form.get("website"),
         startedAt: startedAt.current,
+        ...(ref ? { ref } : {}),
       });
       if (ok) {
         startedAt.current = Date.now();
+        setInvited(data.approved === true);
         setPhase("details");
         return;
       }
@@ -190,9 +203,12 @@ export default function BetaForm({ compact = false }: { compact?: boolean }) {
   }, [onList]);
 
   const submit = (
-    <button className="btn-primary bf-submit" type="submit" disabled={phase === "sending"}>
-      {phase === "sending" ? "adding you…" : "put me on the list"}
-    </button>
+    <>
+      {ref && <p className="bf-invited">a friend invited you — you&apos;ll skip the waitlist.</p>}
+      <button className="btn-primary bf-submit" type="submit" disabled={phase === "sending"}>
+        {phase === "sending" ? "adding you…" : ref ? "join with my invite" : "put me on the list"}
+      </button>
+    </>
   );
 
   return (
@@ -295,10 +311,22 @@ export default function BetaForm({ compact = false }: { compact?: boolean }) {
             <div className="bf-done" ref={doneRef} tabIndex={-1} role="status">
               <i aria-hidden="true" />
               <div>
-                <b>you&apos;re on the list.</b>
-                <span>
-                  the invite goes to <strong>{email.trim().toLowerCase()}</strong> when the android test opens.
-                </span>
+                {invited ? (
+                  <>
+                    <b>you&apos;re in — a friend&apos;s invite skipped the queue.</b>
+                    <span>
+                      your invite is on its way to <strong>{email.trim().toLowerCase()}</strong>. open it to make
+                      your account.
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <b>you&apos;re on the list.</b>
+                    <span>
+                      the invite goes to <strong>{email.trim().toLowerCase()}</strong> when the android test opens.
+                    </span>
+                  </>
+                )}
               </div>
             </div>
 
