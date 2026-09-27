@@ -10,7 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const title = now ? `${now.title} — indie hook of the week` : "indie hook of the week";
   const description = now
     ? `${now.title} by ${now.artist}: ${now.blurb}`
-    : "Every week hookedcue picks one independent song and puts it at the top of Home.";
+    : "Every week HookedCue picks one independent song and puts it at the top of Home.";
   return {
     title,
     description,

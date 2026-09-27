@@ -34,7 +34,7 @@ export async function GET() {
           <div style={{ display: "flex", fontSize: 60, marginTop: 80 }}>coming soon</div>
         )}
         <div style={{ display: "flex", alignItems: "baseline", marginTop: 110, fontSize: 64, fontWeight: 800 }}>
-          hookedcue<span style={{ color: "#ff3d71" }}>.</span>
+          HookedCue<span style={{ color: "#ff3d71" }}>.</span>
         </div>
         <div style={{ display: "flex", fontSize: 34, color: "#8e8c99", marginTop: 12 }}>hookedcue.com/indie-hook</div>
       </div>

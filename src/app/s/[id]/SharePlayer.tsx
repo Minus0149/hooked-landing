@@ -83,8 +83,8 @@ export function SharePlayer({ track, hook, appUrl }: { track: SharedTrack; hook:
   return (
     <main id="main" className="sp" style={{ ["--sp-accent" as string]: track.accent || "#ff3d71" }}>
       <header className="sp-top">
-        <Link href="/" className="sp-mark" aria-label="hookedcue home">
-          hookedcue<span>.</span>
+        <Link href="/" className="sp-mark" aria-label="HookedCue home">
+          HookedCue<span>.</span>
         </Link>
       </header>
 
@@ -118,7 +118,7 @@ export function SharePlayer({ track, hook, appUrl }: { track: SharedTrack; hook:
 
         <div className="sp-actions">
           <a className="btn-primary sp-open" href={openInApp}>
-            open in hookedcue
+            open in HookedCue
           </a>
           <Link className="sp-secondary" href="/beta">
             get the android beta

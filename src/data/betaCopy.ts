@@ -2,7 +2,7 @@
  * The beta form's words in English and Hindi.
  *
  * The English is the source (the same lowercase voice as the rest of the
- * site). Hindi is conversational, not textbook: hookedcue, android, play
+ * site). Hindi is conversational, not textbook: HookedCue, android, play
  * store, google, email and the genre names stay as people say them.
  *
  * Chip values are never translated — the API validates the English values —

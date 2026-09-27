@@ -12,7 +12,7 @@ import { appUrl, appLinkProps } from "@/lib/site";
  */
 const title = "हर गाना उसके hook से शुरू";
 const description =
-  "hookedcue पर हर गाना सीधे अपने सबसे अच्छे हिस्से से बजता है। स्वाइप करें, सेव करें, और अपना अगला फ़ेवरेट गाना ढूँढें। browser में आज़माएँ या android beta से जुड़ें।";
+  "HookedCue पर हर गाना सीधे अपने सबसे अच्छे हिस्से से बजता है। स्वाइप करें, सेव करें, और अपना अगला फ़ेवरेट गाना ढूँढें। browser में आज़माएँ या android beta से जुड़ें।";
 
 export const metadata: Metadata = {
   title,
@@ -22,10 +22,10 @@ export const metadata: Metadata = {
     type: "website",
     url: "/hi",
     locale: "hi_IN",
-    siteName: "hookedcue",
-    title: `${title} | hookedcue`,
+    siteName: "HookedCue",
+    title: `${title} | HookedCue`,
     description,
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "hookedcue" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "HookedCue" }],
   },
   robots: { index: true, follow: true },
 };
@@ -42,7 +42,7 @@ export default function HindiPage() {
     <main id="main" className="beta-page" lang="hi">
       <nav className="beta-nav">
         <Link className="wordmark" href="/">
-          hookedcue<i>.</i>
+          HookedCue<i>.</i>
         </Link>
         <span className="lang-switch">
           <Link className="beta-back" href="/" hrefLang="en" lang="en">
@@ -53,12 +53,12 @@ export default function HindiPage() {
 
       <div className="beta-body">
         <header className="beta-head">
-          <p className="sec-tag"><span>hookedcue</span> — गाने ढूँढने का नया तरीका</p>
+          <p className="sec-tag"><span>HookedCue</span> — गाने ढूँढने का नया तरीका</p>
           <h1>
             हर गाना उसके <span>hook से शुरू।</span>
           </h1>
           <p className="beta-intro">
-            तीस सेकंड का intro सुनने की ज़रूरत नहीं। hookedcue हर गाने को सीधे उसके सबसे अच्छे
+            तीस सेकंड का intro सुनने की ज़रूरत नहीं। HookedCue हर गाने को सीधे उसके सबसे अच्छे
             हिस्से से बजाता है — आप स्वाइप करते जाइए, वो आपकी पसंद समझता जाता है।
           </p>
         </header>
@@ -105,7 +105,7 @@ export default function HindiPage() {
           <Link href="/privacy">privacy</Link> · <Link href="/terms">terms</Link> ·{" "}
           <Link href="/data-deletion">अपना डेटा हटाएँ</Link>
         </span>
-        <span>hookedcue © 2026 · previews via itunes</span>
+        <span>HookedCue © 2026 · previews via itunes</span>
       </footer>
 
       <div className="vignette" />

@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const track = await getSharedTrack(decodeURIComponent(id));
   if (!track) return { title: "song not found", robots: { index: false } };
   const title = `${track.title} — ${track.artist}`;
-  const description = `Hear "${track.title}" by ${track.artist} from its hook on hookedcue — every song starts at the part you came for.`;
+  const description = `Hear "${track.title}" by ${track.artist} from its hook on HookedCue — every song starts at the part you came for.`;
   return {
     title,
     description,

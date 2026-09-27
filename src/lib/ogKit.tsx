@@ -38,7 +38,7 @@ const MOOD_COLORS: Record<string, string> = {
 function Wordmark({ size }: { size: number }) {
   return (
     <div style={{ display: "flex", fontFamily: "Unbounded", fontWeight: 800, fontSize: size, color: TEXT, letterSpacing: -size * 0.03 }}>
-      hookedcue<span style={{ color: PINK }}>.</span>
+      HookedCue<span style={{ color: PINK }}>.</span>
     </div>
   );
 }
