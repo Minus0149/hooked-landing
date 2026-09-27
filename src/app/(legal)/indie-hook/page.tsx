@@ -36,7 +36,7 @@ export default async function IndieHookPage() {
               <p className="indie-artist">{now.artist}</p>
               <p className="legal-lede">{now.blurb}</p>
               <p className="indie-week">week of {weekLabel(now.week)} · chosen by us, not paid for</p>
-              <a className="btn-primary" href={appUrl} {...appLinkProps}>
+              <a className="btn-primary" href={`${appUrl}/discover?track=${encodeURIComponent(now.trackId)}`} {...appLinkProps}>
                 hear it at its hook
               </a>
             </div>
