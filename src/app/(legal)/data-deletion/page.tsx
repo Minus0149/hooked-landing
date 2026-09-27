@@ -63,7 +63,9 @@ export default function DataDeletionPage() {
         </li>
         <li>
           <strong>Server and email-delivery logs</strong>, which record that a request or an email
-          happened, for security and debugging. They are deleted automatically within 30 days.
+          happened, for security and debugging. Log entries about hookedcue are deleted
+          automatically after 30 days; the mail server&apos;s low-level system logs are cleared when
+          its software is updated or restarted.
         </li>
         <li>
           Anything stored on <strong>your own device</strong>. Use{" "}

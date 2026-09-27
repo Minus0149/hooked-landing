@@ -179,7 +179,7 @@ export default function PrivacyPage() {
         <li><strong>Crash reports</strong> — deleted within 90 days.</li>
         <li><strong>Song reports</strong> — until we have acted on them, and deleted within 90 days after.</li>
         <li><strong>Ad counters</strong> — 45 days.</li>
-        <li><strong>Server and email-delivery logs</strong> — deleted within 30 days.</li>
+        <li><strong>Email-delivery and mailbox logs</strong> — entries about hookedcue are deleted after 30 days. The mail server also keeps low-level system logs for every domain it serves; those are cleared when the mail server software is updated or restarted.</li>
       </ul>
 
       <h2>your rights</h2>
