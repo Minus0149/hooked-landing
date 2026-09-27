@@ -98,8 +98,16 @@ export default function ArtistsPage() {
           marker to where it hooks.
         </li>
         <li>
-          <strong>Pick a package and pay</strong> on the web, by UPI, card or netbanking, through
-          Razorpay.
+          <strong>Request a promotion.</strong> Pick a package — or ask for a custom quote — and tell us
+          who it&apos;s for. Nothing is charged yet.
+        </li>
+        <li>
+          <strong>We review it.</strong> We listen to the hook and check the rights, then email you:
+          approved at a fixed price, or not, with the reason.
+        </li>
+        <li>
+          <strong>Pay within 7 days</strong> on the web, by UPI, card or netbanking, through Razorpay.
+          After that the approval lapses and you can ask again.
         </li>
         <li>
           <strong>Watch it land.</strong> Your campaign runs for up to {CAMPAIGN_DAYS} days; the
@@ -113,6 +121,11 @@ export default function ArtistsPage() {
         You get the difference back, automatically. If a campaign ends after {CAMPAIGN_DAYS} days with
         listeners still owed, the unused share is refunded pro rata to the way you paid. The full policy
         is on the <Link href="/refunds">refunds page</Link>.
+      </p>
+      <h3>why do you review requests?</h3>
+      <p>
+        So every promoted song is one you have the rights to and one our listeners will want to hear.
+        Reviewing before you pay means you&apos;re never charged for something we&apos;d have to stop.
       </p>
       <h3>can I stop a campaign?</h3>
       <p>Yes, any time from the dashboard. Whatever hasn&apos;t been delivered is refunded the same way.</p>
