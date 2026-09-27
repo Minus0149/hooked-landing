@@ -31,3 +31,12 @@ test("the page says the pick is unpaid", () => {
   assert.ok(page.includes("not paid for"));
   assert.ok(!/promoted/i.test(page));
 });
+
+test("the story image only uses layouts the image renderer accepts", () => {
+  // next/og (Satori) refuses a <div> with more than one child unless it is a
+  // flex box, and "week of {date}" is two children: every div here is flex.
+  const route = readFileSync(new URL("../src/app/(legal)/indie-hook/story/route.tsx", import.meta.url), "utf8");
+  const divs = route.match(/<div\s+style=\{\{[^}]*\}\}/g) ?? [];
+  assert.ok(divs.length >= 5);
+  for (const d of divs) assert.match(d, /display: "flex"/, d);
+});
