@@ -95,9 +95,9 @@ function vinylTexture(label: [string, string, string]) {
   x.beginPath(); x.arc(512, 512, 130, 0, 7); x.stroke();
   x.fillStyle = "#0b0b10";
   x.textAlign = "center"; x.textBaseline = "middle";
-  // "hookedcue." is wider than the old "hooked.": fit it inside the label
-  fitFont(x, "hookedcue.", 900, 56, 270, "Unbounded, sans-serif");
-  x.fillText("hookedcue.", 512, 488);
+  // "HookedCue." is wider than the old "hooked.": fit it inside the label
+  fitFont(x, "HookedCue.", 900, 56, 270, "Unbounded, sans-serif");
+  x.fillText("HookedCue.", 512, 488);
   x.font = "600 26px Instrument Sans, sans-serif";
   x.fillText("SIDE A · YOUR TASTE", 512, 556);
   x.beginPath(); x.arc(512, 512, 14, 0, 7); x.fill();
@@ -156,8 +156,8 @@ function plateTexture() {
   const x = c.getContext("2d")!;
   x.fillStyle = "rgba(244,242,238,.88)";
   x.textAlign = "left"; x.textBaseline = "middle";
-  fitFont(x, "hookedcue.", 900, 58, 470, "Unbounded, sans-serif");
-  x.fillText("hookedcue.", 16, 48);
+  fitFont(x, "HookedCue.", 900, 58, 470, "Unbounded, sans-serif");
+  x.fillText("HookedCue.", 16, 48);
   x.fillStyle = "rgba(244,242,238,.4)"; x.font = "600 24px Instrument Sans, sans-serif";
   x.fillText("MODEL 01 · TASTE TURNTABLE", 18, 102);
   const t = new THREE.CanvasTexture(c);

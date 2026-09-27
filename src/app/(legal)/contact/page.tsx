@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "contact",
-  description: "How to reach hookedcue: support, artists, privacy, copyright and grievances.",
+  description: "How to reach HookedCue: support, artists, privacy, copyright and grievances.",
   alternates: { canonical: "/contact" },
   robots: { index: true, follow: true },
 };
@@ -14,7 +14,7 @@ export default function ContactPage() {
       <p className="legal-kicker">contact</p>
       <h1>talk to us</h1>
       <p className="legal-lede">
-        hookedcue is operated by MiNUs from India. Email is the fastest way to reach a person; we answer
+        HookedCue is operated by MiNUs from India. Email is the fastest way to reach a person; we answer
         within 2 business days, Monday to Friday, 10:00–18:00 IST.
       </p>
 

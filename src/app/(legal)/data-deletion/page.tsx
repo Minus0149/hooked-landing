@@ -7,7 +7,7 @@ const updated = "26 September 2026";
 export const metadata: Metadata = {
   title: "delete your data",
   description:
-    "How to delete your hookedcue account and everything stored with it — in the app in two taps, or by email.",
+    "How to delete your HookedCue account and everything stored with it — in the app in two taps, or by email.",
   alternates: { canonical: "/data-deletion" },
   robots: { index: true, follow: true },
 };
@@ -16,9 +16,9 @@ export default function DataDeletionPage() {
   return (
     <article className="legal">
       <p className="legal-kicker">last updated {updated}</p>
-      <h1>delete your hookedcue data</h1>
+      <h1>delete your HookedCue data</h1>
       <p className="legal-lede">
-        You do not have to ask us, and you do not have to wait. Deleting your hookedcue account is
+        You do not have to ask us, and you do not have to wait. Deleting your HookedCue account is
         built into the app, and it is immediate.
       </p>
 
@@ -63,7 +63,7 @@ export default function DataDeletionPage() {
         </li>
         <li>
           <strong>Server and email-delivery logs</strong>, which record that a request or an email
-          happened, for security and debugging. Log entries about hookedcue are deleted
+          happened, for security and debugging. Log entries about HookedCue are deleted
           automatically after 30 days; the mail server&apos;s low-level system logs are cleared when
           its software is updated or restarted.
         </li>

@@ -6,7 +6,7 @@ const updated = "24 August 2026";
 export const metadata: Metadata = {
   title: "community guidelines",
   description:
-    "What belongs on hookedcue, what doesn't, and what happens when the line is crossed.",
+    "What belongs on HookedCue, what doesn't, and what happens when the line is crossed.",
   alternates: { canonical: "/guidelines" },
   robots: { index: true, follow: true },
 };
@@ -17,7 +17,7 @@ export default function GuidelinesPage() {
       <p className="legal-kicker">last updated {updated}</p>
       <h1>community guidelines</h1>
       <p className="legal-lede">
-        hookedcue is a small room with good acoustics. These are the house rules —
+        HookedCue is a small room with good acoustics. These are the house rules —
         short, because most of it is obvious.
       </p>
 
@@ -70,7 +70,7 @@ export default function GuidelinesPage() {
         Grievances are acknowledged within 24 hours and resolved within 72 for
         urgent matters (15 days for copyright cases, per{" "}
         <Link href="/copyright">the copyright policy</Link>). The designated
-        Grievance Officer for hookedcue is the operator, MiNUs.
+        Grievance Officer for HookedCue is the operator, MiNUs.
       </p>
 
       <p className="legal-footnote">

@@ -9,7 +9,7 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
     <main id="main" className="legal-page">
       <nav className="beta-nav">
         <Link className="wordmark" href="/">
-          hookedcue<i>.</i>
+          HookedCue<i>.</i>
         </Link>
         <Link className="beta-back" href="/">
           ← back to the site
@@ -27,7 +27,7 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
           <Link href="/refunds">refunds</Link> · <Link href="/contact">contact</Link> ·{" "}
           <Link href="/artists">for artists</Link> · <Link href="/indie-hook">indie hook</Link>
         </span>
-        <span>hookedcue © 2026 · previews via itunes</span>
+        <span>HookedCue © 2026 · previews via itunes</span>
       </footer>
 
       <div className="vignette" />

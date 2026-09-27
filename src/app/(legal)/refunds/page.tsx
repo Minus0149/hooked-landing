@@ -7,7 +7,7 @@ const updated = "26 September 2026";
 export const metadata: Metadata = {
   title: "refunds and cancellation",
   description:
-    "How cancelling a hookedcue promotion works, how refunds are calculated, and how long they take.",
+    "How cancelling a HookedCue promotion works, how refunds are calculated, and how long they take.",
   alternates: { canonical: "/refunds" },
   robots: { index: true, follow: true },
 };
@@ -18,8 +18,8 @@ export default function RefundsPage() {
       <p className="legal-kicker">last updated {updated}</p>
       <h1>refunds and cancellation</h1>
       <p className="legal-lede">
-        The only thing you can pay hookedcue for is promoting your own song to listeners. Listening to
-        music on hookedcue is free. This page covers what happens to your money when a promotion
+        The only thing you can pay HookedCue for is promoting your own song to listeners. Listening to
+        music on HookedCue is free. This page covers what happens to your money when a promotion
         stops.
       </p>
 

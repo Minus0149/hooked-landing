@@ -6,7 +6,7 @@ const updated = "26 September 2026";
 export const metadata: Metadata = {
   title: "terms of use",
   description:
-    "The terms for using hookedcue — a music discovery app in closed testing. Plain English, no surprises.",
+    "The terms for using HookedCue — a music discovery app in closed testing. Plain English, no surprises.",
   alternates: { canonical: "/terms" },
   robots: { index: true, follow: true },
 };
@@ -17,21 +17,21 @@ export default function TermsPage() {
       <p className="legal-kicker">last updated {updated}</p>
       <h1>terms of use</h1>
       <p className="legal-lede">
-        Short, and written to be read. Using hookedcue — this site, the browser app, or the Android
+        Short, and written to be read. Using HookedCue — this site, the browser app, or the Android
         build — means you agree to what is below.
       </p>
 
       <h2>this is a test build</h2>
       <p>
-        hookedcue is in closed testing. Things will break, features will change, and{" "}
-        <strong>data may be reset</strong> while we get it right. Do not treat your hookedcue library
+        HookedCue is in closed testing. Things will break, features will change, and{" "}
+        <strong>data may be reset</strong> while we get it right. Do not treat your HookedCue library
         as the only copy of anything you care about. We will avoid wiping libraries and will warn you
         if we have to, but this is a beta and we cannot promise it.
       </p>
 
       <h2>you must be 18 or older</h2>
       <p>
-        hookedcue is for adults. The catalogue is real chart music, some of it explicit, so you must
+        HookedCue is for adults. The catalogue is real chart music, some of it explicit, so you must
         be at least 18 to use the app or apply for the beta. If we learn an account belongs to
         someone younger, we will delete it.
       </p>
@@ -46,8 +46,8 @@ export default function TermsPage() {
 
       <h2>the music is not ours</h2>
       <p>
-        hookedcue plays short preview clips supplied by Apple&rsquo;s iTunes service, along with the
-        artwork that comes with them. Those recordings belong to their rights holders. hookedcue does
+        HookedCue plays short preview clips supplied by Apple&rsquo;s iTunes service, along with the
+        artwork that comes with them. Those recordings belong to their rights holders. HookedCue does
         not host, sell or licence the music, and it is not a substitute for a streaming service — the
         full song opens on Apple Music, Spotify or YouTube. If you are a rights holder and want a
         track out of the catalogue, email{" "}
@@ -77,15 +77,15 @@ export default function TermsPage() {
 
       <h2>no warranty, and the limit of our liability</h2>
       <p>
-        hookedcue is provided as-is, with no guarantee that it will be available, accurate or
+        HookedCue is provided as-is, with no guarantee that it will be available, accurate or
         uninterrupted. To the extent the law allows, we are not liable for indirect or consequential
-        loss, and our total liability is limited to what you have paid us — which, since hookedcue is
+        loss, and our total liability is limited to what you have paid us — which, since HookedCue is
         free, is nothing.
       </p>
 
       <h2>price</h2>
       <p>
-        Listening on hookedcue is free during testing. If that ever changes you will be told before it
+        Listening on HookedCue is free during testing. If that ever changes you will be told before it
         affects you, and never retroactively.
       </p>
 

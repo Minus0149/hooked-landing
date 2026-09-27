@@ -17,7 +17,7 @@ export default function NotFound() {
     <main id="main" className="oops-page">
       <nav className="beta-nav">
         <Link className="wordmark" href="/">
-          hookedcue<i>.</i>
+          HookedCue<i>.</i>
         </Link>
         <Link className="beta-back" href="/">
           ← back to the site

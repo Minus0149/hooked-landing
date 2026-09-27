@@ -4,9 +4,9 @@ import "./globals.css";
 
 import { appUrl, siteUrl } from "@/lib/site";
 
-const title = "hookedcue - Swipe your next favorite song";
+const title = "HookedCue - Swipe your next favorite song";
 const description =
-  "hookedcue is a swipe-based music discovery app that plays the best 30 seconds of new songs, learns your taste from four gestures, and saves the tracks you love.";
+  "HookedCue is a swipe-based music discovery app that plays the best 30 seconds of new songs, learns your taste from four gestures, and saves the tracks you love.";
 
 const unbounded = Unbounded({
   subsets: ["latin"],
@@ -21,10 +21,10 @@ const instrument = Instrument_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  applicationName: "hookedcue",
+  applicationName: "HookedCue",
   title: {
     default: title,
-    template: "%s | hookedcue",
+    template: "%s | HookedCue",
   },
   description,
   keywords: [
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     "Android music app",
   ],
   creator: "MiNUs, unaware",
-  publisher: "hookedcue",
+  publisher: "HookedCue",
   alternates: {
     canonical: "/",
   },
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "/",
-    siteName: "hookedcue",
+    siteName: "HookedCue",
     title,
     description,
     images: [
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "hookedcue swipe-based music discovery app preview",
+        alt: "HookedCue swipe-based music discovery app preview",
       },
     ],
   },
@@ -98,13 +98,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const websiteJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "hookedcue",
+    name: "HookedCue",
     url: siteUrl,
     description,
     potentialAction: {
       "@type": "ViewAction",
       target: appUrl,
-      name: "Try hookedcue in your browser",
+      name: "Try HookedCue in your browser",
     },
   };
 

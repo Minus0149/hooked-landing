@@ -20,7 +20,7 @@ export default function StoryLayout({ children }: { children: React.ReactNode })
       <Cursor />
       <NavShell>
         <a className="wordmark" href="#" aria-label="back to top">
-          hookedcue<i>.</i>
+          HookedCue<i>.</i>
         </a>
         <div className="nav-right">
           <SoundToggle />

@@ -6,7 +6,7 @@ const updated = "27 September 2026";
 export const metadata: Metadata = {
   title: "privacy policy",
   description:
-    "What hookedcue stores, why, who it is shared with, how long it is kept, and how to have it deleted.",
+    "What HookedCue stores, why, who it is shared with, how long it is kept, and how to have it deleted.",
   alternates: { canonical: "/privacy" },
   robots: { index: true, follow: true },
 };
@@ -17,7 +17,7 @@ export default function PrivacyPage() {
       <p className="legal-kicker">last updated {updated}</p>
       <h1>privacy policy</h1>
       <p className="legal-lede">
-        hookedcue is run by one person. This is written plainly because there is no reason for it not
+        HookedCue is run by one person. This is written plainly because there is no reason for it not
         to be. It describes exactly what the app stores, and nothing it does not do.
       </p>
 
@@ -31,7 +31,7 @@ export default function PrivacyPage() {
 
       <h2>who is responsible</h2>
       <p>
-        hookedcue is operated by MiNUs (&ldquo;we&rdquo;, &ldquo;us&rdquo;) from India. For anything
+        HookedCue is operated by MiNUs (&ldquo;we&rdquo;, &ldquo;us&rdquo;) from India. For anything
         in this policy, including a request to see or delete your data, write to{" "}
         <a href="mailto:privacy@hookedcue.com">privacy@hookedcue.com</a>.
       </p>
@@ -109,7 +109,7 @@ export default function PrivacyPage() {
 
       <h3>house ads</h3>
       <p>
-        hookedcue shows occasional first-party sponsored cards between swipes —
+        HookedCue shows occasional first-party sponsored cards between swipes —
         written by us or by an artist promoting their own release, never served
         by a third-party network, with no SDKs and no tracking pixels.
       </p>
@@ -160,7 +160,7 @@ export default function PrivacyPage() {
           processes request metadata including IP addresses in doing so.
         </li>
         <li>
-          <strong>Convex.</strong> hookedcue&rsquo;s database is hosted on Convex (convex.dev), a
+          <strong>Convex.</strong> HookedCue&rsquo;s database is hosted on Convex (convex.dev), a
           managed backend service that stores and processes it on our behalf. Your data is not on a
           third-party analytics platform.
         </li>
@@ -191,7 +191,7 @@ export default function PrivacyPage() {
         <li><strong>Crash reports</strong> — deleted within 90 days.</li>
         <li><strong>Song reports</strong> — until we have acted on them, and deleted within 90 days after.</li>
         <li><strong>Ad counters</strong> — 45 days.</li>
-        <li><strong>Email-delivery and mailbox logs</strong> — entries about hookedcue are deleted after 30 days. The mail server also keeps low-level system logs for every domain it serves; those are cleared when the mail server software is updated or restarted.</li>
+        <li><strong>Email-delivery and mailbox logs</strong> — entries about HookedCue are deleted after 30 days. The mail server also keeps low-level system logs for every domain it serves; those are cleared when the mail server software is updated or restarted.</li>
       </ul>
 
       <h2>your rights</h2>
@@ -210,7 +210,7 @@ export default function PrivacyPage() {
 
       <h2>children</h2>
       <p>
-        hookedcue is for people aged 18 and over. The music is real chart music, some of it explicit,
+        HookedCue is for people aged 18 and over. The music is real chart music, some of it explicit,
         and the app learns from what you play. We do not knowingly collect data from anyone under 18;
         on Google Play the app is restricted to adults. If you believe someone under 18 has an
         account, email us and we will delete it.
@@ -226,7 +226,7 @@ export default function PrivacyPage() {
       <h2>changes</h2>
       <p>
         If this policy changes in a way that matters, the date at the top changes and, if you have an
-        account, we will email you. Continuing to use hookedcue after a change means you accept it.
+        account, we will email you. Continuing to use HookedCue after a change means you accept it.
       </p>
     </article>
   );

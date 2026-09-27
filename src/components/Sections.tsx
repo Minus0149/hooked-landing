@@ -127,7 +127,7 @@ export function Footer() {
         <Link href="/artists">for artists</Link> · <Link href="/contact">contact</Link> ·{" "}
         <Link href="/hi" hrefLang="hi" lang="hi">हिन्दी</Link>
       </span>
-      <span>hookedcue © 2026 · previews via itunes · your taste stays yours</span>
+      <span>HookedCue © 2026 · previews via itunes · your taste stays yours</span>
     </footer>
   );
 }

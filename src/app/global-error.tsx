@@ -23,7 +23,7 @@ export default function GlobalError({
   return (
     <html lang="en">
       <body>
-        <title>something broke | hookedcue</title>
+        <title>something broke | HookedCue</title>
         <main id="main" className="oops-page oops-bare">
           <div className="oops-body">
             <p className="oops-code">error</p>

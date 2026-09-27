@@ -25,7 +25,7 @@ export default function ArtistsPage() {
       <p className="legal-kicker">for artists</p>
       <h1>get your song heard at its hook</h1>
       <p className="legal-lede">
-        hookedcue plays every song from its hook, and people swipe through them looking for something
+        HookedCue plays every song from its hook, and people swipe through them looking for something
         new. Promote a song and we deal it to listeners who haven&apos;t heard it — starting at the part
         you&apos;d want them to hear first. You pay for real listeners, and anything we don&apos;t
         deliver comes back to you.
@@ -75,14 +75,14 @@ export default function ArtistsPage() {
       </table>
       <p>
         <strong>Launch offer:</strong> {LAUNCH_OFFER_PERCENT}% off your first campaign. While
-        hookedcue is in beta we only sell as many listeners as we can actually reach, so a big package
+        HookedCue is in beta we only sell as many listeners as we can actually reach, so a big package
         may show as full — try a smaller one, or come back soon.
       </p>
 
       <h2>how it works</h2>
       <ol>
         <li>
-          <strong>Get in.</strong> hookedcue is invite-only for now.{" "}
+          <strong>Get in.</strong> HookedCue is invite-only for now.{" "}
           <Link href="/beta">Apply for the beta</Link> and mention you&apos;re an artist; we email you when
           you&apos;re in.
         </li>
@@ -131,7 +131,7 @@ export default function ArtistsPage() {
       <p>Yes, any time from the dashboard. Whatever hasn&apos;t been delivered is refunded the same way.</p>
       <h3>which songs can I promote?</h3>
       <p>
-        Your own, uploaded to hookedcue, that you have the rights to. Songs that break our{" "}
+        Your own, uploaded to HookedCue, that you have the rights to. Songs that break our{" "}
         <Link href="/guidelines">guidelines</Link> or someone else&apos;s{" "}
         <Link href="/copyright">copyright</Link> are removed, and the campaign refunded.
       </p>
