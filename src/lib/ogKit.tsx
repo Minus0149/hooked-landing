@@ -72,7 +72,8 @@ function hookSpan(track: SharedTrack, hook: number): [number, number] {
   const h = track.hooks[hook];
   // a preview is 30 s; creator uploads use their own length
   const total = track.audioUrl ? Math.max(track.durationMs, 1) : 30_000;
-  if (!h) return [0.35, 0.65];
+  // no marked hook: the app plays the whole preview (web/src/audio/usePlayer.ts)
+  if (!h) return [0, 1];
   return [Math.min(h.startMs / total, 0.9), Math.min((h.startMs + h.durationMs) / total, 1)];
 }
 

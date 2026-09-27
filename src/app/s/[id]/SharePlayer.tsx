@@ -25,9 +25,10 @@ export function SharePlayer({ track, hook, appUrl }: { track: SharedTrack; hook:
   const audio = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
-  const h = track.hooks[hook] ?? { startMs: 0, durationMs: 15_000, label: null };
   const src = track.audioUrl ?? track.previewUrl;
   const total = track.audioUrl ? Math.max(track.durationMs, 1) : 30_000;
+  // no marked hook: the whole preview, as the app plays it (web/src/audio/usePlayer.ts)
+  const h = track.hooks[hook] ?? { startMs: 0, durationMs: total, label: null };
   const from = Math.min(h.startMs / total, 0.9);
   const to = Math.min((h.startMs + h.durationMs) / total, 1);
   const bars = waveBars(track.trackId, BARS);
