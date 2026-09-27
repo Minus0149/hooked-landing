@@ -942,3 +942,15 @@ body[data-grabbing] .cursor-ring { scale: 0.7; }
 .sp-links { margin: 20px 0 0; font-size: 14px; color: #9a98a3; }
 .sp-links a { color: #f4f2ee; text-underline-offset: 3px; }
 .sp-credit { margin: 10px 0 0; font-size: 12px; color: #6f6d7a; }
+
+/* ---------- indie hook of the week share page ---------- */
+.indie-now { display: flex; gap: 28px; align-items: flex-start; flex-wrap: wrap; margin-top: 8px; }
+.indie-art { width: 300px; height: 300px; max-width: 100%; border-radius: 24px; object-fit: cover; }
+.indie-now > div { flex: 1; min-width: 240px; }
+.indie-now h1 { max-width: none; }
+.legal .indie-artist { font-size: 18px; color: var(--text); margin-bottom: 10px; }
+.legal .indie-week { font-size: 13px; }
+.legal .indie-share { margin-top: 18px; font-size: 13.5px; }
+.legal .indie-archive { list-style: none; margin-left: 0; }
+.indie-archive li { display: flex; gap: 14px; align-items: center; }
+.indie-archive img { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; }

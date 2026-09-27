@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-const updated = "26 September 2026";
+const updated = "27 September 2026";
 
 export const metadata: Metadata = {
   title: "privacy policy",
@@ -74,6 +74,13 @@ export default function PrivacyPage() {
         <li>Your artist name, bio and links.</li>
         <li>The songs you upload: the audio files, cover details and the hooks you mark.</li>
         <li>An audio fingerprint of each upload — a list of numbers, not the audio — used only to catch duplicate uploads.</li>
+        <li>
+          Hook insights for each upload: counts of plays, saves and skips, the second of the hook
+          where skips happened, and which moods and genres its listeners had. Only totals are kept
+          and shown; a group smaller than five listeners is folded into &ldquo;other&rdquo;, and nothing
+          is shown until five people have heard the song. A private list of which accounts have
+          already been counted stops anyone counting twice, and your entry is deleted with your account.
+        </li>
       </ul>
 
       <h3>if you pay to promote a song</h3>
@@ -113,6 +120,11 @@ export default function PrivacyPage() {
           honestly. These counters are keyed to your account — or to a random
           per-install id if you haven&rsquo;t signed in — and are deleted after 45
           days.
+        </li>
+        <li>
+          A sponsored mood deck (&ldquo;Party deck &middot; presented by a brand&rdquo;) is counted the
+          same way, but only as daily totals of how often it was shown, opened and played. No
+          account or install id is stored with those totals, and the brand gets the totals only.
         </li>
         <li>
           Ad views are not profiled, not shared, and not used to train
