@@ -205,7 +205,7 @@ function SceneCopy({ id }: { id: SceneId }) {
         <a href={appUrl} {...appLinkProps}>
           try it in your browser →
         </a>{" "}
-        it&apos;s the whole app, no signup.
+        it&apos;s the whole app — five free swipes, then invite-only while we test.
       </p>
     </div>
   );

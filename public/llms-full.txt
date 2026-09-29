@@ -1,10 +1,10 @@
 # HookedCue — full reference
 
-HookedCue is an independent, invite-while-testing music discovery product by MiNUs (minus4399@gmail.com). It exists to answer one question: what is the fastest way to find music you will love, using nothing but your thumb?
+HookedCue is an independent, invite-while-testing music discovery product by MiNUs (minus4399@gmail.com). The web app gives 5 free swipes, then asks for an email and is invite-only while in testing; the Android app is coming through a Google Play closed test. It exists to answer one question: what is the fastest way to find music you will love, using nothing but your thumb?
 
 ## The deck
 
-- Every card plays a 30-second preview that starts at a hook — the catchiest part of the song — measured from the audio itself (loudness, onset density, phrase-level repetition), not guessed from track position.
+- Every card plays a preview clip that starts at a hook — the catchiest part of the song — measured from the audio itself (loudness, onset density, phrase-level repetition), not guessed from track position, and plays from there to the end of the clip.
 - Four gestures: swipe down to save, up to skip, right for "more like this", left for "never play this again".
 - The deck learns: saves and skips feed a per-listener profile that re-ranks what comes next. Buried songs stay buried; blocked artists never return; both can be lifted in Settings → Sound & taste.
 - A "deck memory" keeps recently heard songs out of rotation for seven days, and any song skipped twice buries itself automatically (recoverable in the buried list).

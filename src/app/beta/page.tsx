@@ -5,7 +5,7 @@ import { appUrl, appLinkProps } from "@/lib/site";
 
 const title = "join the beta";
 const description =
-  "Try HookedCue in your browser, then join the Android closed test. Play Store invites go to the Google account you enter.";
+  "Try HookedCue in your browser, then get on the list for the Android closed test. Play Store invites go to the Google account you enter.";
 
 export const metadata: Metadata = {
   title,
@@ -60,7 +60,7 @@ export default function BetaPage() {
         <aside className="beta-try">
           <div>
             <b>not sure yet?</b>
-            <span>the browser build is the real deck — every gesture, the moods, the vinyl save. no signup.</span>
+            <span>the browser build is the real deck — every gesture, the moods, the vinyl save. five free swipes, then it&apos;s invite-only while we test.</span>
           </div>
           <a className="btn-browser" href={appUrl} {...appLinkProps}>
             try it in your browser <span>→</span>

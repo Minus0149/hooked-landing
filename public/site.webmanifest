@@ -1,7 +1,7 @@
 {
   "name": "HookedCue",
   "short_name": "HookedCue",
-  "description": "Swipe through 30-second song previews and discover your next favorite track.",
+  "description": "Swipe through songs that start at their hook and discover your next favorite track.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

@@ -77,7 +77,7 @@ export default function HindiPage() {
         <aside className="beta-try">
           <div>
             <b>अभी आज़माएँ</b>
-            <span>browser वाला version ही पूरा ऐप है — हर स्वाइप, हर mood। कोई signup नहीं।</span>
+            <span>browser वाला version ही पूरा ऐप है — हर स्वाइप, हर mood। पहले 5 स्वाइप free, फिर testing तक invite-only।</span>
           </div>
           <a className="btn-browser" href={appUrl} {...appLinkProps}>
             browser में सुनें <span>→</span>

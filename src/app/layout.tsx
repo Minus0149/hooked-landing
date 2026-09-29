@@ -6,7 +6,7 @@ import { appUrl, siteUrl } from "@/lib/site";
 
 const title = "HookedCue - Swipe your next favorite song";
 const description =
-  "HookedCue is a swipe-based music discovery app that plays the best 30 seconds of new songs, learns your taste from four gestures, and saves the tracks you love.";
+  "HookedCue is a swipe-based music discovery app that starts every song at its hook, learns your taste from four gestures, and saves the tracks you love.";
 
 const unbounded = Unbounded({
   subsets: ["latin"],

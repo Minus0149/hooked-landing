@@ -5,7 +5,7 @@
 export const FAQS = [
   {
     q: "what is HookedCue?",
-    a: "a swipe app for finding songs. it plays the strongest 30 seconds first, and your swipes decide what turns up next.",
+    a: "a swipe app for finding songs. every song starts at its hook, and your swipes decide what turns up next.",
   },
   {
     q: "how is it different from spotify radio?",
