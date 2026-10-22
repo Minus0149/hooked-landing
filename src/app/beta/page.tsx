@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import BetaForm from "@/components/BetaForm";
+import MakerCredit from "@/components/MakerCredit";
 import { appUrl, appLinkProps } from "@/lib/site";
 
 const title = "join the beta";
@@ -74,7 +75,7 @@ export default function BetaPage() {
           <Link href="/data-deletion">delete your data</Link>
         </span>
         <span>HookedCue © 2026 · previews via itunes · your taste stays yours</span>
-        <span>built in public by MiNUs, unaware</span>
+        <MakerCredit />
       </footer>
 
       <div className="vignette" />

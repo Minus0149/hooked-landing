@@ -1,4 +1,5 @@
 import Link from "next/link";
+import MakerCredit from "@/components/MakerCredit";
 
 /**
  * Legal pages: quiet, readable, and outside the (story) route group so they
@@ -28,6 +29,7 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
           <Link href="/artists">for artists</Link> · <Link href="/indie-hook">indie hook</Link>
         </span>
         <span>HookedCue © 2026 · previews via itunes</span>
+        <MakerCredit />
       </footer>
 
       <div className="vignette" />

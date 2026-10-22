@@ -3,6 +3,7 @@ import { Fragment, useId, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { FAQS } from "@/data/faq";
+import MakerCredit from "@/components/MakerCredit";
 
 /*
  * Shared pieces of the page: section tags, the headline reveal, the FAQ list
@@ -128,6 +129,7 @@ export function Footer() {
         <Link href="/hi" hrefLang="hi" lang="hi">हिन्दी</Link>
       </span>
       <span>HookedCue © 2026 · previews via itunes · your taste stays yours</span>
+      <MakerCredit />
     </footer>
   );
 }

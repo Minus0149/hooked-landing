@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import BetaForm from "@/components/BetaForm";
+import MakerCredit from "@/components/MakerCredit";
 import { appUrl, appLinkProps } from "@/lib/site";
 
 /**
@@ -106,6 +107,7 @@ export default function HindiPage() {
           <Link href="/data-deletion">अपना डेटा हटाएँ</Link>
         </span>
         <span>HookedCue © 2026 · previews via itunes</span>
+        <MakerCredit />
       </footer>
 
       <div className="vignette" />

@@ -760,6 +760,8 @@ body[data-grabbing] .cursor-ring { scale: 0.7; }
 }
 .legal-foot a { color: var(--muted); text-decoration: none; }
 .legal-foot a:hover { color: var(--text); }
+.maker-credit a { color: var(--muted); text-decoration: none; }
+.maker-credit a:hover { color: var(--text); }
 
 /* ---------- 404 / error pages ---------- */
 .oops-page {
