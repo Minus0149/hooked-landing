@@ -36,7 +36,7 @@ async function alreadySignedUp(email: string) {
   }
 }
 
-async function store(record: Record<string, unknown>): Promise<{ approved: boolean }> {
+async function store(record: Record<string, unknown>, ip: string): Promise<{ approved: boolean }> {
   // BETA_LOCAL_FILE=1 keeps signups in a local JSONL instead (dev, or a VPS
   // with no backend); otherwise they go to the app's backend.
   if (!process.env.BETA_LOCAL_FILE) {
@@ -49,7 +49,9 @@ async function store(record: Record<string, unknown>): Promise<{ approved: boole
         // the convex ingest route rejects anything without this
         ...(secret ? { "x-beta-secret": secret } : {}),
       },
-      body: JSON.stringify(record),
+      // the visitor's IP, so the backend limits each visitor rather than this
+      // server: without it every signup shared one per-IP allowance there
+      body: JSON.stringify({ ...record, ip }),
       signal: AbortSignal.timeout(8_000),
     });
     if (!res.ok) throw new Error(`webhook responded ${res.status}`);
@@ -66,7 +68,8 @@ const json = (body: unknown, status: number, headers?: HeadersInit) =>
   Response.json(body, { status, headers });
 
 export async function POST(request: NextRequest) {
-  const limit = checkRateLimit(clientKey(request.headers));
+  const ip = clientKey(request.headers);
+  const limit = checkRateLimit(ip);
   if (!limit.ok) {
     return json(
       {
@@ -128,7 +131,7 @@ export async function POST(request: NextRequest) {
 
   let approved = false;
   try {
-    ({ approved } = await store(record));
+    ({ approved } = await store(record, ip));
   } catch (err) {
     console.error("[beta] could not store signup:", err);
     return json(
