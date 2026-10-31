@@ -49,7 +49,7 @@ export default function BetaPage() {
           <p className="beta-intro">
             android goes out through play store closed testing first, so all we need is the
             google account that&apos;s signed in on your phone — that address is how the invite
-            reaches you. ios is further out than we&apos;d like.
+            reaches you. no iphone app yet: on an iphone, the browser build at app.hookedcue.com is the whole app, and the same invite works there.
           </p>
         </header>
 

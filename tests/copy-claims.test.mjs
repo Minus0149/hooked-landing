@@ -36,3 +36,11 @@ test("the free swipes the site quotes are the ones the web app gives", () => {
     assert.match(read(f), new RegExp(`${n} (free swipes|स्वाइप free)`), f);
   }
 });
+
+test("the beta page tells iPhone users the browser build is the whole app (no iPhone app yet)", () => {
+  const page = read("src/app/beta/page.tsx");
+  assert.match(page, /no iphone app yet/i);
+  assert.match(page, /app\.hookedcue\.com is the whole app/);
+  const promisesIos = files.filter((f) => /\b(ios|iphone) app (is )?(out|live|available)/i.test(read(f)));
+  assert.deepEqual(promisesIos, []);
+});
