@@ -1,7 +1,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import type { NextRequest } from "next/server";
-import { checkRateLimit, clientKey } from "@/lib/rate-limit";
+import { checkRateLimit, clientKey, forwardedIp } from "@/lib/rate-limit";
 import { betaSink } from "@/config/backend";
 import { validateDetails, validateSignup, type Stage } from "@/data/beta";
 import { inviteCode } from "@/lib/inviteCode";
@@ -36,7 +36,7 @@ async function alreadySignedUp(email: string) {
   }
 }
 
-async function store(record: Record<string, unknown>, ip: string): Promise<{ approved: boolean }> {
+async function store(record: Record<string, unknown>, ip: string | undefined): Promise<{ approved: boolean }> {
   // BETA_LOCAL_FILE=1 keeps signups in a local JSONL instead (dev, or a VPS
   // with no backend); otherwise they go to the app's backend.
   if (!process.env.BETA_LOCAL_FILE) {
@@ -50,8 +50,9 @@ async function store(record: Record<string, unknown>, ip: string): Promise<{ app
         ...(secret ? { "x-beta-secret": secret } : {}),
       },
       // the visitor's IP, so the backend limits each visitor rather than this
-      // server: without it every signup shared one per-IP allowance there
-      body: JSON.stringify({ ...record, ip }),
+      // server: without it every signup shared one per-IP allowance there.
+      // Only Cloudflare's address is sent (lib/rate-limit.ts forwardedIp).
+      body: JSON.stringify(ip ? { ...record, ip } : record),
       signal: AbortSignal.timeout(8_000),
     });
     if (!res.ok) throw new Error(`webhook responded ${res.status}`);
@@ -131,7 +132,7 @@ export async function POST(request: NextRequest) {
 
   let approved = false;
   try {
-    ({ approved } = await store(record, ip));
+    ({ approved } = await store(record, forwardedIp(ip)));
   } catch (err) {
     console.error("[beta] could not store signup:", err);
     return json(

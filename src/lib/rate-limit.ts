@@ -80,15 +80,33 @@ export function checkRateLimit(key: string, now = Date.now()): RateVerdict {
   return { ok: true };
 }
 
-/** Cloudflare sits in front of this domain, so cf-connecting-ip is the trustworthy one. */
+/**
+ * Every visitor without a Cloudflare address shares this one bucket.
+ *
+ * Cloudflare sits in front of this domain and sets cf-connecting-ip itself,
+ * overwriting anything the visitor sent. x-forwarded-for and x-real-ip are
+ * not like that: a request that reaches the server without Cloudflare (or a
+ * proxy that appends rather than replaces) carries whatever the client wrote,
+ * so keying on them let a script mint a fresh allowance per request. Without
+ * cf-connecting-ip there is nothing trustworthy to tell visitors apart, so
+ * they all draw from one allowance instead of one each.
+ */
+export const SHARED_KEY = "shared";
+
+/** The address a request's limit is kept under: Cloudflare's word, or the shared bucket. */
 export function clientKey(headers: Headers): string {
-  const cf = headers.get("cf-connecting-ip");
-  if (cf) return cf.trim();
-  const real = headers.get("x-real-ip");
-  if (real) return real.trim();
-  const fwd = headers.get("x-forwarded-for");
-  if (fwd) return fwd.split(",")[0].trim();
-  return "unknown";
+  const cf = (headers.get("cf-connecting-ip") ?? "").trim();
+  return /^[0-9A-Fa-f:.]{2,64}$/.test(cf) ? cf : SHARED_KEY;
+}
+
+/**
+ * The visitor IP forwarded to the backend with a signup: only a real
+ * Cloudflare address. For the shared bucket nothing is sent, so the backend
+ * falls back to this server's address (web/convex/callerIp.ts) rather than
+ * trusting a header the visitor wrote.
+ */
+export function forwardedIp(key: string): string | undefined {
+  return key === SHARED_KEY ? undefined : key;
 }
 
 /** test seam — not used by the route */
