@@ -105,6 +105,8 @@ export const SERVER_ERRORS_HI: Record<string, string> = {
   "that address doesn't look right": "ये email सही नहीं लग रहा",
   "a little more than one letter?": "एक अक्षर से थोड़ा ज़्यादा?",
   "nothing to send yet — pick something, or skip it": "अभी भेजने को कुछ नहीं — कुछ चुनें, या छोड़ दें",
+  "Please use a permanent email address. Temporary inboxes can't join HookedCue.":
+    "कृपया अपना स्थायी email डालें। अस्थायी (temporary) inbox से HookedCue नहीं जुड़ सकता।",
 };
 
 export function betaText(lang: BetaLang, key: BetaCopyKey, vars?: Record<string, string | number>): string {

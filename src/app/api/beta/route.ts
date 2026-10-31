@@ -3,8 +3,9 @@ import path from "node:path";
 import type { NextRequest } from "next/server";
 import { checkRateLimit, clientKey, forwardedIp } from "@/lib/rate-limit";
 import { betaSink } from "@/config/backend";
-import { validateDetails, validateSignup, type Stage } from "@/data/beta";
+import { DISPOSABLE_EMAIL, validateDetails, validateSignup, type Stage } from "@/data/beta";
 import { inviteCode } from "@/lib/inviteCode";
+import { isDisposableAnswer } from "@/lib/betaAnswer";
 
 // fs + a long-lived rate-limit map both need the node runtime
 export const runtime = "nodejs";
@@ -36,7 +37,9 @@ async function alreadySignedUp(email: string) {
   }
 }
 
-async function store(record: Record<string, unknown>, ip: string | undefined): Promise<{ approved: boolean }> {
+type Stored = { approved: boolean; disposable?: false } | { approved: false; disposable: true };
+
+async function store(record: Record<string, unknown>, ip: string | undefined): Promise<Stored> {
   // BETA_LOCAL_FILE=1 keeps signups in a local JSONL instead (dev, or a VPS
   // with no backend); otherwise they go to the app's backend.
   if (!process.env.BETA_LOCAL_FILE) {
@@ -55,6 +58,7 @@ async function store(record: Record<string, unknown>, ip: string | undefined): P
       body: JSON.stringify(ip ? { ...record, ip } : record),
       signal: AbortSignal.timeout(8_000),
     });
+    if (await isDisposableAnswer(res)) return { approved: false, disposable: true };
     if (!res.ok) throw new Error(`webhook responded ${res.status}`);
     // the backend says whether a friend's invite approved them on the spot
     const answer = (await res.json().catch(() => ({}))) as { status?: string; referred?: boolean };
@@ -130,9 +134,9 @@ export async function POST(request: NextRequest) {
     record = { stage, ...data, ...(ref ? { ref } : {}), submittedAt: new Date().toISOString(), userAgent };
   }
 
-  let approved = false;
+  let stored: Stored;
   try {
-    ({ approved } = await store(record, forwardedIp(ip)));
+    stored = await store(record, forwardedIp(ip));
   } catch (err) {
     console.error("[beta] could not store signup:", err);
     return json(
@@ -141,5 +145,9 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  return json({ ok: true, approved }, 200);
+  if (stored.disposable) {
+    // the backend's word on a throwaway inbox, shown under the email field
+    return json({ ok: false, errors: { email: DISPOSABLE_EMAIL }, message: DISPOSABLE_EMAIL }, 400);
+  }
+  return json({ ok: true, approved: stored.approved }, 200);
 }

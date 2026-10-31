@@ -55,6 +55,37 @@ export const LIMITS = {
 // the RFC. anything weirder gets caught when the invite email bounces.
 export const EMAIL_RE = /^[^\s@,;:<>()[\]\\]+@[^\s@.,;:<>()[\]\\]+(\.[^\s@.,;:<>()[\]\\]+)+$/;
 
+/**
+ * What a temporary inbox is told. The backend (web/convex) holds the full,
+ * maintained list of throwaway domains and is the one that decides; it answers
+ * 422 {"error":"disposable"} and the route shows this line. The handful below
+ * only spare the round trip for the commonest ones — the list stays out of the
+ * page's bundle on purpose.
+ */
+export const DISPOSABLE_EMAIL = "Please use a permanent email address. Temporary inboxes can't join HookedCue.";
+
+const COMMON_DISPOSABLE = [
+  "mailinator.com",
+  "guerrillamail.com",
+  "guerrillamail.net",
+  "sharklasers.com",
+  "10minutemail.com",
+  "temp-mail.org",
+  "tempmail.com",
+  "yopmail.com",
+  "getnada.com",
+  "maildrop.cc",
+  "trashmail.com",
+  "dispostable.com",
+  "throwawaymail.com",
+];
+
+/** One of the commonest throwaway domains, or a subdomain of one. */
+export function isCommonDisposable(email: string): boolean {
+  const domain = email.split("@").pop()?.trim().toLowerCase().replace(/\.+$/, "") ?? "";
+  return COMMON_DISPOSABLE.some((d) => domain === d || domain.endsWith(`.${d}`));
+}
+
 /* ------------------------------------------------------------------------
    The signup is two steps, validated here for both the form and the route.
 
@@ -116,6 +147,7 @@ export function validateSignup(body: Record<string, unknown>): { data: Signup; e
   const email = clean(body.email, LIMITS.email).toLowerCase();
   if (!email) errors.email = "an email, please — that's how the invite arrives";
   else if (!EMAIL_RE.test(email)) errors.email = "that address doesn't look right";
+  else if (isCommonDisposable(email)) errors.email = DISPOSABLE_EMAIL;
   const typed = clean(body.name, LIMITS.name);
   if (typed.length === 1) errors.name = "a little more than one letter?";
   const name = typed.length >= 2 ? typed : nameFromEmail(email);

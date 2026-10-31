@@ -169,7 +169,7 @@ export default function BetaForm({ compact = false, lang = "en" }: { compact?: b
       setErrors(
         Object.fromEntries(Object.entries(data.errors ?? {}).map(([k, v]) => [k, serverError(lang, v)])),
       );
-      setMessage(data.errors ? "" : (data.message ?? t("failed")));
+      setMessage(data.errors ? "" : data.message ? serverError(lang, data.message) : t("failed"));
       if (data.errors?.email) emailRef.current?.focus();
     } catch {
       setPhase("signup");
@@ -208,7 +208,7 @@ export default function BetaForm({ compact = false, lang = "en" }: { compact?: b
         return;
       }
       setPhase("details");
-      setMessage(data.message ?? t("failed"));
+      setMessage(data.message ? serverError(lang, data.message) : t("failed"));
     } catch {
       setPhase("details");
       setMessage(t("offlineDetails"));
