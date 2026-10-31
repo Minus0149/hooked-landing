@@ -1,11 +1,12 @@
 import { ImageResponse } from "next/og";
-import { bigArt, indieArchive, weekLabel } from "@/lib/indieHook";
+import { bigArt, weekLabel } from "@/lib/indieHook";
+import { indiePicks } from "@/lib/indiePicks";
 
 export const revalidate = 300;
 
 /** The indie hook of the week as a 1080 × 1920 image for Instagram stories. */
 export async function GET() {
-  const [now] = await indieArchive();
+  const [now] = await indiePicks();
   return new ImageResponse(
     (
       <div

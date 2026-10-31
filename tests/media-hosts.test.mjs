@@ -45,8 +45,13 @@ test("the shared song and the indie pick only carry safe media", () => {
   const shared = readFileSync(new URL("../src/lib/sharedTrack.ts", import.meta.url), "utf8");
   assert.match(shared, /return track \? withSafeMedia\(track\) : null;/);
   for (const field of ["artwork", "previewUrl", "audioUrl"]) assert.ok(shared.includes(`safeMediaUrl(track.${field}, origins)`), field);
-  const indie = readFileSync(new URL("../src/lib/indieHook.ts", import.meta.url), "utf8");
-  assert.match(indie, /artwork: safeMediaUrl\(p\.artwork, \[CONVEX_URL\]\) \?\? ""/);
+  const indie = readFileSync(new URL("../src/lib/indiePicks.ts", import.meta.url), "utf8");
+  assert.ok(indie.includes('artwork: safeMediaUrl(p.artwork, [CONVEX_URL]) ?? ""'));
+  for (const page of ["../src/app/(legal)/indie-hook/page.tsx", "../src/app/(legal)/indie-hook/story/route.tsx"]) {
+    const src = readFileSync(new URL(page, import.meta.url), "utf8");
+    assert.match(src, /await indiePicks\(\)/, page);
+    assert.doesNotMatch(src, /rawIndieArchive/, page);
+  }
 });
 
 test("renderers draw a tile instead of an empty image", () => {

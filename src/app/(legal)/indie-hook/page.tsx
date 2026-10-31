@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { appUrl, appLinkProps } from "@/lib/site";
-import { bigArt, indieArchive, weekLabel } from "@/lib/indieHook";
+import { bigArt, weekLabel } from "@/lib/indieHook";
+import { indiePicks } from "@/lib/indiePicks";
 
 export const revalidate = 300;
 
 export async function generateMetadata(): Promise<Metadata> {
-  const [now] = await indieArchive();
+  const [now] = await indiePicks();
   const title = now ? `${now.title} — indie hook of the week` : "indie hook of the week";
   const description = now
     ? `${now.title} by ${now.artist}: ${now.blurb}`
@@ -21,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function IndieHookPage() {
-  const picks = await indieArchive();
+  const picks = await indiePicks();
   const [now, ...past] = picks;
   return (
     <article className="legal indie">

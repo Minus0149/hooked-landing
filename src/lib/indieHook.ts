@@ -1,5 +1,3 @@
-import { safeMediaUrl } from "@/lib/mediaHosts";
-
 /**
  * The indie hook of the week, read from the app's backend (web/convex/
  * featured.ts) for the public share page and its story image. Public data
@@ -33,12 +31,12 @@ async function convexQuery<T>(path: string): Promise<T | null> {
   }
 }
 
-/** Newest first; the first is this week's when one is set. */
-export async function indieArchive(): Promise<IndiePick[]> {
-  const picks = (await convexQuery<IndiePick[]>("featured:archive")) ?? [];
-  // artwork only from the catalogue's hosts (lib/mediaHosts.ts): the story
-  // image fetches it from this server
-  return picks.map((p) => ({ ...p, artwork: safeMediaUrl(p.artwork, [CONVEX_URL]) ?? "" }));
+/**
+ * Newest first, as the backend has them. Pages use indiePicks
+ * (lib/indiePicks.ts), which drops artwork off the catalogue's hosts.
+ */
+export async function rawIndieArchive(): Promise<IndiePick[]> {
+  return (await convexQuery<IndiePick[]>("featured:archive")) ?? [];
 }
 
 /** Bigger artwork for sharing: iTunes-style URLs encode their size. */
