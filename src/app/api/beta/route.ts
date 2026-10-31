@@ -5,7 +5,7 @@ import { checkRateLimit, clientKey, forwardedIp } from "@/lib/rate-limit";
 import { betaSink } from "@/config/backend";
 import { DISPOSABLE_EMAIL, validateDetails, validateSignup, type Stage } from "@/data/beta";
 import { inviteCode } from "@/lib/inviteCode";
-import { isDisposableAnswer } from "@/lib/betaAnswer";
+import { isDisposableAnswer, readCapped } from "@/lib/betaAnswer";
 
 // fs + a long-lived rate-limit map both need the node runtime
 export const runtime = "nodejs";
@@ -89,8 +89,8 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const raw = await request.text();
-  if (raw.length > MAX_BODY_BYTES) {
+  const raw = await readCapped(request, MAX_BODY_BYTES);
+  if (raw === null) {
     return json({ ok: false, message: "that's far too much text." }, 413);
   }
 

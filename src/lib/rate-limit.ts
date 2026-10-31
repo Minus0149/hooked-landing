@@ -109,9 +109,45 @@ export function forwardedIp(key: string): string | undefined {
   return key === SHARED_KEY ? undefined : key;
 }
 
+/**
+ * Share pages and share images, per visitor. Each one costs a backend query
+ * (a song id the cache hasn't seen goes to Convex) or a full PNG render, so a
+ * script walking random ids or recap numbers could run up the backend's
+ * function calls and this server's CPU without limit. Generous on purpose:
+ * link-preview crawlers fetch the page and its image for every share.
+ */
+const RENDER_WINDOW_MS = 10 * 60_000;
+const RENDER_MAX = 240;
+const renders = new Map<string, { start: number; count: number }>();
+
+export function checkRenderLimit(key: string, now = Date.now()): RateVerdict {
+  const row = renders.get(key);
+  if (!row || now - row.start >= RENDER_WINDOW_MS) {
+    renders.delete(key);
+    renders.set(key, { start: now, count: 1 });
+    while (renders.size > MAX_KEYS) {
+      const oldest = renders.keys().next();
+      if (oldest.done) break;
+      renders.delete(oldest.value);
+    }
+    return { ok: true };
+  }
+  if (row.count >= RENDER_MAX) {
+    return { ok: false, retryAfter: Math.max(1, Math.ceil((RENDER_WINDOW_MS - (now - row.start)) / 1000)), reason: "window" };
+  }
+  row.count++;
+  return { ok: true };
+}
+
+/** The paths checkRenderLimit covers: shared songs, their images, and the story images. */
+export function isRenderPath(pathname: string): boolean {
+  return /^\/s\/[^/]+(\/(story|opengraph-image[^/]*))?\/?$/.test(pathname) || pathname === "/r/story" || pathname === "/indie-hook/story";
+}
+
 /** test seam — not used by the route */
 export function __resetRateLimit() {
   hits.clear();
+  renders.clear();
   globalHits.length = 0;
   lastSweep = 0;
 }
