@@ -24,8 +24,13 @@ export async function GET() {
         <div style={{ display: "flex", fontSize: 40, letterSpacing: 8, color: "#00e5a0", fontWeight: 700 }}>INDIE HOOK OF THE WEEK</div>
         {now ? (
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={bigArt(now.artwork, 1000)} width={820} height={820} style={{ borderRadius: 48, marginTop: 70 }} alt="" />
+            {now.artwork ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={bigArt(now.artwork, 1000)} width={820} height={820} style={{ borderRadius: 48, marginTop: 70 }} alt="" />
+            ) : (
+              // no artwork on the catalogue's hosts (lib/indieHook.ts): a plain tile, nothing fetched
+              <div style={{ display: "flex", width: 820, height: 820, borderRadius: 48, marginTop: 70, background: "#1d1d27" }} />
+            )}
             <div style={{ display: "flex", fontSize: 84, fontWeight: 800, marginTop: 70, textAlign: "center", lineHeight: 1.05 }}>{now.title}</div>
             <div style={{ display: "flex", fontSize: 48, color: "#b9b7c2", marginTop: 20 }}>{now.artist}</div>
             <div style={{ display: "flex", fontSize: 34, color: "#8e8c99", marginTop: 30 }}>{`week of ${weekLabel(now.week)}`}</div>

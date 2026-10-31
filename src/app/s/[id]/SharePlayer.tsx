@@ -89,13 +89,18 @@ export function SharePlayer({ track, hook, appUrl }: { track: SharedTrack; hook:
       </header>
 
       <section className="sp-card">
-        {/* eslint-disable-next-line @next/next/no-img-element -- Apple's artwork CDN, sized per request */}
-        <img className="sp-art" src={artworkAt(track.artwork, 600)} alt={`${track.title} cover art`} width={600} height={600} />
+        {track.artwork ? (
+          // eslint-disable-next-line @next/next/no-img-element -- Apple's artwork CDN, sized per request
+          <img className="sp-art" src={artworkAt(track.artwork, 600)} alt={`${track.title} cover art`} width={600} height={600} />
+        ) : (
+          // no artwork on the catalogue's hosts (lib/sharedTrack.ts withSafeMedia)
+          <div className="sp-art" aria-hidden="true" />
+        )}
         <p className="sp-kicker">hear the hook</p>
         <h1 className="sp-title">{track.title}</h1>
         <p className="sp-artist">{track.artist}</p>
 
-        <button className="sp-play" onClick={() => void toggle()} aria-pressed={playing}>
+        <button className="sp-play" onClick={() => void toggle()} aria-pressed={playing} disabled={!src}>
           <span aria-hidden="true">{playing ? "❚❚" : "▶"}</span>
           {playing ? "pause" : "play the hook"}
         </button>
@@ -114,7 +119,7 @@ export function SharePlayer({ track, hook, appUrl }: { track: SharedTrack; hook:
             );
           })}
         </div>
-        <audio ref={audio} src={src} preload="none" />
+        {src && <audio ref={audio} src={src} preload="none" />}
 
         <div className="sp-actions">
           <a className="btn-primary sp-open" href={openInApp}>

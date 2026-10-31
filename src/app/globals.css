@@ -956,3 +956,6 @@ body[data-grabbing] .cursor-ring { scale: 0.7; }
 .legal .indie-archive { list-style: none; margin-left: 0; }
 .indie-archive li { display: flex; gap: 14px; align-items: center; }
 .indie-archive img { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; }
+/* artwork off the catalogue's hosts is never loaded (lib/mediaHosts.ts): a plain tile instead */
+.indie-archive .indie-thumb { display: block; flex: none; width: 56px; height: 56px; border-radius: 10px; background: #1d1d27; }
+div.indie-art, div.sp-art { background: linear-gradient(160deg, #1d1d27 0%, #2a1520 100%); }

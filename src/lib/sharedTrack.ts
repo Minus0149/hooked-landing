@@ -1,4 +1,5 @@
 import { CONVEX_CLOUD_URL } from "@/config/backend";
+import { safeMediaUrl } from "@/lib/mediaHosts";
 
 /**
  * One song for a shared link, read from the app's public `share:track` query.
@@ -31,10 +32,26 @@ export async function getSharedTrack(trackId: string): Promise<SharedTrack | nul
     });
     if (!res.ok) return null;
     const data = (await res.json()) as { status?: string; value?: SharedTrack | null };
-    return data.status === "success" ? (data.value ?? null) : null;
+    const track = data.status === "success" ? (data.value ?? null) : null;
+    return track ? withSafeMedia(track) : null;
   } catch {
     return null;
   }
+}
+
+/**
+ * Artwork and audio only from the catalogue's own hosts (lib/mediaHosts.ts):
+ * a creator's link elsewhere is dropped, so the share images never fetch it
+ * and no listener's browser loads it. An empty artwork draws the placeholder.
+ */
+export function withSafeMedia(track: SharedTrack): SharedTrack {
+  const origins = [CONVEX_CLOUD_URL];
+  return {
+    ...track,
+    artwork: safeMediaUrl(track.artwork, origins) ?? "",
+    previewUrl: safeMediaUrl(track.previewUrl, origins) ?? "",
+    audioUrl: track.audioUrl ? safeMediaUrl(track.audioUrl, origins) : null,
+  };
 }
 
 /** Sized iTunes artwork (their URLs encode the size). */

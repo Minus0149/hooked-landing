@@ -68,6 +68,18 @@ function Wave({ seed, width, height, bars, hookFrom, hookTo }: { seed: string; w
   );
 }
 
+/**
+ * The cover, or a plain tile when the song has none we'll fetch (a creator's
+ * link off the catalogue's hosts is dropped in lib/sharedTrack.ts).
+ */
+function Cover({ url, size, radius, style }: { url: string; size: number; radius: number; style?: Record<string, string | number> }) {
+  if (!url) {
+    return <div style={{ display: "flex", width: size, height: size, borderRadius: radius, background: "linear-gradient(160deg, #1d1d27 0%, #2a1520 100%)", ...style }} />;
+  }
+  // eslint-disable-next-line @next/next/no-img-element -- satori (next/og) draws plain <img>
+  return <img src={url} width={size} height={size} style={{ borderRadius: radius, objectFit: "cover", ...style }} alt="" />;
+}
+
 function hookSpan(track: SharedTrack, hook: number): [number, number] {
   const h = track.hooks[hook];
   // a preview is 30 s; creator uploads use their own length
@@ -82,8 +94,7 @@ export function SongCard({ track, hook }: { track: SharedTrack; hook: number }) 
   const [from, to] = hookSpan(track, hook);
   return (
     <div style={{ width: 1200, height: 630, display: "flex", background: INK, padding: 56, gap: 56, fontFamily: "Instrument Sans" }}>
-      {/* eslint-disable-next-line @next/next/no-img-element -- satori (next/og) draws plain <img> */}
-      <img src={artworkAt(track.artwork, 600)} width={518} height={518} style={{ borderRadius: 36, objectFit: "cover" }} alt="" />
+      <Cover url={track.artwork && artworkAt(track.artwork, 600)} size={518} radius={36} />
       <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
         <Wordmark size={40} />
         <div style={{ display: "flex", flexDirection: "column" }}>
@@ -105,8 +116,7 @@ export function SongStory({ track, hook }: { track: SharedTrack; hook: number })
   return (
     <div style={{ width: 1080, height: 1920, display: "flex", flexDirection: "column", alignItems: "center", background: INK, padding: "150px 90px", fontFamily: "Instrument Sans" }}>
       <Wordmark size={64} />
-      {/* eslint-disable-next-line @next/next/no-img-element -- satori (next/og) draws plain <img> */}
-      <img src={artworkAt(track.artwork, 900)} width={820} height={820} style={{ borderRadius: 56, marginTop: 110, objectFit: "cover" }} alt="" />
+      <Cover url={track.artwork && artworkAt(track.artwork, 900)} size={820} radius={56} style={{ marginTop: 110 }} />
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 70, width: 900 }}>
         <div style={{ fontFamily: "Unbounded", fontWeight: 800, fontSize: track.title.length > 22 ? 58 : 72, color: TEXT, textAlign: "center", lineHeight: 1.08 }}>
           {track.title.slice(0, 60)}

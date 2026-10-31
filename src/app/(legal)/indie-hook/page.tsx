@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title,
     description,
     alternates: { canonical: "/indie-hook" },
-    openGraph: { title, description, url: "/indie-hook", images: now ? [{ url: bigArt(now.artwork, 1200) }] : undefined },
+    openGraph: { title, description, url: "/indie-hook", images: now?.artwork ? [{ url: bigArt(now.artwork, 1200) }] : undefined },
     twitter: { card: "summary_large_image", title, description },
   };
 }
@@ -29,8 +29,12 @@ export default async function IndieHookPage() {
       {now ? (
         <>
           <div className="indie-now">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="indie-art" src={bigArt(now.artwork, 600)} alt={`${now.title} artwork`} width={300} height={300} />
+            {now.artwork ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img className="indie-art" src={bigArt(now.artwork, 600)} alt={`${now.title} artwork`} width={300} height={300} />
+            ) : (
+              <div className="indie-art" aria-hidden="true" />
+            )}
             <div>
               <h1>{now.title}</h1>
               <p className="indie-artist">{now.artist}</p>
@@ -64,8 +68,12 @@ export default async function IndieHookPage() {
           <ul className="indie-archive">
             {past.map((p) => (
               <li key={p.week}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={bigArt(p.artwork, 120)} alt="" width={56} height={56} />
+                {p.artwork ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={bigArt(p.artwork, 120)} alt="" width={56} height={56} />
+                ) : (
+                  <span className="indie-thumb" aria-hidden="true" />
+                )}
                 <span>
                   <strong>{p.title}</strong> — {p.artist}
                   <br />
