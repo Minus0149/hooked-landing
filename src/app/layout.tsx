@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { connection } from "next/server";
 import { Unbounded, Instrument_Sans } from "next/font/google";
 import "./globals.css";
 
@@ -94,7 +95,11 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // every page renders per request so it can carry this request's CSP nonce
+  // (src/proxy.ts, src/lib/csp.ts); a page built ahead has no nonce and its
+  // inline scripts would be refused
+  await connection();
   const websiteJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",

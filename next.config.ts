@@ -1,30 +1,8 @@
 import type { NextConfig } from "next";
 
-// Dev builds of React use eval() for debugging aids, and Turbopack's HMR
-// needs a websocket — so development gets 'unsafe-eval' + ws: while the
-// production policy stays exactly as strict as it ships.
-const isDev = process.env.NODE_ENV !== "production";
-
-const csp = [
-  "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://static.cloudflareinsights.com`,
-  "style-src 'self' 'unsafe-inline'",
-  "font-src 'self' data:",
-  "img-src 'self' https: data: blob:",
-  `media-src 'self' https: blob:`, // 'self': the mood chapter's app clip is served from here
-  `connect-src 'self'${isDev ? " ws: wss:" : ""}`,
-  "object-src 'none'",
-  "base-uri 'self'",
-  "frame-ancestors 'none'",
-  "form-action 'self'",
-  "upgrade-insecure-requests",
-].join("; ");
-
+// The Content-Security-Policy is set per request with a nonce, in src/proxy.ts
+// (src/lib/csp.ts). The rest of the security headers are the same everywhere.
 const securityHeaders = [
-  {
-    key: "Content-Security-Policy",
-    value: csp,
-  },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   {
