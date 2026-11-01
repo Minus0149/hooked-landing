@@ -22,6 +22,8 @@ const instrument = Instrument_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
+  // Search Console ownership (unawareminus@gmail.com), 1 Nov 2026. Public by design; removing it un-verifies the site.
+  verification: { google: "mphmaB3OKzkTWHytM-p23rVhE5JasMsIIlth4u8kHc8" },
   applicationName: "HookedCue",
   title: {
     default: title,
