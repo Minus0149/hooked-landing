@@ -628,6 +628,10 @@ export default function Stage() {
     typeof document !== "undefined" ? document.body : undefined,
   );
   const wrap = useRef<HTMLDivElement>(null);
+  // touch screens and narrow windows get the lighter render
+  const [phone] = useState(() =>
+    typeof window !== "undefined" && (matchMedia("(pointer: coarse)").matches || innerWidth < 700),
+  );
   // draw only while the stage is on screen
   const [visible, setVisible] = useState(true);
   useEffect(() => {
@@ -641,8 +645,10 @@ export default function Stage() {
     <div className="stage-canvas" ref={wrap}>
       <Canvas
         camera={{ fov: 34, position: [0, 3.1, 9.4] }}
-        gl={{ antialias: true, alpha: true }}
-        dpr={[1, 1.75]}
+        gl={{ antialias: !phone, alpha: true, powerPreference: "high-performance" }}
+        // a phone's 3x screen made the GPU shade ~5x the pixels for a record
+        // that sits in a third of the screen: cap it, and skip MSAA there
+        dpr={phone ? [1, 1.25] : [1, 1.75]}
         frameloop={visible ? "always" : "never"}
         eventSource={eventSource}
         onCreated={(state) => {

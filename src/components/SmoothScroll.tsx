@@ -4,6 +4,22 @@ import Lenis from "lenis";
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
+    // phones scroll natively: Lenis only smooths wheels, yet its loop still ran
+    // every frame on touch screens, on top of the 3D stage. Anchors still glide.
+    if (matchMedia("(pointer: coarse)").matches) {
+      const onTap = (e: MouseEvent) => {
+        const a = (e.target as HTMLElement).closest?.('a[href^="#"]') as HTMLAnchorElement | null;
+        if (!a) return;
+        const id = a.getAttribute("href")!;
+        const el = id === "#" || id === "#top" ? null : document.querySelector(id);
+        if (id !== "#" && id !== "#top" && !el) return;
+        e.preventDefault();
+        const top = el ? el.getBoundingClientRect().top + scrollY - 92 : 0;
+        scrollTo({ top, behavior: "smooth" });
+      };
+      document.addEventListener("click", onTap);
+      return () => document.removeEventListener("click", onTap);
+    }
     const lenis = new Lenis({ lerp: 0.09 });
     let raf = 0;
     const loop = (t: number) => {

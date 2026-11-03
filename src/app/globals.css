@@ -959,3 +959,23 @@ body[data-grabbing] .cursor-ring { scale: 0.7; }
 /* artwork off the catalogue's hosts is never loaded (lib/mediaHosts.ts): a plain tile instead */
 .indie-archive .indie-thumb { display: block; flex: none; width: 56px; height: 56px; border-radius: 10px; background: #1d1d27; }
 div.indie-art, div.sp-art { background: linear-gradient(160deg, #1d1d27 0%, #2a1520 100%); }
+
+/* ---------- small phones: room for the display face, nothing clipped ---------- */
+/* Unbounded's caps and descenders are taller than 1.02em, so stacked lines
+   touched or crossed on narrow screens where headings wrap 4-5 deep */
+@media (max-width: 900px) {
+  h1, h2, .hero-copy h1, .scene-copy h2 { line-height: 1.14; }
+}
+@media (max-width: 640px) {
+  .nav-cta { white-space: nowrap; }
+  .sec-tag { letter-spacing: .18em; font-size: 11px; white-space: nowrap; }
+}
+/* 320-380px: the two hero buttons no longer fit side by side, so they stack */
+@media (max-width: 380px) {
+  nav { padding-left: 14px; padding-right: 14px; }
+  .wordmark { font-size: 17px; }
+  .nav-cta { padding: 9px 12px; font-size: 10.5px; letter-spacing: .04em; }
+  .hero-cta { flex-wrap: wrap; }
+  .hero-cta > * { flex: 1 1 100%; }
+  .hero-cta .btn-browser { width: 100%; }
+}
