@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     description,
     images: [
       {
-        url: "/og-hookedcue-v2.png",
+        url: "/og-hookedcue-v3.png",
         width: 1200,
         height: 630,
         alt: "HookedCue swipe-based music discovery app preview",
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title,
     description,
-    images: ["/og-hookedcue-v2.png"],
+    images: ["/og-hookedcue-v3.png"],
   },
   robots: {
     index: true,

@@ -1,0 +1,79 @@
+<!doctype html>
+<!-- HookedCue logo options (6 Nov 2026). Flat marks that hold up at 16px; one pink, one off-white, dark ground. -->
+<html><head><meta charset="utf-8"><style>
+  @font-face{font-family:'Unbounded';src:url('../og/fonts/Unbounded-800-normal.woff2') format('woff2');font-weight:800;}
+  @font-face{font-family:'InstrumentSans';src:url('../og/fonts/InstrumentSans-400-normal.woff2') format('woff2');font-weight:400;}
+  :root{--bg:#08080c;--tile:#121218;--ink:#f4f2ee;--pink:#ff3d71;--soft:#8d8b98;}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{width:1800px;background:var(--bg);color:var(--ink);font-family:'InstrumentSans',sans-serif;padding:56px 64px}
+  .row{display:flex;align-items:center;gap:56px;padding:40px 0;border-bottom:1px solid #22222b}
+  .row:last-child{border-bottom:0}
+  .tag{width:120px;font-family:'Unbounded';font-weight:800;font-size:56px;color:var(--pink)}
+  .icon{width:220px;height:220px;border-radius:52px;background:var(--tile);display:grid;place-items:center;box-shadow:0 0 0 1px #24242e}
+  .icon svg{width:150px;height:150px}
+  .light{background:#f4f2ee}
+  .lock{display:flex;align-items:center;gap:22px}
+  .lock svg{width:84px;height:84px}
+  .word{font-family:'Unbounded';font-weight:800;font-size:58px;letter-spacing:-0.03em}
+  .word i{font-style:normal;color:var(--pink)}
+  .small{display:flex;align-items:center;gap:18px}
+  .small div{display:grid;place-items:center;border-radius:8px;background:var(--tile)}
+  .note{width:330px;font-size:20px;line-height:1.45;color:var(--soft)}
+  h1{font-family:'Unbounded';font-weight:800;font-size:34px;margin-bottom:8px}
+  p.h{color:var(--soft);font-size:20px;margin-bottom:12px}
+</style></head><body>
+<h1>HookedCue logo options</h1><p class="h">icon · wordmark · favicon sizes (48 / 32 / 16 px)</p>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <!-- A: waveform; the loudest bar (the hook of the song) curls into a fish hook -->
+    <symbol id="A" viewBox="0 0 100 100">
+      <g stroke-linecap="round" fill="none">
+        <path d="M14 42 V58" stroke="#f4f2ee" stroke-width="9"/>
+        <path d="M30 34 V52" stroke="#f4f2ee" stroke-width="9"/>
+        <path d="M70 30 V70" stroke="#f4f2ee" stroke-width="9"/>
+        <path d="M86 40 V60" stroke="#f4f2ee" stroke-width="9"/>
+        <path d="M51 12 V66 A13 13 0 0 1 25 66 V62" stroke="#ff3d71" stroke-width="10" stroke-linejoin="round"/>
+        <path d="M25 62 L34 70" stroke="#ff3d71" stroke-width="8"/>
+      </g>
+    </symbol>
+    <!-- B: one bold fish hook whose eye is a play button -->
+    <symbol id="B" viewBox="0 0 100 100">
+      <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M60 36 V64 A21 21 0 0 1 18 64 V52" stroke="#ff3d71" stroke-width="12"/>
+        <path d="M18 52 L31 64" stroke="#ff3d71" stroke-width="10"/>
+      </g>
+      <circle cx="60" cy="22" r="17" fill="#ff3d71"/>
+      <path d="M55 14 L69 22 L55 30 Z" fill="#121218"/>
+    </symbol>
+    <!-- C: a song's waveform line; the playhead drops onto the peak as a hook -->
+    <symbol id="C" viewBox="0 0 100 100">
+      <path d="M8 56 Q16 50 22 56 T36 56 T50 40 T64 56 T78 56 T92 56" fill="none" stroke="#f4f2ee" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+      <g fill="none" stroke="#ff3d71" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M50 8 V30" stroke-width="8"/>
+        <path d="M50 30 V72 A11 11 0 0 1 28 72 V66" stroke-width="8"/>
+        <path d="M28 66 L36 73" stroke-width="7"/>
+      </g>
+      <circle cx="50" cy="8" r="7" fill="#ff3d71"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="row"><div class="tag">A</div>
+  <div class="icon"><svg><use href="#A"/></svg></div>
+  <div class="lock"><svg><use href="#A"/></svg><div class="word">HookedCue<i>.</i></div></div>
+  <div class="small"><div style="width:48px;height:48px"><svg width="36" height="36"><use href="#A"/></svg></div><div style="width:32px;height:32px"><svg width="24" height="24"><use href="#A"/></svg></div><div style="width:16px;height:16px;border-radius:3px"><svg width="14" height="14"><use href="#A"/></svg></div></div>
+  <div class="note">Waveform. The loudest bar, the song's hook, curls into a fish hook. Says "music" and "hook" at once.</div></div>
+
+<div class="row"><div class="tag">B</div>
+  <div class="icon"><svg><use href="#B"/></svg></div>
+  <div class="lock"><svg><use href="#B"/></svg><div class="word">HookedCue<i>.</i></div></div>
+  <div class="small"><div style="width:48px;height:48px"><svg width="36" height="36"><use href="#B"/></svg></div><div style="width:32px;height:32px"><svg width="24" height="24"><use href="#B"/></svg></div><div style="width:16px;height:16px;border-radius:3px"><svg width="14" height="14"><use href="#B"/></svg></div></div>
+  <div class="note">One bold hook whose eye is a play button. The simplest; closest to today's icon, without the glow.</div></div>
+
+<div class="row"><div class="tag">C</div>
+  <div class="icon"><svg><use href="#C"/></svg></div>
+  <div class="lock"><svg><use href="#C"/></svg><div class="word">HookedCue<i>.</i></div></div>
+  <div class="small"><div style="width:48px;height:48px"><svg width="36" height="36"><use href="#C"/></svg></div><div style="width:32px;height:32px"><svg width="24" height="24"><use href="#C"/></svg></div><div style="width:16px;height:16px;border-radius:3px"><svg width="14" height="14"><use href="#C"/></svg></div></div>
+  <div class="note">A song's wave with the playhead dropping onto its peak as a hook: "starts at the hook", drawn.</div></div>
+</body></html>

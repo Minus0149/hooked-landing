@@ -35,9 +35,26 @@ const MOOD_COLORS: Record<string, string> = {
   sleepy: "#5b8def",
 };
 
+/** The logo mark: a waveform whose loudest bar (the song's hook) curls into a fish hook. */
+function Mark({ size }: { size: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 100 100">
+      <g transform="translate(0 4)" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14 42 V58" stroke={TEXT} strokeWidth={9} />
+        <path d="M30 34 V52" stroke={TEXT} strokeWidth={9} />
+        <path d="M70 30 V70" stroke={TEXT} strokeWidth={9} />
+        <path d="M86 40 V60" stroke={TEXT} strokeWidth={9} />
+        <path d="M51 12 V66 A13 13 0 0 1 25 66 V62" stroke={PINK} strokeWidth={10} />
+        <path d="M25 62 L34 70" stroke={PINK} strokeWidth={8} />
+      </g>
+    </svg>
+  );
+}
+
 function Wordmark({ size }: { size: number }) {
   return (
-    <div style={{ display: "flex", fontFamily: "Unbounded", fontWeight: 800, fontSize: size, color: TEXT, letterSpacing: -size * 0.03 }}>
+    <div style={{ display: "flex", alignItems: "center", fontFamily: "Unbounded", fontWeight: 800, fontSize: size, color: TEXT, letterSpacing: -size * 0.03 }}>
+      <div style={{ display: "flex", marginRight: size * 0.38 }}><Mark size={Math.round(size * 1.3)} /></div>
       HookedCue<span style={{ color: PINK }}>.</span>
     </div>
   );
