@@ -1,0 +1,78 @@
+<!doctype html>
+<!-- HookedCue share image (1200x630). Rendered by scripts/og/render.cjs at 2x, then scaled to 1200x630.
+     Same look as the motion film: dark stage, Unbounded, one pink accent, real cards from the app's catalogue. -->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face{font-family:'Unbounded';src:url('fonts/Unbounded-800-normal.woff2') format('woff2');font-weight:800;}
+  @font-face{font-family:'Unbounded';src:url('fonts/Unbounded-600-normal.woff2') format('woff2');font-weight:600;}
+  @font-face{font-family:'InstrumentSans';src:url('fonts/InstrumentSans-400-normal.woff2') format('woff2');font-weight:400;}
+  @font-face{font-family:'InstrumentSans';src:url('fonts/InstrumentSans-600-normal.woff2') format('woff2');font-weight:600;}
+  :root{--bg:#08080c;--ink:#f4f2ee;--soft:#a9a6b4;--pink:#ff3d71;--green:#2ee59d;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{width:1200px;height:630px;overflow:hidden;background:var(--bg);}
+  body{position:relative;color:var(--ink);font-family:'InstrumentSans',sans-serif;}
+  .glow{position:absolute;left:640px;top:-120px;width:760px;height:860px;background:radial-gradient(closest-side,rgba(255,61,113,0.28),rgba(255,61,113,0) 70%);}
+  .glow2{position:absolute;left:-200px;top:380px;width:700px;height:500px;background:radial-gradient(closest-side,rgba(255,61,113,0.10),rgba(255,61,113,0) 70%);}
+  .brand{position:absolute;left:72px;top:60px;display:flex;align-items:center;gap:16px;}
+  .brand img{width:56px;height:56px;border-radius:14px;}
+  .brand b{font-family:'Unbounded';font-weight:800;font-size:30px;letter-spacing:-0.02em;}
+  .brand b i{font-style:normal;color:var(--pink);}
+  h1{position:absolute;left:72px;top:156px;font-family:'Unbounded';font-weight:800;font-size:56px;line-height:1.1;letter-spacing:-0.03em;}
+  h1 span{color:var(--pink);}
+  .wave{position:absolute;left:72px;top:338px;width:560px;height:70px;}
+  .bar{position:absolute;bottom:20px;width:5px;border-radius:3px;background:rgba(244,242,238,0.28);}
+  .bar.h{background:var(--pink);}
+  .zone{position:absolute;top:-6px;height:62px;border-radius:8px;background:rgba(255,61,113,0.12);}
+  .head{position:absolute;top:-10px;width:3px;height:66px;background:var(--pink);border-radius:2px;}
+  .lbl{position:absolute;top:56px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:14px;color:var(--soft);white-space:nowrap;}
+  .lbl.p{color:var(--pink);}
+  p.sub{position:absolute;left:72px;top:452px;width:560px;font-size:25px;line-height:1.4;color:var(--soft);}
+  .url{position:absolute;left:72px;top:540px;display:flex;align-items:center;gap:12px;font-size:25px;font-weight:600;}
+  .url i{width:12px;height:12px;border-radius:50%;background:var(--green);}
+  .card{position:absolute;width:244px;height:376px;border-radius:26px;overflow:hidden;background:#15151c;box-shadow:0 40px 90px rgba(0,0,0,0.6),0 0 0 1px rgba(255,255,255,0.08);}
+  .card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .card .g{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 25%,rgba(0,0,0,0) 45%,rgba(6,6,10,0.94) 84%);}
+  .chip{position:absolute;left:18px;top:18px;padding:6px 12px;border-radius:999px;background:rgba(10,10,14,0.6);border:1px solid rgba(255,255,255,0.2);font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;}
+  .t{position:absolute;left:20px;right:20px;bottom:70px;}
+  .t b{display:block;font-family:'Unbounded';font-weight:600;font-size:22px;letter-spacing:-0.02em;}
+  .t span{display:block;margin-top:6px;font-size:15px;color:#c9c7d2;}
+  .pl{position:absolute;left:20px;bottom:42px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--pink);}
+  .pr{position:absolute;left:20px;right:20px;bottom:26px;height:4px;border-radius:2px;background:rgba(255,255,255,0.2);}
+  .pr .k{position:absolute;top:0;height:4px;border-radius:2px;background:rgba(255,61,113,0.5);}
+  .pr .f{position:absolute;top:-3px;width:3px;height:10px;border-radius:2px;background:var(--pink);}
+  .c1{left:790px;top:160px;transform:rotate(-9deg);opacity:0.5;}
+  .c2{left:972px;top:142px;transform:rotate(8deg);opacity:0.55;}
+  .c3{left:878px;top:126px;transform:rotate(-1deg);}
+</style>
+</head>
+<body>
+  <div class="glow"></div><div class="glow2"></div>
+  <div class="brand"><img src="icon.png" alt=""><b>HookedCue<i>.</i></b></div>
+  <h1>Every song starts<br>at <span>its hook.</span></h1>
+  <div class="wave" id="wave"></div>
+  <p class="sub">Skip the slow intro. Hear the best part first, then swipe to save it or skip it.</p>
+  <div class="url"><i></i><span id="url">hookedcue.com</span></div>
+
+  <div class="card c1"><img src="art/1700880858.jpg" alt=""><div class="g"></div></div>
+  <div class="card c2"><img src="art/1419151804.jpg" alt=""><div class="g"></div></div>
+  <div class="card c3"><img src="art/299583026.jpg" alt=""><div class="g"></div><div class="chip">bollywood</div>
+    <div class="t"><b>Zara Sa</b><span>KK &amp; Pritam</span></div><div class="pl">▶ from the hook</div>
+    <div class="pr"><div class="k" style="left:44%;width:24%"></div><div class="f" style="left:44%"></div></div></div>
+<script>
+  // a song's waveform: quiet intro, loud chorus (the hook) lit pink, the playhead parked on it
+  var u = new URLSearchParams(location.search).get("url"); if (u) document.getElementById("url").textContent = u;
+  var w = document.getElementById("wave"), n = 70, step = 8, hs = 33, he = 48;
+  var z = document.createElement("div"); z.className = "zone"; z.style.left = (hs * step - 6) + "px"; z.style.width = ((he - hs) * step + 6) + "px"; w.appendChild(z);
+  for (var i = 0; i < n; i++) {
+    var x = i / n, env = 0.18 + 0.25 * Math.sin(x * 9.1) ** 2 + (i >= hs && i < he ? 0.55 : 0) + (i > 52 ? 0.2 * Math.abs(Math.sin(x * 23)) : 0);
+    var h = Math.max(6, Math.min(44, Math.round(44 * env * (0.65 + 0.35 * Math.abs(Math.sin(i * 1.7))))));
+    var b = document.createElement("div"); b.className = "bar" + (i >= hs && i < he ? " h" : ""); b.style.left = (i * step) + "px"; b.style.height = h + "px"; w.appendChild(b);
+  }
+  var p = document.createElement("div"); p.className = "head"; p.style.left = (hs * step - 4) + "px"; w.appendChild(p);
+  var l1 = document.createElement("div"); l1.className = "lbl"; l1.style.left = "0px"; l1.textContent = "0:00 intro"; w.appendChild(l1);
+  var l2 = document.createElement("div"); l2.className = "lbl p"; l2.style.left = (hs * step - 4) + "px"; l2.textContent = "▶ the hook"; w.appendChild(l2);
+</script>
+</body>
+</html>

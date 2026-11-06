@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     siteName: "HookedCue",
     title: `${title} | HookedCue`,
     description,
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "HookedCue" }],
+    images: [{ url: "/og-hookedcue-v2.png", width: 1200, height: 630, alt: "HookedCue" }],
   },
   robots: { index: true, follow: true },
 };
